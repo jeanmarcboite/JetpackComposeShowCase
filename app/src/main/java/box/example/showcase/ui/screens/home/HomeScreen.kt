@@ -1,4 +1,4 @@
-package box.example.showcase.ui.home
+package box.example.showcase.ui.screens.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,14 +13,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun HomeScreen() {
-   Column(
+    Column(
         modifier = Modifier
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
-            .semantics { contentDescription = "Overview Screen" }
+            .semantics { contentDescription = "Home Screen" }
     )
     {
         for (i in 1..10)
-        Text("Home screen $i")
+            Text("Home screen $i")
     }
 }

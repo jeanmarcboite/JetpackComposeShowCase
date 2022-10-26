@@ -2,9 +2,6 @@ package box.example.showcase
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,10 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import box.example.showcase.ui.home.HomeScreen
+import box.example.showcase.ui.screens.about.AboutScreen
+import box.example.showcase.ui.screens.home.HomeScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +30,7 @@ fun MainScreen() {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
-    val items = listOf(Icons.Default.Favorite, Icons.Default.Face, Icons.Default.Email)
+    val items = listOf(Home, About)
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -39,12 +39,13 @@ fun MainScreen() {
                 Spacer(Modifier.height(12.dp))
                 items.forEach { item ->
                     NavigationDrawerItem(
-                        icon = { Icon(item, contentDescription = null) },
-                        label = { Text(item.name) },
+                        icon = { Icon(imageVector = item.icon, contentDescription = null) },
+                        label = { Text(item.route) },
                         selected = item == selectedItem.value,
                         onClick = {
                             scope.launch { drawerState.close() }
                             selectedItem.value = item
+                            navController.navigateSingleTopTo(item.route)
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
@@ -94,6 +95,9 @@ fun MainScreen() {
                             composable(Home.route) {
                                 HomeScreen()
                             }
+                            composable(About.route) {
+                                AboutScreen()
+                            }
                         }
                     },
                     bottomBar = {
@@ -106,3 +110,14 @@ fun MainScreen() {
         }
     )
 }
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id
+        ) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
