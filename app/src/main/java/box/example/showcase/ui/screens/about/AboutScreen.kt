@@ -7,9 +7,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import box.example.showcase.R
 
 @Composable
 fun AboutScreen() {
@@ -20,7 +22,6 @@ fun AboutScreen() {
             .semantics { contentDescription = "About Screen" }
     )
     {
-        for (i in 1..10)
-            Text("About screen $i")
+            Text("Application " + stringResource(id = R.string.app_name))
     }
 }

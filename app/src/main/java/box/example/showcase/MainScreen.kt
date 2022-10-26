@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    val materialBlue700 = Color(0xFF1976D2)
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -92,11 +91,10 @@ fun MainScreen() {
                             navController = navController,
                             startDestination = Home.route
                         ) {
-                            composable(Home.route) {
-                                HomeScreen()
-                            }
-                            composable(About.route) {
-                                AboutScreen()
+                            mainScreens.forEach { destination ->
+                                composable(destination.route) {
+                                    destination.screen()
+                                }
                             }
                         }
                     },
