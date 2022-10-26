@@ -18,8 +18,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import box.example.showcase.ui.screens.about.AboutScreen
-import box.example.showcase.ui.screens.home.HomeScreen
+import box.example.showcase.ui.screens.about.About
+import box.example.showcase.ui.screens.home.Home
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,14 +29,15 @@ fun MainScreen() {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
-    val items = listOf(Home, About)
-    val selectedItem = remember { mutableStateOf(items[0]) }
+    val routes = listOf(Home, About)
+    val drawerItems = listOf(Home, About)
+    val selectedItem = remember { mutableStateOf(drawerItems[0]) }
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(Modifier.height(12.dp))
-                items.forEach { item ->
+                drawerItems.forEach { item ->
                     NavigationDrawerItem(
                         icon = { Icon(imageVector = item.icon, contentDescription = null) },
                         label = { Text(item.route) },
@@ -91,7 +92,7 @@ fun MainScreen() {
                             navController = navController,
                             startDestination = Home.route
                         ) {
-                            mainScreens.forEach { destination ->
+                            routes.forEach { destination ->
                                 composable(destination.route) {
                                     destination.screen()
                                 }
@@ -100,7 +101,7 @@ fun MainScreen() {
                     },
                     bottomBar = {
                         BottomAppBar(containerColor = MaterialTheme.colorScheme.primary) {
-                            Text("BottomAppBar")
+                            Text(selectedItem.value.route)
                         }
                     }
                 )
