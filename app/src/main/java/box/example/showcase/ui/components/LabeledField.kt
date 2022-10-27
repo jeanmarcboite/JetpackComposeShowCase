@@ -1,4 +1,4 @@
-package box.example.showcase.ui.component
+package box.example.showcase.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

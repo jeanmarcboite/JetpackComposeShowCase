@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ShowCase</string>
+    <string name="dark_mode">dark_mode</string>
 </resources>

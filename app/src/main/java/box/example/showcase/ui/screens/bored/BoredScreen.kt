@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import box.example.showcase.ui.Route
-import box.example.showcase.ui.component.LabeledField
+import box.example.showcase.ui.components.LabeledField
 import kotlinx.coroutines.launch
 
 object Bored : Route {

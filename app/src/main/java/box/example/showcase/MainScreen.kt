@@ -21,12 +21,17 @@ import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.screens.about.About
 import box.example.showcase.ui.screens.bored.Bored
 import box.example.showcase.ui.screens.home.Home
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Moon
+import compose.icons.fontawesomeicons.solid.Sun
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(mainViewModel: MainViewModel) {
     val navController = rememberNavController()
+    mainViewModel.navController = navController
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
@@ -79,6 +84,23 @@ fun MainScreen() {
                                         imageVector = Icons.Default.Menu,
                                         contentDescription = null,
                                         tint = Color.White
+                                    )
+                                }
+                            },
+                            actions = {
+                                IconToggleButton(checked = mainViewModel.darkMode.value,
+                                    onCheckedChange = {
+
+                                        mainViewModel.setDarkMode(it)
+                                    }) {
+                                    Icon(
+                                        if (mainViewModel.darkMode.value) FontAwesomeIcons.Solid.Sun else FontAwesomeIcons.Solid.Moon,
+                                        contentDescription = "toggle dark mode",
+                                        tint = if (mainViewModel.darkMode.value) Color.Yellow else Color.Magenta,
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .padding(4.dp)
+
                                     )
                                 }
                             }
