@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.screens.about.About
+import box.example.showcase.ui.screens.bored.Bored
 import box.example.showcase.ui.screens.home.Home
 import kotlinx.coroutines.launch
 
@@ -29,8 +30,8 @@ fun MainScreen() {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
-    val routes = listOf(Home, About)
-    val drawerItems = listOf(Home, About)
+    val routes = listOf(Home, Bored, About)
+    val drawerItems = listOf(Home, Bored, About)
     val selectedItem = remember { mutableStateOf(drawerItems[0]) }
     ModalNavigationDrawer(
         drawerState = drawerState,
