@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.screens.about.About
 import box.example.showcase.ui.screens.bored.Bored
 import box.example.showcase.ui.screens.home.Home
@@ -68,44 +69,9 @@ fun MainScreen(mainViewModel: MainViewModel) {
 
                 Scaffold(
                     topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(text = stringResource(id = R.string.app_name))
-                            },
-                            colors = TopAppBarDefaults.smallTopAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                titleContentColor = Color.White,
-                            ),
-                            navigationIcon = {
-                                IconButton(onClick = {
-                                    scope.launch { drawerState.open() }
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Menu,
-                                        contentDescription = null,
-                                        tint = Color.White
-                                    )
-                                }
-                            },
-                            actions = {
-                                IconToggleButton(checked = mainViewModel.darkMode.value,
-                                    onCheckedChange = {
-
-                                        mainViewModel.setDarkMode(it)
-                                    }) {
-                                    Icon(
-                                        if (mainViewModel.darkMode.value) FontAwesomeIcons.Solid.Sun else FontAwesomeIcons.Solid.Moon,
-                                        contentDescription = "toggle dark mode",
-                                        tint = if (mainViewModel.darkMode.value) Color.Yellow else Color.Magenta,
-                                        modifier = Modifier
-                                            .size(24.dp)
-                                            .padding(4.dp)
-
-                                    )
-                                }
-                            }
-                        )
-
+                        TopBar(stringResource(id = R.string.app_name), mainViewModel) {
+                            scope.launch { drawerState.open() }
+                        }
                     },
                     content = { paddingValues ->
                         NavHost(
