@@ -1,4 +1,4 @@
-package box.example.showcase.ui.screens.bored
+package box.example.showcase.ui.pages.bored
 
 import android.util.Log
 import box.example.showcase.BuildConfig
@@ -17,10 +17,12 @@ data class Activity(
     val price: Double,
     val link: String,
     val key: String,
-    val accessibility: Double)
+    val accessibility: Double
+)
+
 interface BoredApi {
-   @GET("api/activity")
-   suspend fun getActivity() : Response<Activity>
+    @GET("api/activity")
+    suspend fun getActivity(): Response<Activity>
 }
 
 suspend fun nextActivity(): Activity? {
@@ -39,7 +41,7 @@ suspend fun nextActivity(): Activity? {
 object ApiHelper {
     private const val baseUrl = "https://www.boredapi.com/"
 
-   fun getInstance(): Retrofit {
+    fun getInstance(): Retrofit {
         val logging = HttpLoggingInterceptor()
         val httpclient = OkHttpClient.Builder()
         httpclient.addInterceptor(logging)

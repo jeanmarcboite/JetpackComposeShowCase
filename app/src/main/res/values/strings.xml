@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">ShowCase</string>
     <string name="dark_mode">dark_mode</string>
+    <string name="home_item_title">HOME item</string>
+    <string name="home_item_route">home_home</string>
+    <string name="about_item_title">ABOUT item</string>
+    <string name="about_item_route">home_about</string>
+    <string name="home_page_title">Home Page</string>
+    <string name="home_page_route">home</string>
+    <string name="about_page_title">About app</string>
+    <string name="about_page_route">about</string>
+    <string name="settings_page_title">Settings</string>
+    <string name="settings_page_route">settings</string>
+    <string name="login_page_title">Log In</string>
+    <string name="login_page_route">login</string>
+    <string name="notes_page_title">Notes</string>
+    <string name="notes_page_route">notes</string>
 </resources>

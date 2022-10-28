@@ -1,8 +1,6 @@
 package box.example.showcase
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -10,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -19,13 +16,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.app.TopBar
-import box.example.showcase.ui.screens.about.About
-import box.example.showcase.ui.screens.bored.Bored
-import box.example.showcase.ui.screens.home.Home
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Moon
-import compose.icons.fontawesomeicons.solid.Sun
+import box.example.showcase.ui.pages.about.About
+import box.example.showcase.ui.pages.bored.Bored
+import box.example.showcase.ui.pages.home.Home
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

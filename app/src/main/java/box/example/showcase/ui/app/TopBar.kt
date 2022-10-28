@@ -6,24 +6,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import box.example.showcase.MainViewModel
+import box.example.showcase.ui.components.ProfileImage
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Moon
 import compose.icons.fontawesomeicons.solid.Sun
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
     title: String,
     mainViewModel: MainViewModel,
-           onButtonClicked: () -> Unit) {
+    buttonIcon: ImageVector = Icons.Default.Menu,
+    onButtonClicked: () -> Unit
+) {
     TopAppBar(
         title = {
             Text(text = title)
@@ -35,7 +36,7 @@ fun TopBar(
         navigationIcon = {
             IconButton(onClick = onButtonClicked) {
                 Icon(
-                    imageVector = Icons.Default.Menu,
+                    imageVector = buttonIcon,
                     contentDescription = null,
                     tint = Color.White
                 )
@@ -56,6 +57,12 @@ fun TopBar(
                         .padding(4.dp)
 
                 )
+            }
+
+            IconButton(onClick = {
+                mainViewModel.navigate("login")
+            }) {
+                ProfileImage(mainViewModel, 32.dp)
             }
         }
     )

@@ -1,4 +1,4 @@
-package box.example.showcase.ui.screens.about
+package box.example.showcase.ui.pages.about
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -32,6 +32,6 @@ fun AboutScreen() {
             .semantics { contentDescription = "About Screen" }
     )
     {
-            Text("Application " + stringResource(id = R.string.app_name))
+        Text("Application " + stringResource(id = R.string.app_name))
     }
 }

@@ -1,4 +1,4 @@
-package box.example.showcase.ui.screens.bored
+package box.example.showcase.ui.pages.bored
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

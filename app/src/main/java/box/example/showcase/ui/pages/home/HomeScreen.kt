@@ -1,4 +1,4 @@
-package box.example.showcase.ui.screens.home
+package box.example.showcase.ui.pages.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
