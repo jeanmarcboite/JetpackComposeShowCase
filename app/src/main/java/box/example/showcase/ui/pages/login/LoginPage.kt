@@ -32,12 +32,12 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Google
-import compose.icons.fontawesomeicons.solid.CloudSunRain
+import compose.icons.fontawesomeicons.solid.Fire
 
 class LoginPage(private val _mainViewModel: MainViewModel) :
     Page(
         _mainViewModel,
-        FontAwesomeIcons.Solid.CloudSunRain,
+        FontAwesomeIcons.Solid.Fire,
         R.string.login_page_route,
         R.string.login_page_title,
         Icons.Default.ArrowBack
@@ -56,7 +56,7 @@ class LoginPage(private val _mainViewModel: MainViewModel) :
         }
     }
 
-    override suspend fun onButtonClicked(): Unit {
+    override suspend fun onButtonClicked() {
         mainViewModel.popBackStack()
     }
 

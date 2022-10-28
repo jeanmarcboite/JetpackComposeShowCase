@@ -18,7 +18,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.app.TopBar
+import box.example.showcase.ui.pages.about.AboutPage
 import box.example.showcase.ui.pages.bored.BoredPage
+import box.example.showcase.ui.pages.home.HomePage
 import box.example.showcase.ui.pages.login.LoginPage
 import kotlinx.coroutines.launch
 
@@ -29,7 +31,12 @@ fun MainScreen(mainViewModel: MainViewModel) {
     mainViewModel.drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
-    val pages = listOf(BoredPage(mainViewModel), LoginPage(mainViewModel))
+    val pages = listOf(
+        HomePage(mainViewModel),
+        AboutPage(mainViewModel),
+        BoredPage(mainViewModel),
+        LoginPage(mainViewModel)
+    )
     val routes = pages.associateBy { stringResource(id = it.route) }
     Log.d("boxxx", routes.toString())
     val context = LocalContext.current

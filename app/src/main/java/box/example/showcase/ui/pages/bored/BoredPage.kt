@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,12 +18,15 @@ import box.example.showcase.MainViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.LabeledField
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.Beer
 import kotlinx.coroutines.launch
 
 class BoredPage(private val _mainViewModel: MainViewModel) :
     Page(
         _mainViewModel,
-        Icons.Filled.Person,
+        FontAwesomeIcons.Solid.Beer,
         R.string.bored_page_route,
         R.string.bored_page_title
     ) {
