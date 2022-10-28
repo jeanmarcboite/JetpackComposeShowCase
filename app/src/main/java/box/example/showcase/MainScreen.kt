@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.app.TopBar
+import box.example.showcase.ui.pages.ColorPage
 import box.example.showcase.ui.pages.about.AboutPage
 import box.example.showcase.ui.pages.bored.BoredPage
 import box.example.showcase.ui.pages.home.HomePage
@@ -33,6 +34,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
 // icons to mimic drawer destinations
     val pages = listOf(
         HomePage(mainViewModel),
+        ColorPage(mainViewModel),
         AboutPage(mainViewModel),
         BoredPage(mainViewModel),
         LoginPage(mainViewModel)

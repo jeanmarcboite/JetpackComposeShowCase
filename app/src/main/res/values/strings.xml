@@ -17,4 +17,6 @@
     <string name="login_page_route">login</string>
     <string name="notes_page_title">Notes</string>
     <string name="notes_page_route">notes</string>
+    <string name="color_page_title">Colors</string>
+    <string name="color_page_route">colors</string>
 </resources>
