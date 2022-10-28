@@ -23,7 +23,7 @@ import compose.icons.fontawesomeicons.solid.Sun
 fun TopBar(
     title: String,
     mainViewModel: MainViewModel,
-    buttonIcon: ImageVector = Icons.Default.Menu,
+    buttonIcon: ImageVector?,
     onButtonClicked: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -38,7 +38,7 @@ fun TopBar(
         navigationIcon = {
             IconButton(onClick = onButtonClicked) {
                 Icon(
-                    imageVector = buttonIcon,
+                    imageVector = buttonIcon ?: Icons.Default.Menu,
                     contentDescription = null,
                     tint = Color.White
                 )
