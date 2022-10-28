@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -16,36 +17,35 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.app.TopBar
-import box.example.showcase.ui.pages.about.About
-import box.example.showcase.ui.pages.bored.Bored
-import box.example.showcase.ui.pages.home.Home
+import box.example.showcase.ui.pages.bored.BoredPage
+import box.example.showcase.ui.pages.login.LoginPage
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(mainViewModel: MainViewModel) {
-    val navController = rememberNavController()
-    mainViewModel.navController = navController
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    mainViewModel.navController = rememberNavController()
+    mainViewModel.drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
-    val routes = listOf(Home, Bored, About)
-    val drawerItems = listOf(Home, Bored, About)
-    val selectedItem = remember { mutableStateOf(drawerItems[0]) }
+    val pages = listOf(BoredPage(mainViewModel), LoginPage(mainViewModel))
+    val context = LocalContext.current
+    val selectedItem = remember { mutableStateOf(pages[0]) }
     ModalNavigationDrawer(
-        drawerState = drawerState,
+        drawerState = mainViewModel.drawerState,
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(Modifier.height(12.dp))
-                drawerItems.forEach { item ->
+                pages.forEach { page ->
+                    val route = stringResource(id = page.route)
                     NavigationDrawerItem(
-                        icon = { Icon(imageVector = item.icon, contentDescription = null) },
-                        label = { Text(item.route) },
-                        selected = item == selectedItem.value,
+                        icon = { Icon(imageVector = page.icon, contentDescription = null) },
+                        label = { Text(route) },
+                        selected = page == selectedItem.value,
                         onClick = {
-                            scope.launch { drawerState.close() }
-                            selectedItem.value = item
-                            navController.navigateSingleTopTo(item.route)
+                            scope.launch { mainViewModel.drawerState.close() }
+                            selectedItem.value = page
+                            mainViewModel.navigate(route)
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
@@ -62,28 +62,33 @@ fun MainScreen(mainViewModel: MainViewModel) {
 
                 Scaffold(
                     topBar = {
-                        TopBar(stringResource(id = R.string.app_name), mainViewModel) {
-                            scope.launch { drawerState.open() }
-                        }
+                        TopBar(
+                            stringResource(id = R.string.app_name),
+                            mainViewModel,
+                            selectedItem.value.buttonIcon,
+                            onButtonClicked = { scope.launch { selectedItem.value.onButtonClicked() } }
+                        )
                     },
                     content = { paddingValues ->
                         NavHost(
                             modifier = Modifier
                                 .padding(paddingValues)
                                 .fillMaxSize(),
-                            navController = navController,
-                            startDestination = Home.route
+                            navController = mainViewModel.navController,
+                            startDestination = context.getString(pages[0].route)
                         ) {
-                            routes.forEach { destination ->
-                                composable(destination.route) {
-                                    destination.screen()
+                            pages.forEach { page ->
+                                composable(context.getString(page.route)) {
+                                    page.Content {
+
+                                    }
                                 }
                             }
                         }
                     },
                     bottomBar = {
                         BottomAppBar(containerColor = MaterialTheme.colorScheme.primary) {
-                            Text(selectedItem.value.route)
+                            Text(context.getString(selectedItem.value.route))
                         }
                     }
                 )

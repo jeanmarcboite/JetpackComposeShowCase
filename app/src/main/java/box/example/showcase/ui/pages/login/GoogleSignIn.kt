@@ -37,6 +37,7 @@ class GoogleSignInContract(private val googleSignInClient: GoogleSignInClient) :
             Log.i("boxx", "Google sign in ${account.displayName} ${account.id} ${account.idToken}")
             account.idToken!!
         } catch (e: Exception) {
+            // TODO: display message
             Log.e("boxx", "Google sign in failed ${e.message}", e)
             null
         }

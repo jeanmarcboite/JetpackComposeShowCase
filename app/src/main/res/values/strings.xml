@@ -7,6 +7,8 @@
     <string name="about_item_route">home_about</string>
     <string name="home_page_title">Home Page</string>
     <string name="home_page_route">home</string>
+    <string name="bored_page_title">Find activity</string>
+    <string name="bored_page_route">bored</string>
     <string name="about_page_title">About app</string>
     <string name="about_page_route">about</string>
     <string name="settings_page_title">Settings</string>

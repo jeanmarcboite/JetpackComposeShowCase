@@ -15,30 +15,35 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import box.example.showcase.ui.Route
+import box.example.showcase.MainViewModel
+import box.example.showcase.R
+import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.LabeledField
 import kotlinx.coroutines.launch
 
-object Bored : Route {
-    override val icon = Icons.Filled.Person
-    override val route = "bored"
-    override val screen: @Composable () -> Unit = { BoredScreen() }
-}
-
-@Composable
-fun BoredScreen() {
-    val scope = rememberCoroutineScope()
-    val activity: MutableState<Activity?> = remember { mutableStateOf<Activity?>(null) }
-    LaunchedEffect(true) {
-        activity.value = nextActivity()
-    }
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+class BoredPage(private val _mainViewModel: MainViewModel) :
+    Page(
+        _mainViewModel,
+        Icons.Filled.Person,
+        R.string.bored_page_route,
+        R.string.bored_page_title
     ) {
-        ActivityCard(activity) {
-            scope.launch {
-                activity.value = nextActivity()
+
+    @Composable
+    override fun Content(openDrawer: () -> Unit) {
+        val scope = rememberCoroutineScope()
+        val activity: MutableState<Activity?> = remember { mutableStateOf<Activity?>(null) }
+        LaunchedEffect(true) {
+            activity.value = nextActivity()
+        }
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            ActivityCard(activity) {
+                scope.launch {
+                    activity.value = nextActivity()
+                }
             }
         }
     }

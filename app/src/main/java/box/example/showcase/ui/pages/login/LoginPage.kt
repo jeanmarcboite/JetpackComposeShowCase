@@ -16,7 +16,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,17 +24,24 @@ import androidx.compose.ui.viewinterop.AndroidView
 import box.example.showcase.MainViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
-import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.components.ProfileImage
 import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
+import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Google
+import compose.icons.fontawesomeicons.solid.CloudSunRain
 
-class Login(private val mainViewModel: MainViewModel) :
-    Page(R.string.login_page_route, R.string.login_page_title) {
+class LoginPage(private val _mainViewModel: MainViewModel) :
+    Page(
+        _mainViewModel,
+        FontAwesomeIcons.Solid.CloudSunRain,
+        R.string.login_page_route,
+        R.string.login_page_title,
+        Icons.Default.ArrowBack
+    ) {
     override fun showInDrawer() = false
     lateinit var googleSignIn: GSignIn
 
@@ -43,17 +49,15 @@ class Login(private val mainViewModel: MainViewModel) :
     override fun Content(openDrawer: () -> Unit) {
         googleSignIn = GSignIn(LocalContext.current)
         Column(modifier = Modifier.fillMaxSize()) {
-            TopBar(
-                title = stringResource(id = title),
-                buttonIcon = Icons.Filled.ArrowBack,
-                mainViewModel = mainViewModel
-            ) { mainViewModel.navController?.popBackStack() }
-
             if (mainViewModel.user.value == null)
                 LoginScreen()
             else
                 LogoutScreen()
         }
+    }
+
+    override suspend fun onButtonClicked(): Unit {
+        mainViewModel.navController?.popBackStack()
     }
 
     @Composable
