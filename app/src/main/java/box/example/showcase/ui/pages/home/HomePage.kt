@@ -12,16 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import box.example.showcase.MainViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Home
 
-class HomePage(private val _mainViewModel: MainViewModel) :
+class HomePage() :
     Page(
-        _mainViewModel,
         FontAwesomeIcons.Solid.Home,
         R.string.home_page_route,
         R.string.home_page_title

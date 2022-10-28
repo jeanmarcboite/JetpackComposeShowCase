@@ -34,9 +34,8 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Google
 import compose.icons.fontawesomeicons.solid.Fire
 
-class LoginPage(private val _mainViewModel: MainViewModel) :
+class LoginPage() :
     Page(
-        _mainViewModel,
         FontAwesomeIcons.Solid.Fire,
         R.string.login_page_route,
         R.string.login_page_title,

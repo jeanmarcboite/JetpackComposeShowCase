@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import box.example.showcase.MainViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.theme.margin_half
@@ -128,9 +127,8 @@ val COLOR_MAP: Map<String, ColorItem> = mapOf(
 )
 
 // gh repo clone mwolfson/jetpackTemplate
-class ColorPage(private val _mainViewModel: MainViewModel) :
+class ColorPage() :
     Page(
-        _mainViewModel,
         FontAwesomeIcons.Solid.Cocktail,
         R.string.color_page_route,
         R.string.color_page_title

@@ -33,12 +33,15 @@ fun MainScreen(mainViewModel: MainViewModel) {
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
     val pages = listOf(
-        HomePage(mainViewModel),
-        ColorPage(mainViewModel),
-        AboutPage(mainViewModel),
-        BoredPage(mainViewModel),
-        LoginPage(mainViewModel)
+        HomePage(),
+        ColorPage(),
+        AboutPage(),
+        BoredPage(),
+        LoginPage()
     )
+    pages.forEach {
+        it.mainViewModel = mainViewModel
+    }
     val routes = pages.associateBy { stringResource(id = it.route) }
     Log.d("boxxx", routes.toString())
     val context = LocalContext.current
@@ -49,11 +52,12 @@ fun MainScreen(mainViewModel: MainViewModel) {
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(Modifier.height(12.dp))
-                pages.forEach { page ->
+                pages.filter { it.showInDrawer() }.forEach { page ->
                     val route = stringResource(id = page.route)
+                    val title = stringResource(id = page.title)
                     NavigationDrawerItem(
                         icon = { Icon(imageVector = page.icon, contentDescription = null) },
-                        label = { Text(route) },
+                        label = { Text(title) },
                         selected = page == selectedItem.value,
                         onClick = {
                             scope.launch { mainViewModel.drawerState.close() }

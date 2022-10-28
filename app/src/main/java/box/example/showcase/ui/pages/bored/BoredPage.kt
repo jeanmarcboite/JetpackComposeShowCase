@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import box.example.showcase.MainViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.LabeledField
@@ -23,9 +22,8 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Beer
 import kotlinx.coroutines.launch
 
-class BoredPage(private val _mainViewModel: MainViewModel) :
+class BoredPage() :
     Page(
-        _mainViewModel,
         FontAwesomeIcons.Solid.Beer,
         R.string.bored_page_route,
         R.string.bored_page_title
