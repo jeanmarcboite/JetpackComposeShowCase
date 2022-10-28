@@ -50,4 +50,12 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+
+    fun popBackStack() {
+        navController.popBackStack()
+        Log.w(
+            "boxxx",
+            navController.currentDestination.toString()
+        )
+    }
 }

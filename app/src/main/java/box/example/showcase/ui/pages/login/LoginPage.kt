@@ -57,7 +57,7 @@ class LoginPage(private val _mainViewModel: MainViewModel) :
     }
 
     override suspend fun onButtonClicked(): Unit {
-        mainViewModel.navController?.popBackStack()
+        mainViewModel.popBackStack()
     }
 
     @Composable
@@ -149,7 +149,7 @@ class LoginPage(private val _mainViewModel: MainViewModel) :
                     FirebaseAuth.getInstance().signOut()
                     googleSignIn.googleSignInClient.signOut()
                     mainViewModel.user.value = null
-                    mainViewModel.navController?.popBackStack()
+                    mainViewModel.popBackStack()
                 },
                 modifier = Modifier.padding(8.dp),
                 shape = RoundedCornerShape(20.dp)

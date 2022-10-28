@@ -1,5 +1,6 @@
 package box.example.showcase
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -29,8 +30,11 @@ fun MainScreen(mainViewModel: MainViewModel) {
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
     val pages = listOf(BoredPage(mainViewModel), LoginPage(mainViewModel))
+    val routes = pages.associateBy { stringResource(id = it.route) }
+    Log.d("boxxx", routes.toString())
     val context = LocalContext.current
     val selectedItem = remember { mutableStateOf(pages[0]) }
+
     ModalNavigationDrawer(
         drawerState = mainViewModel.drawerState,
         drawerContent = {
@@ -44,8 +48,10 @@ fun MainScreen(mainViewModel: MainViewModel) {
                         selected = page == selectedItem.value,
                         onClick = {
                             scope.launch { mainViewModel.drawerState.close() }
-                            selectedItem.value = page
+                            //selectedItem.value = page
                             mainViewModel.navigate(route)
+                            selectedItem.value =
+                                routes[mainViewModel.navController.currentDestination?.route]!!
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
@@ -66,7 +72,13 @@ fun MainScreen(mainViewModel: MainViewModel) {
                             stringResource(id = R.string.app_name),
                             mainViewModel,
                             selectedItem.value.buttonIcon,
-                            onButtonClicked = { scope.launch { selectedItem.value.onButtonClicked() } }
+                            onButtonClicked = {
+                                scope.launch {
+                                    selectedItem.value.onButtonClicked()
+                                    selectedItem.value =
+                                        routes[mainViewModel.navController.currentDestination?.route]!!
+                                }
+                            }
                         )
                     },
                     content = { paddingValues ->
