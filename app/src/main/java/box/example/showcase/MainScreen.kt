@@ -27,30 +27,28 @@ fun MainScreen(mainViewModel: MainViewModel) {
     mainViewModel.navController = rememberNavController()
     mainViewModel.drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val pages = mainPages(context, mainViewModel)
+    mainViewModel.pages = mainPages(context, mainViewModel)
 
-    Log.d("boxxx", pages.toString())
-    val selectedItem =
-        remember { mutableStateOf(pages[mainViewModel.navController.currentDestination?.route]) }
+    Log.d("boxxx", mainViewModel.pages.toString())
+    mainViewModel.selectedItem =
+        remember { mutableStateOf(mainViewModel.pages[context.getString(R.string.home_page_route)]) }
 
     ModalNavigationDrawer(
         drawerState = mainViewModel.drawerState,
         drawerContent = {
             ModalDrawerSheet {
                 Spacer(Modifier.height(12.dp))
-                pages.values.filter { it.showInDrawer() }.forEach { page ->
+                mainViewModel.pages.values.filter { it.showInDrawer() }.forEach { page ->
                     val route = stringResource(id = page.route)
                     val title = stringResource(id = page.title)
                     NavigationDrawerItem(
                         icon = { Icon(imageVector = page.icon, contentDescription = null) },
                         label = { Text(title) },
-                        selected = page == selectedItem.value,
+                        selected = page == mainViewModel.selectedItem.value,
                         onClick = {
                             scope.launch { mainViewModel.drawerState.close() }
                             //selectedItem.value = page
                             mainViewModel.navigate(route)
-                            selectedItem.value =
-                                pages[mainViewModel.navController.currentDestination?.route]!!
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                     )
@@ -70,12 +68,12 @@ fun MainScreen(mainViewModel: MainViewModel) {
                         TopBar(
                             stringResource(id = R.string.app_name),
                             mainViewModel,
-                            selectedItem.value?.buttonIcon,
+                            mainViewModel.selectedItem.value?.buttonIcon,
                             onButtonClicked = {
                                 scope.launch {
-                                    selectedItem.value?.onButtonClicked()
-                                    selectedItem.value =
-                                        pages[mainViewModel.navController.currentDestination?.route]!!
+                                    mainViewModel.selectedItem.value?.onButtonClicked()
+                                    mainViewModel.selectedItem.value =
+                                        mainViewModel.pages[mainViewModel.navController.currentDestination?.route]!!
                                 }
                             }
                         )
@@ -88,7 +86,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
                             navController = mainViewModel.navController,
                             startDestination = context.getString(R.string.home_page_route)
                         ) {
-                            pages.values.forEach { page ->
+                            mainViewModel.pages.values.forEach { page ->
                                 composable(context.getString(page.route)) {
                                     page.Content {
 
@@ -99,7 +97,7 @@ fun MainScreen(mainViewModel: MainViewModel) {
                     },
                     bottomBar = {
                         BottomAppBar(containerColor = MaterialTheme.colorScheme.primary) {
-                            selectedItem.value?.route?.let {
+                            mainViewModel.selectedItem.value?.route?.let {
                                 Text(context.getString(it))
                             }
                         }

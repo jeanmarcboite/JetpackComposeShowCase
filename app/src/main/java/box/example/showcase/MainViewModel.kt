@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import box.example.showcase.ui.Page
 import com.google.firebase.auth.FirebaseUser
 
 const val DARK_MODE = "dark_mode"
@@ -21,6 +22,8 @@ class MainViewModel : ViewModel() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     lateinit var drawerState: DrawerState
+    lateinit var selectedItem: MutableState<Page?>
+    lateinit var pages: Map<String, Page>
 
     init {
         Log.v("boxy", "init MainViewModel")
@@ -38,13 +41,15 @@ class MainViewModel : ViewModel() {
     }
 
     fun navigate(route: String) {
-        navController?.apply {
+        navController.apply {
             try {
                 navigate(route) {
                     //popUpTo = navController.graph.startDestination
                     launchSingleTop = true
                 }
                 navigateSingleTopTo(route)
+                selectedItem.value =
+                    pages[navController.currentDestination?.route]!!
             } catch (e: Exception) {
                 Log.e("boxx", "Cannot navigate to {route}: ${e.message}"/*, e*/)
             }
