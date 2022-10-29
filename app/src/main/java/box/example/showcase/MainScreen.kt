@@ -25,11 +25,12 @@ import kotlinx.coroutines.launch
 fun MainScreen(mainViewModel: MainViewModel) {
     val context = LocalContext.current
     mainViewModel.navController = rememberNavController()
+
     mainViewModel.drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     mainViewModel.pages = mainPages(context, mainViewModel)
 
-    Log.d("boxxx", mainViewModel.pages.toString())
+    Log.d("boxxx", "Pages: " + mainViewModel.pages.toString())
     mainViewModel.selectedItem =
         remember { mutableStateOf(mainViewModel.pages[context.getString(R.string.home_page_route)]) }
 

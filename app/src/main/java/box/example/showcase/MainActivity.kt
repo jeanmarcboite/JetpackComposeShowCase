@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val mainViewModel: MainViewModel by viewModels()
         mainViewModel.readApplicationSettings(ApplicationSettings(this))
+
         setContent {
             ShowCaseTheme(mainViewModel.darkMode.value) {
                 // A surface container using the 'background' color from the theme

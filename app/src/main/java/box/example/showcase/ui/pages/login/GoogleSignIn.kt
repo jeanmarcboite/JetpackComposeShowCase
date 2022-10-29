@@ -12,9 +12,8 @@ import com.google.android.gms.common.api.ApiException
 
 class GSignIn(context: Context) {
     private val client_id =
-        "47788721477-3mvgqpgqe3tf3gj89ip2rvc4moht0k87.apps.googleusercontent.com"
-    val client_id2 = "47788721477-l5fqema2vfc8unpn89gufdhptqtbbllk.apps.googleusercontent.com"
-    val googleSignInOptions: GoogleSignInOptions =
+        "1048873307400-ffpoo6p4rp09tvg90psmb4dejjkj1645.apps.googleusercontent.com"
+    private val googleSignInOptions: GoogleSignInOptions =
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(client_id)
             .requestEmail()
@@ -31,8 +30,8 @@ class GoogleSignInContract(private val googleSignInClient: GoogleSignInClient) :
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?): String? {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
         return try {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
             val account = task.getResult(ApiException::class.java)!!
             Log.i("boxx", "Google sign in ${account.displayName} ${account.id} ${account.idToken}")
             account.idToken!!

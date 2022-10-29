@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import box.example.showcase.MainViewModel
@@ -28,10 +27,10 @@ import box.example.showcase.ui.components.ProfileImage
 import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.brands.Google
 import compose.icons.fontawesomeicons.solid.Fire
 
 class LoginPage() :
@@ -59,12 +58,13 @@ class LoginPage() :
         mainViewModel.popBackStack()
     }
 
+
     @Composable
     fun GoogleSignInButton() {
         val context = LocalContext.current
         val googleLoginLauncher =
             rememberLauncherForActivityResult(GoogleSignInContract(googleSignIn.googleSignInClient)) { idToken ->
-                Log.d("boxx", idToken.toString())
+                Log.d("boxx [idToken]", idToken.toString())
                 idToken?.let {
                     firebaseAuthWithGoogle(context, it, mainViewModel)
                 }
@@ -99,8 +99,8 @@ class LoginPage() :
             .addOnCompleteListener(context as Activity) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
                     mainViewModel.user.value = FirebaseAuth.getInstance().currentUser
+                    Log.d(TAG, "signInWithCredential:success: user " + mainViewModel.user.value)
                     //val user = auth.currentUser
                     //updateUI(user)
                 } else {
@@ -118,11 +118,7 @@ class LoginPage() :
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                SimpleOutlinedTextFieldSample()
-                PasswordTextField()
-            }
-
+            EmailSignInButton()
             GoogleSignInButton()
         }
 
@@ -138,7 +134,7 @@ class LoginPage() :
             Row {
                 ProfileImage(mainViewModel, 64.dp)
                 Text(
-                    text = "Username: ${mainViewModel.user.value?.displayName}",
+                    text = "Username: ${mainViewModel.user.value?.email}",
                     modifier = Modifier.padding(8.dp)
                 )
             }
@@ -153,59 +149,92 @@ class LoginPage() :
                 modifier = Modifier.padding(8.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {
-                Icon(
-                    FontAwesomeIcons.Brands.Google, "",
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .size(32.dp)
-                )
-
                 Text(text = "Logout", modifier = Modifier.padding(16.dp))
             }
 
         }
     }
-}
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SimpleOutlinedTextFieldSample() {
-    var text by remember {
-        mutableStateOf("")
+    @Composable
+    fun EmailSignInButton() {
+        var email by remember {
+            mutableStateOf("jeanmarcboite@gmail.com")
+        }
+        var password by rememberSaveable { mutableStateOf("firebase") }
+        val context = LocalContext.current
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            EmailTextField(email) {
+                email = it
+            }
+            PasswordTextField(password) {
+                password = it
+            }
+            Button(
+                onClick = {
+                    Log.d("boxx", "login with password")
+                    firebaseAuthWithEmail(context, email, password)
+                },
+                modifier = Modifier.padding(1.dp),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Text("Sign in")
+            }
+        }
     }
-    Surface(modifier = Modifier.padding(8.dp)) {
-        OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
-            label = { Text("User") }
+
+    fun firebaseAuthWithEmail(context: Context, email: String, password: String) {
+        val TAG = "boxxx firebaseAuthWithEmail"
+        val auth = Firebase.auth
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(context as Activity) { task ->
+                if (task.isSuccessful) {
+                    mainViewModel.user.value = FirebaseAuth.getInstance().currentUser
+                    Log.d(
+                        TAG,
+                        "signInWithCredential:success: user " + mainViewModel.user.value?.email
+                    )
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    Log.d(TAG, "signInWithEmail:success for ${user?.email}")
+                    //updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    //Toast.makeText(context, "Authentication failed.",
+                    //   Toast.LENGTH_SHORT).show()
+                    //updateUI(null)
+                    //checkForMultiFactorFailure(task.exception!!)
+                }
+
+            }
+
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun EmailTextField(email: String, onValueChange: (String) -> Unit) {
+        Surface(modifier = Modifier.padding(8.dp)) {
+            OutlinedTextField(
+                value = email,
+                onValueChange = onValueChange,
+                label = { Text("User") }
+            )
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun PasswordTextField(password: String, onValueChange: (String) -> Unit) {
+
+        TextField(
+            value = password,
+            onValueChange = onValueChange,
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
     }
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PasswordTextField() {
-    var password by rememberSaveable { mutableStateOf("") }
-
-    TextField(
-        value = password,
-        onValueChange = { password = it },
-        label = { Text("Password") },
-        visualTransformation = PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-    )
-}
-
-@Preview
-@Composable
-fun LoginScreen() {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        SimpleOutlinedTextFieldSample()
-        PasswordTextField()
-    }
 }

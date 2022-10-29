@@ -9,11 +9,14 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import box.example.showcase.ui.Page
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 const val DARK_MODE = "dark_mode"
 
-class MainViewModel : ViewModel() {
+class MainViewModel() : ViewModel() {
     lateinit var applicationSettings: ApplicationSettings
     val user: MutableState<FirebaseUser?> = mutableStateOf(null)
 
@@ -27,7 +30,13 @@ class MainViewModel : ViewModel() {
 
     init {
         Log.v("boxy", "init MainViewModel")
-        //user.value = FirebaseAuth.getInstance().currentUser
+        Log.d("boxx [Firebase.auth]", Firebase.auth.toString())
+        Log.d("boxx [Firebase.auth]", Firebase.auth.currentUser.toString())
+        val auth = Firebase.auth
+
+        user.value = FirebaseAuth.getInstance().currentUser
+        //FirebaseApp.initializeApp(application.applicationContext)
+        Log.d("boxx", "Firebase user: " + FirebaseAuth.getInstance().currentUser.toString())
     }
 
     fun readApplicationSettings(_applicationSettings: ApplicationSettings) {
