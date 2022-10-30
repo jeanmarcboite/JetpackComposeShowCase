@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -20,7 +21,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val mainViewModel: MainViewModel by viewModels()
+        val authViewModel: AuthViewModel by viewModels()
         mainViewModel.readApplicationSettings(ApplicationSettings(this))
+        mainViewModel.authViewModel = authViewModel
 
         setContent {
             ShowCaseTheme(mainViewModel.darkMode.value) {

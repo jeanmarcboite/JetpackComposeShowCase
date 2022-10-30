@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import box.example.showcase.MainViewModel
+import box.example.showcase.ui.models.AuthViewModel
 import coil.transform.CircleCropTransformation
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 
 @Composable
-fun ProfileImage(viewModel: MainViewModel, imgSize: Dp) {
+fun ProfileImage(viewModel: AuthViewModel, imgSize: Dp) {
     val user = viewModel.user.value
     val imageUri = user?.photoUrl?.toString()?.toUri()
 

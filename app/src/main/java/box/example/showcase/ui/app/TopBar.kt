@@ -62,7 +62,7 @@ fun TopBar(
             IconButton(onClick = {
                 mainViewModel.navigate("login")
             }) {
-                ProfileImage(mainViewModel, 32.dp)
+                ProfileImage(mainViewModel.authViewModel, 32.dp)
             }
         }
     )

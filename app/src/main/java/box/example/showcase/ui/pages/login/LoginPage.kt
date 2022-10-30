@@ -7,28 +7,24 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.launch
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import box.example.showcase.MainViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.ProfileImage
+import box.example.showcase.ui.models.AuthState
 import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Fire
@@ -47,10 +43,10 @@ class LoginPage() :
     override fun Content(openDrawer: () -> Unit) {
         googleSignIn = GSignIn(LocalContext.current)
         Column(modifier = Modifier.fillMaxSize()) {
-            if (mainViewModel.user.value == null)
-                LoginScreen()
-            else
+            if (mainViewModel.authViewModel.state.value == AuthState.LoggedIn)
                 LogoutScreen()
+            else
+                LoginScreen()
         }
     }
 
@@ -98,8 +94,11 @@ class LoginPage() :
             .addOnCompleteListener(context as Activity) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    mainViewModel.user.value = FirebaseAuth.getInstance().currentUser
-                    Log.d(TAG, "signInWithCredential:success: user " + mainViewModel.user.value)
+                    mainViewModel.authViewModel.setUser(FirebaseAuth.getInstance().currentUser)
+                    Log.d(
+                        TAG,
+                        "signInWithCredential:success: user " + mainViewModel.authViewModel.user.value
+                    )
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -114,7 +113,7 @@ class LoginPage() :
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            EmailSignInButton()
+            EmailSignInScreen(mainViewModel.authViewModel)
             GoogleSignInButton()
         }
     }
@@ -127,9 +126,9 @@ class LoginPage() :
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row {
-                ProfileImage(mainViewModel, 64.dp)
+                ProfileImage(mainViewModel.authViewModel, 64.dp)
                 Text(
-                    text = "Username: ${mainViewModel.user.value?.email}",
+                    text = "Username: ${mainViewModel.authViewModel.user.value?.email}",
                     modifier = Modifier.padding(8.dp)
                 )
             }
@@ -138,7 +137,7 @@ class LoginPage() :
                 onClick = {
                     FirebaseAuth.getInstance().signOut()
                     googleSignIn.googleSignInClient.signOut()
-                    mainViewModel.user.value = null
+                    mainViewModel.authViewModel.setUser(null)
                     mainViewModel.popBackStack()
                 },
                 modifier = Modifier.padding(8.dp),
@@ -149,87 +148,4 @@ class LoginPage() :
 
         }
     }
-
-
-    @Composable
-    fun EmailSignInButton() {
-        var email by remember {
-            mutableStateOf("jeanmarcboite@gmail.com")
-        }
-        var password by rememberSaveable { mutableStateOf("firebase") }
-        val context = LocalContext.current
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            EmailTextField(email) {
-                email = it
-            }
-            PasswordTextField(password) {
-                password = it
-            }
-            Button(
-                onClick = {
-                    Log.d("boxx", "login with password")
-                    firebaseAuthWithEmail(context, email, password)
-                },
-                modifier = Modifier.padding(1.dp),
-                shape = RoundedCornerShape(20.dp)
-            ) {
-                Text("Sign in")
-            }
-        }
-    }
-
-    fun firebaseAuthWithEmail(context: Context, email: String, password: String) {
-        val TAG = "boxxx firebaseAuthWithEmail"
-        val auth = Firebase.auth
-
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(context as Activity) { task ->
-                if (task.isSuccessful) {
-                    mainViewModel.user.value = FirebaseAuth.getInstance().currentUser
-                    Log.d(
-                        TAG,
-                        "signInWithCredential:success: user " + mainViewModel.user.value?.email
-                    )
-                    // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    Log.d(TAG, "signInWithEmail:success for ${user?.email}")
-                    //updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    //Toast.makeText(context, "Authentication failed.",
-                    //   Toast.LENGTH_SHORT).show()
-                    //updateUI(null)
-                    //checkForMultiFactorFailure(task.exception!!)
-                }
-
-            }
-
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun EmailTextField(email: String, onValueChange: (String) -> Unit) {
-        Surface(modifier = Modifier.padding(8.dp)) {
-            OutlinedTextField(
-                value = email,
-                onValueChange = onValueChange,
-                label = { Text("User") }
-            )
-        }
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun PasswordTextField(password: String, onValueChange: (String) -> Unit) {
-
-        TextField(
-            value = password,
-            onValueChange = onValueChange,
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
-    }
-
 }
