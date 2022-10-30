@@ -87,7 +87,6 @@ class LoginPage() :
         }
     }
 
-
     private fun firebaseAuthWithGoogle(
         context: Context,
         idToken: String,
@@ -101,12 +100,9 @@ class LoginPage() :
                     // Sign in success, update UI with the signed-in user's information
                     mainViewModel.user.value = FirebaseAuth.getInstance().currentUser
                     Log.d(TAG, "signInWithCredential:success: user " + mainViewModel.user.value)
-                    //val user = auth.currentUser
-                    //updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    //updateUI(null)
                 }
             }
     }
@@ -121,7 +117,6 @@ class LoginPage() :
             EmailSignInButton()
             GoogleSignInButton()
         }
-
     }
 
     @Composable
