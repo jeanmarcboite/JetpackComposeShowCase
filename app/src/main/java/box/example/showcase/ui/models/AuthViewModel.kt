@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -61,4 +62,25 @@ class AuthViewModel() : ViewModel() {
             }
 
     }
+
+    fun firebaseAuthWithGoogle(idToken: String) {
+        val TAG = "boxxx firebaseAuthWithGoogle"
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        Firebase.auth.signInWithCredential(credential)
+            .addOnCompleteListener() { task ->
+                if (task.isSuccessful) {
+                    setUser(FirebaseAuth.getInstance().currentUser)
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(
+                        TAG,
+                        "signInWithCredential:success: user " + user.value?.email
+                    )
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("boxxx", task.exception.toString())
+                    state.value = AuthState.LoginError
+                }
+            }
+    }
+
 }

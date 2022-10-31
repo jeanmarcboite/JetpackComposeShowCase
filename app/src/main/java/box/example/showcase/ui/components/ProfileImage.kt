@@ -14,8 +14,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import box.example.showcase.ui.models.AuthViewModel
-import coil.transform.CircleCropTransformation
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 
 @Composable
@@ -31,6 +29,7 @@ fun ProfileImage(viewModel: AuthViewModel, imgSize: Dp) {
         elevation = cardElevation(4.dp)
     ) {
         if (imageUri != null) {
+            /*
             CoilImage(
                 data = imageUri,
                 contentDescription = "User image",
@@ -38,6 +37,8 @@ fun ProfileImage(viewModel: AuthViewModel, imgSize: Dp) {
                     transformations(CircleCropTransformation())
                 }
             )
+            
+             */
         } else {
             Icon(Icons.Filled.Person, contentDescription = "no user")
         }

@@ -1,44 +1,68 @@
 package box.example.showcase.ui.pages.login
 
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import box.example.showcase.R
+import box.example.showcase.ui.models.AuthState
+import box.example.showcase.ui.models.AuthViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.AuthResult
 
-class GSignIn(context: Context) {
-    private val client_id =
-        "1048873307400-ffpoo6p4rp09tvg90psmb4dejjkj1645.apps.googleusercontent.com"
-    private val googleSignInOptions: GoogleSignInOptions =
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(client_id)
-            .requestEmail()
-            .build()
+@Composable
+fun GoogleSignInScreen(authViewModel: AuthViewModel) {
+    val context = LocalContext.current
+    // R.string.default_web_client_id is created automatically as per google-services.json,
+    // though sometimes the IDE might not recognize it
+    val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(context.getString(R.string.default_web_client_id))
+        .requestEmail()
+        .build()
+    val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+    val authResultLauncher = authViewModel.rememberFirebaseAuthLauncher(
+        onAuthComplete = {
+            authViewModel.setUser(it.user)
+            //authViewModel.setUser(FirebaseAuth.getInstance().currentUser)
+        },
+        onAuthError = {
+            Log.w("boxxx", "signInWithEmail:failure", it)
+            authViewModel.state.value = AuthState.LoginError
+        })
 
-    val googleSignInClient: GoogleSignInClient =
-        GoogleSignIn.getClient(context, googleSignInOptions)
+    Button(onClick = {
+        val signInIntent = googleSignInClient.signInIntent
+        authResultLauncher.launch(signInIntent)
+    }) {
+        Text("Sign in via Google")
+    }
 }
 
-class GoogleSignInContract(private val googleSignInClient: GoogleSignInClient) :
-    ActivityResultContract<Unit, String?>() {
-    override fun createIntent(context: Context, input: Unit): Intent {
-        return googleSignInClient.signInIntent
-    }
-
-    override fun parseResult(resultCode: Int, intent: Intent?): String? {
-        return try {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
+@Composable
+fun AuthViewModel.rememberFirebaseAuthLauncher(
+    onAuthComplete: (AuthResult) -> Unit,
+    onAuthError: (ApiException) -> Unit
+): ManagedActivityResultLauncher<Intent, ActivityResult> {
+    return rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+        val data: Intent? = activityResult.data
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        try {
+            // Google Sign In was successful, authenticate with Firebase
             val account = task.getResult(ApiException::class.java)!!
-            Log.i("boxx", "Google sign in ${account.displayName} ${account.id} ${account.idToken}")
-            account.idToken!!
-        } catch (e: Exception) {
-            // TODO: display message
-            Log.e("boxx", "Google sign in failed ${e.message}", e)
-            null
+            Log.d("Boxxx", "firebaseAuthWithGoogle:" + account.email)
+            firebaseAuthWithGoogle(account.idToken!!)
+        } catch (e: ApiException) {
+            // Google Sign In failed, update UI appropriately
+            Log.e("boxxx", "Google sign in failed: " + e.message)
         }
     }
 }

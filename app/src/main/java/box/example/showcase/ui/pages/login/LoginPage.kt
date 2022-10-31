@@ -1,10 +1,5 @@
 package box.example.showcase.ui.pages.login
 
-import android.app.Activity
-import android.content.Context
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.launch
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,17 +9,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import box.example.showcase.MainViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.ProfileImage
 import box.example.showcase.ui.models.AuthState
-import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Fire
@@ -37,11 +27,11 @@ class LoginPage() :
         Icons.Default.ArrowBack
     ) {
     override fun showInDrawer() = false
-    lateinit var googleSignIn: GSignIn
+    //lateinit var googleSignIn: GSignIn
 
     @Composable
     override fun Content(openDrawer: () -> Unit) {
-        googleSignIn = GSignIn(LocalContext.current)
+        //googleSignIn = GSignIn(LocalContext.current)
         Column(modifier = Modifier.fillMaxSize()) {
             if (mainViewModel.authViewModel.state.value == AuthState.LoggedIn)
                 LogoutScreen()
@@ -54,58 +44,58 @@ class LoginPage() :
         mainViewModel.popBackStack()
     }
 
-
-    @Composable
-    fun GoogleSignInButton() {
-        val context = LocalContext.current
-        val googleLoginLauncher =
-            rememberLauncherForActivityResult(GoogleSignInContract(googleSignIn.googleSignInClient)) { idToken ->
-                Log.d("boxx [idToken]", idToken.toString())
-                idToken?.let {
-                    firebaseAuthWithGoogle(context, it, mainViewModel)
+    /*
+        @Composable
+        fun GoogleSignInButton() {
+            val context = LocalContext.current
+            val googleLoginLauncher =
+                rememberLauncherForActivityResult(GoogleSignInContract(googleSignIn.googleSignInClient)) { idToken ->
+                    Log.d("boxx [idToken]", idToken.toString())
+                    idToken?.let {
+                        firebaseAuthWithGoogle(context, it, mainViewModel)
+                    }
                 }
+
+            Button(
+                onClick = {
+                    Log.d("boxx", "login")
+                },
+                modifier = Modifier.padding(1.dp),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                AndroidView({ context: Context ->
+                    val button = SignInButton(context)
+                    button.setOnClickListener {
+                        googleLoginLauncher.launch()
+                    }
+                    button
+                })
             }
-
-        Button(
-            onClick = {
-                Log.d("boxx", "login")
-            },
-            modifier = Modifier.padding(1.dp),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            AndroidView({ context: Context ->
-                val button = SignInButton(context)
-                button.setOnClickListener {
-                    googleLoginLauncher.launch()
-                }
-                button
-            })
         }
-    }
 
-    private fun firebaseAuthWithGoogle(
-        context: Context,
-        idToken: String,
-        mainViewModel: MainViewModel
-    ) {
-        val TAG = "boxx firebaseAuthWithGoogle"
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        FirebaseAuth.getInstance().signInWithCredential(credential)
-            .addOnCompleteListener(context as Activity) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    mainViewModel.authViewModel.setUser(FirebaseAuth.getInstance().currentUser)
-                    Log.d(
-                        TAG,
-                        "signInWithCredential:success: user " + mainViewModel.authViewModel.user.value
-                    )
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+        private fun firebaseAuthWithGoogle(
+            context: Context,
+            idToken: String,
+            mainViewModel: MainViewModel
+        ) {
+            val TAG = "boxx firebaseAuthWithGoogle"
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnCompleteListener(context as Activity) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        mainViewModel.authViewModel.setUser(FirebaseAuth.getInstance().currentUser)
+                        Log.d(
+                            TAG,
+                            "signInWithCredential:success: user " + mainViewModel.authViewModel.user.value
+                        )
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    }
                 }
-            }
-    }
-
+        }
+    */
     @Composable
     fun LoginScreen() {
         Column(
@@ -114,7 +104,7 @@ class LoginPage() :
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             EmailSignInScreen(mainViewModel.authViewModel)
-            GoogleSignInButton()
+            GoogleSignInScreen(mainViewModel.authViewModel)
         }
     }
 
@@ -136,7 +126,7 @@ class LoginPage() :
             Button(
                 onClick = {
                     FirebaseAuth.getInstance().signOut()
-                    googleSignIn.googleSignInClient.signOut()
+                    //googleSignIn.googleSignInClient.signOut()
                     mainViewModel.authViewModel.setUser(null)
                     mainViewModel.popBackStack()
                 },
