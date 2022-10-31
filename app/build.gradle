@@ -51,11 +51,11 @@ android {
 dependencies {
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.6.0'
+    implementation 'androidx.activity:activity-compose:1.6.1'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.compose.material3:material3:1.0.0-rc01'
-    implementation "androidx.navigation:navigation-compose:2.5.2"
+    implementation 'androidx.compose.material3:material3:1.1.0-alpha01'
+    implementation "androidx.navigation:navigation-compose:2.5.3"
     implementation "androidx.datastore:datastore-preferences:1.1.0-dev01"
 
     // Icons
@@ -74,14 +74,15 @@ dependencies {
 // Also declare the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
     // Firebase UI
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
+    implementation "com.google.accompanist:accompanist-coil:0.10.0"
+
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
     implementation 'io.coil-kt:coil-compose:2.2.2'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
@@ -94,3 +95,6 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }
+
+
+// gradle sigInReport

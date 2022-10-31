@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import box.example.showcase.R
 import box.example.showcase.ui.Page
@@ -116,7 +117,12 @@ class LoginPage() :
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row {
-                ProfileImage(mainViewModel.authViewModel, 64.dp)
+                ProfileImage(
+                    Modifier
+                        .size(128.dp),
+                    RectangleShape,
+                    mainViewModel.authViewModel
+                )
                 Text(
                     text = "Username: ${mainViewModel.authViewModel.user.value?.email}",
                     modifier = Modifier.padding(8.dp)
