@@ -37,7 +37,7 @@ class TodoViewModel() : ViewModel() {
 
     }
 
-    fun clear() {
+    private fun clear() {
         tasks.clear()
     }
 

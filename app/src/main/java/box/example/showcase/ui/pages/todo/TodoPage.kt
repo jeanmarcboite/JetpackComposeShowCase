@@ -1,5 +1,6 @@
 package box.example.showcase.ui.pages.todo
 
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
@@ -31,7 +32,9 @@ class TodoPage() :
 
         if (!taskEdit.value) {
             Surface(color = MaterialTheme.colorScheme.background) {
-                TaskListView(tasks = viewModel.tasks)
+                TaskListView(tasks = viewModel.tasks) {
+                    viewModel.add(todoRoot, it)
+                }
             }
         } else {
             NewTaskView() {
@@ -42,6 +45,7 @@ class TodoPage() :
 
     }
 
+    @SuppressLint("ComposableNaming")
     @Composable
     override fun floatingActionButton() {
         ExtendedFloatingActionButton(

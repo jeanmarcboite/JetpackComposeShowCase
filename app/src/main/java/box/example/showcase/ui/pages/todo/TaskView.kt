@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TaskView(task: Task, modifier: Modifier = Modifier) {
+fun TaskView(task: Task, modifier: Modifier = Modifier, onTaskChanged: (Task) -> Unit) {
     Card(
         modifier,
         shape = CardDefaults.shape,
@@ -27,7 +27,9 @@ fun TaskView(task: Task, modifier: Modifier = Modifier) {
         ) {
             Checkbox(
                 checked = task.completed,
-                onCheckedChange = { },
+                onCheckedChange = {
+                    onTaskChanged(task.copy(completed = !task.completed))
+                },
                 modifier = Modifier.padding(8.dp, 0.dp)
             )
 

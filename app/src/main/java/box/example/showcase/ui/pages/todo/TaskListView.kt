@@ -10,13 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TaskListView(tasks: List<Task>) {
+fun TaskListView(tasks: List<Task>, onTask: (Task) -> Unit) {
     Column {
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         ) {
             items(items = tasks) {
-                TaskView(it, modifier = Modifier.padding(vertical = 8.dp))
+                TaskView(it, modifier = Modifier.padding(vertical = 8.dp)) {
+                    onTask(it)
+                }
             }
         }
     }
