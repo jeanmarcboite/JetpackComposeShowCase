@@ -63,7 +63,7 @@ fun ModalDrawer(
                                 .padding(paddingValues)
                                 .fillMaxSize(),
                             navController = navViewModel.navController,
-                            startDestination = context.getString(R.string.home_page_route)
+                            startDestination = context.getString(R.string.start_destination)
                         ) {
                             navViewModel.pages.values.forEach { page ->
                                 composable(context.getString(page.route)) {

@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
         navViewModel.drawerState = rememberDrawerState(DrawerValue.Closed)
 
         navViewModel.selectedItem =
-            remember { mutableStateOf(navViewModel.pages[context.getString(R.string.home_page_route)]) }
+            remember { mutableStateOf(navViewModel.pages[context.getString(R.string.start_destination)]) }
 
         ModalDrawer(
             navViewModel,
