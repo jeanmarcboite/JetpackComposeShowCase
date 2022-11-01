@@ -22,6 +22,6 @@ abstract class Page(
 
     @OptIn(ExperimentalMaterial3Api::class)
     open suspend fun onButtonClicked() {
-        mainViewModel.drawerState.open()
+        mainViewModel.navViewModel.drawerState.open()
     }
 }

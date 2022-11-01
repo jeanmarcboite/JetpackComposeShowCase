@@ -42,7 +42,7 @@ class LoginPage() :
     }
 
     override suspend fun onButtonClicked() {
-        mainViewModel.popBackStack()
+        mainViewModel.navViewModel.popBackStack()
     }
 
     @Composable
@@ -82,7 +82,7 @@ class LoginPage() :
                     FirebaseAuth.getInstance().signOut()
                     //googleSignIn.googleSignInClient.signOut()
                     mainViewModel.authViewModel.setUser(null)
-                    mainViewModel.popBackStack()
+                    mainViewModel.navViewModel.popBackStack()
                 },
                 modifier = Modifier.padding(8.dp),
                 shape = RoundedCornerShape(20.dp)
