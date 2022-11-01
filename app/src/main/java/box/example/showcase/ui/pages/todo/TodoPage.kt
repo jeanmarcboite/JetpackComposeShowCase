@@ -24,6 +24,7 @@ class TodoPage() :
 
     @Composable
     override fun Content(openDrawer: () -> Unit) {
+        val todoRoot = stringResource(R.string.todo_root)
         taskEdit = remember { mutableStateOf(false) }
         val viewModel = mainViewModel.todoViewModel
 
@@ -33,7 +34,7 @@ class TodoPage() :
             }
         } else {
             NewTaskView() {
-                viewModel.tasks.add(it)
+                viewModel.add(todoRoot, it)
                 taskEdit.value = false
             }
         }

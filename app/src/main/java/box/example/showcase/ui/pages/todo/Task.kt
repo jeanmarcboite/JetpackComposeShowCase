@@ -1,10 +1,12 @@
 package box.example.showcase.ui.pages.todo
 
+import java.util.*
+
 data class Task(
-    val id: String = "",
+    val id: String = UUID.randomUUID().toString(),
     val title: String = "",
     val photoUrl: String? = null,
-    val timestamp: Long = 0,
+    val timestamp: Long = System.currentTimeMillis(),
     val due: Long = 0,
     val priority: String = "",
     val description: String = "",

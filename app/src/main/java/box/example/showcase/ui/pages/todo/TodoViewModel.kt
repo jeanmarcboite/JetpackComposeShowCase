@@ -30,4 +30,9 @@ class TodoViewModel() : ViewModel() {
             Log.e("boxx [firebase]", "Error getting data", it)
         }
     }
+
+    fun add(root: String, task: Task) {
+        tasks.add(task)
+        database.child(root).child(task.id).setValue(task)
+    }
 }
