@@ -21,12 +21,6 @@ fun NewTaskView(
         mutableStateOf(Task())
     }
     Column {
-        Button(
-            modifier = modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20.dp),
-            onClick = { onButtonClick(task.value) }) {
-            Text("Add new task")
-        }
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -47,6 +41,12 @@ fun NewTaskView(
             onValueChange = {
                 task.value = task.value.copy(description = it)
             })
+        Button(
+            modifier = modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            onClick = { onButtonClick(task.value) }) {
+            Text("Add new task")
+        }
 
     }
 }
