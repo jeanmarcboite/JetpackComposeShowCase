@@ -1,14 +1,13 @@
 package box.example.showcase.ui.pages.todo
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
@@ -21,31 +20,31 @@ class TodoPage() :
         R.string.todo_page_route,
         R.string.todo_page_title
     ) {
+    lateinit var taskEdit: MutableState<Boolean>
+
     @Composable
     override fun Content(openDrawer: () -> Unit) {
+        taskEdit = remember { mutableStateOf(false) }
         val viewModel = mainViewModel.todoViewModel
-        Surface(color = MaterialTheme.colorScheme.background) {
-            Column {
-                LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    items(items = viewModel.tasks.value) {
-                        TaskView(it)
-                    }
 
-                }
+        if (!taskEdit.value) {
+            Surface(color = MaterialTheme.colorScheme.background) {
+                TaskListView(tasks = viewModel.tasks)
+            }
+        } else {
+            NewTaskView() {
+                viewModel.tasks.add(it)
+                taskEdit.value = false
             }
         }
 
     }
 
-
     @Composable
     override fun floatingActionButton() {
         ExtendedFloatingActionButton(
             onClick = {
-                mainViewModel.todoViewModel.tasks.value =
-                    listOf(Task(title = "how", description = "how todo"))
+                taskEdit.value = true
             },
             icon = {
                 Icon(
@@ -53,7 +52,7 @@ class TodoPage() :
                     contentDescription = "Favorite"
                 )
             },
-            text = { Text("Add Todo") }
+            text = { Text(stringResource(R.string.add_todo)) }
         )
     }
 

@@ -19,4 +19,5 @@
     <string name="color_page_title">Colors</string>
     <string name="color_page_route">colors</string>
     <string name="profile_image_description">User image</string>
+    <string name="add_todo">Add Todo</string>
 </resources>
