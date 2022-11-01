@@ -7,6 +7,7 @@ import box.example.showcase.ui.pages.about.AboutPage
 import box.example.showcase.ui.pages.bored.BoredPage
 import box.example.showcase.ui.pages.home.HomePage
 import box.example.showcase.ui.pages.login.LoginPage
+import box.example.showcase.ui.pages.todo.TodoPage
 
 fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page> {
     val pages = listOf(
@@ -14,6 +15,7 @@ fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page>
         ColorPage(),
         AboutPage(),
         BoredPage(),
+        TodoPage(),
         LoginPage()
     )
     pages.forEach {

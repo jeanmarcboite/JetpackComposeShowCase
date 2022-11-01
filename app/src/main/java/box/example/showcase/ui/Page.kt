@@ -20,6 +20,10 @@ abstract class Page(
     @Composable
     abstract fun Content(openDrawer: () -> Unit)
 
+    @Composable
+    open fun floatingActionButton() {
+    }
+
     @OptIn(ExperimentalMaterial3Api::class)
     open suspend fun onButtonClicked() {
         mainViewModel.navViewModel.drawerState.open()

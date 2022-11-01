@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.ViewModel
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
+import box.example.showcase.ui.pages.todo.TodoViewModel
 
 const val DARK_MODE = "dark_mode"
 
@@ -17,6 +18,7 @@ class MainViewModel() : ViewModel() {
 
     lateinit var authViewModel: AuthViewModel
     lateinit var navViewModel: NavViewModel
+    lateinit var todoViewModel: TodoViewModel
 
     init {
         Log.v("boxy", "init MainViewModel")

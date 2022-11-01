@@ -53,6 +53,7 @@ fun ModalDrawer(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                var floatingActionButton: @Composable () -> Unit = {}
 
                 Scaffold(
                     topBar = topBar,
@@ -73,8 +74,11 @@ fun ModalDrawer(
                             }
                         }
                     },
+                    floatingActionButton = { navViewModel.selectedItem.value?.floatingActionButton() },
                     bottomBar = {
-                        BottomAppBar(containerColor = MaterialTheme.colorScheme.surface) {
+                        BottomAppBar(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                        ) {
                             navViewModel.selectedItem.value?.route?.let {
                                 Text(context.getString(it))
                             }
