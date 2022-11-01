@@ -42,21 +42,18 @@ class TodoViewModel() : ViewModel() {
     }
 
     fun add(root: String, task: Task) {
-        tasks.add(task)
         database.child(root).child(task.id).setValue(task)
     }
 
     private fun read(root: String) {
         database.child(root).get().addOnSuccessListener {
             Log.i("boxx [firebase]", "Got value ${it.value}")
-            tasks.clear()
+            clear()
             for (data in it.children) {
                 data.getValue(Task::class.java)?.apply {
                     tasks.add(this)
                 }
             }
-            Log.i("boxx [firebase]", "Tasks $tasks")
-
         }.addOnFailureListener {
             Log.e("boxx [firebase]", "Error getting data", it)
         }
