@@ -3,10 +3,7 @@ package box.example.showcase.ui.pages.todo
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import box.example.showcase.R
 import box.example.showcase.ui.Page
@@ -27,6 +24,10 @@ class TodoPage() :
         val todoRoot = stringResource(R.string.todo_root)
         taskEdit = remember { mutableStateOf(false) }
         val viewModel = mainViewModel.todoViewModel
+
+        LaunchedEffect(true) {
+            viewModel.read(todoRoot)
+        }
 
         if (!taskEdit.value) {
             Surface(color = MaterialTheme.colorScheme.background) {
