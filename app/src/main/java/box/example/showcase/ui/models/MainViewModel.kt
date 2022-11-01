@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.models.AuthViewModel
+import box.example.showcase.ui.navigation.navigateSingleTopTo
 
 const val DARK_MODE = "dark_mode"
 

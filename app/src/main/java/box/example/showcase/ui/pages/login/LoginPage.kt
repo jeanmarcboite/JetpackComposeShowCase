@@ -45,58 +45,6 @@ class LoginPage() :
         mainViewModel.popBackStack()
     }
 
-    /*
-        @Composable
-        fun GoogleSignInButton() {
-            val context = LocalContext.current
-            val googleLoginLauncher =
-                rememberLauncherForActivityResult(GoogleSignInContract(googleSignIn.googleSignInClient)) { idToken ->
-                    Log.d("boxx [idToken]", idToken.toString())
-                    idToken?.let {
-                        firebaseAuthWithGoogle(context, it, mainViewModel)
-                    }
-                }
-
-            Button(
-                onClick = {
-                    Log.d("boxx", "login")
-                },
-                modifier = Modifier.padding(1.dp),
-                shape = RoundedCornerShape(20.dp)
-            ) {
-                AndroidView({ context: Context ->
-                    val button = SignInButton(context)
-                    button.setOnClickListener {
-                        googleLoginLauncher.launch()
-                    }
-                    button
-                })
-            }
-        }
-
-        private fun firebaseAuthWithGoogle(
-            context: Context,
-            idToken: String,
-            mainViewModel: MainViewModel
-        ) {
-            val TAG = "boxx firebaseAuthWithGoogle"
-            val credential = GoogleAuthProvider.getCredential(idToken, null)
-            FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnCompleteListener(context as Activity) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        mainViewModel.authViewModel.setUser(FirebaseAuth.getInstance().currentUser)
-                        Log.d(
-                            TAG,
-                            "signInWithCredential:success: user " + mainViewModel.authViewModel.user.value
-                        )
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    }
-                }
-        }
-    */
     @Composable
     fun LoginScreen() {
         Column(
