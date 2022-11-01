@@ -26,7 +26,7 @@ class TodoPage() :
         val viewModel = mainViewModel.todoViewModel
 
         LaunchedEffect(true) {
-            viewModel.read(todoRoot)
+            viewModel.setRoot(todoRoot)
         }
 
         if (!taskEdit.value) {

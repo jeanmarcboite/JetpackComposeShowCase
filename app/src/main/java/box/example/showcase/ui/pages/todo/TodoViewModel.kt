@@ -3,6 +3,9 @@ package box.example.showcase.ui.pages.todo
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -30,6 +33,12 @@ class TodoViewModel() : ViewModel() {
         }.addOnFailureListener {
             Log.e("boxx [firebase]", "Error getting data", it)
         }
+
+
+    }
+
+    fun clear() {
+        tasks.clear()
     }
 
     fun add(root: String, task: Task) {
@@ -37,7 +46,7 @@ class TodoViewModel() : ViewModel() {
         database.child(root).child(task.id).setValue(task)
     }
 
-    fun read(root: String) {
+    private fun read(root: String) {
         database.child(root).get().addOnSuccessListener {
             Log.i("boxx [firebase]", "Got value ${it.value}")
             tasks.clear()
@@ -51,5 +60,36 @@ class TodoViewModel() : ViewModel() {
         }.addOnFailureListener {
             Log.e("boxx [firebase]", "Error getting data", it)
         }
+    }
+
+    fun setRoot(todoRoot: String) {
+        read(todoRoot)
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                read(todoRoot)
+            }
+
+            override fun onChildChanged(
+                dataSnapshot: DataSnapshot,
+                previousChildName: String?
+            ) {
+                Log.d("boxxx", "onChildChanged: ${dataSnapshot.key}")
+
+                read(todoRoot)
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                read(todoRoot)
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                read(todoRoot)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        }
+        database.addChildEventListener(childEventListener)
     }
 }
