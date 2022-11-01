@@ -80,7 +80,6 @@ class LoginPage() :
             Button(
                 onClick = {
                     FirebaseAuth.getInstance().signOut()
-                    //googleSignIn.googleSignInClient.signOut()
                     mainViewModel.authViewModel.setUser(null)
                     mainViewModel.navViewModel.popBackStack()
                 },

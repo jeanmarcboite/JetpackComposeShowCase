@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -22,6 +23,8 @@ class AuthViewModel() : ViewModel() {
     val state: MutableState<AuthState> = mutableStateOf(AuthState.NotLoggedIn)
     val user: MutableState<FirebaseUser?> = mutableStateOf(null)
 
+    var googleSignInClient: GoogleSignInClient? = null
+
     init {
         Log.d("boxx [Firebase.auth]", Firebase.auth.toString())
         Log.d("boxx [Firebase.auth]", Firebase.auth.currentUser.toString())
@@ -35,6 +38,14 @@ class AuthViewModel() : ViewModel() {
     fun setUser(firebaseUser: FirebaseUser?) {
         user.value = firebaseUser
         state.value = if (user.value != null) AuthState.LoggedIn else AuthState.NotLoggedIn
+
+        if (user.value != null) {
+            state.value = AuthState.LoggedIn
+        } else {
+            state.value = AuthState.NotLoggedIn
+            googleSignInClient?.signOut()
+            googleSignInClient = null
+        }
     }
 
     fun firebaseAuthWithEmail(context: Context, email: String, password: String) {

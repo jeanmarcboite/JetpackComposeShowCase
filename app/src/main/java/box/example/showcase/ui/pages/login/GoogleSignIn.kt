@@ -12,12 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import box.example.showcase.R
-import box.example.showcase.ui.models.AuthState
 import box.example.showcase.ui.models.AuthViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.AuthResult
 
 @Composable
 fun GoogleSignInScreen(authViewModel: AuthViewModel) {
@@ -29,29 +27,19 @@ fun GoogleSignInScreen(authViewModel: AuthViewModel) {
         .requestEmail()
         .build()
     val googleSignInClient = GoogleSignIn.getClient(context, googleSignInOptions)
-    val authResultLauncher = authViewModel.rememberFirebaseAuthLauncher(
-        onAuthComplete = {
-            authViewModel.setUser(it.user)
-            //authViewModel.setUser(FirebaseAuth.getInstance().currentUser)
-        },
-        onAuthError = {
-            Log.w("boxxx", "signInWithEmail:failure", it)
-            authViewModel.state.value = AuthState.LoginError
-        })
+    val authResultLauncher = authViewModel.rememberFirebaseAuthLauncher()
 
     Button(onClick = {
         val signInIntent = googleSignInClient.signInIntent
         authResultLauncher.launch(signInIntent)
+        authViewModel.googleSignInClient = googleSignInClient
     }) {
         Text("Sign in via Google")
     }
 }
 
 @Composable
-fun AuthViewModel.rememberFirebaseAuthLauncher(
-    onAuthComplete: (AuthResult) -> Unit,
-    onAuthError: (ApiException) -> Unit
-): ManagedActivityResultLauncher<Intent, ActivityResult> {
+fun AuthViewModel.rememberFirebaseAuthLauncher(): ManagedActivityResultLauncher<Intent, ActivityResult> {
     return rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
         val data: Intent? = activityResult.data
         val task = GoogleSignIn.getSignedInAccountFromIntent(data)
