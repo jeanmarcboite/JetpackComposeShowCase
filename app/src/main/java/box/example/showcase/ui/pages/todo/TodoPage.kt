@@ -44,7 +44,8 @@ class TodoPage() :
     override fun floatingActionButton() {
         ExtendedFloatingActionButton(
             onClick = {
-                mainViewModel.todoViewModel.tasks.value = listOf(Task(description = "how todo"))
+                mainViewModel.todoViewModel.tasks.value =
+                    listOf(Task(title = "how", description = "how todo"))
             },
             icon = {
                 Icon(
