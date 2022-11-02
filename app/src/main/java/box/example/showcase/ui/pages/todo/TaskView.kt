@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskView(task: Task, modifier: Modifier = Modifier, onTaskChanged: (Task) -> Unit) {
     Card(
@@ -19,8 +20,6 @@ fun TaskView(task: Task, modifier: Modifier = Modifier, onTaskChanged: (Task) ->
         elevation = CardDefaults.cardElevation(),
         border = null
     ) {
-
-
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
@@ -37,9 +36,7 @@ fun TaskView(task: Task, modifier: Modifier = Modifier, onTaskChanged: (Task) ->
                 Text(text = task.title, style = MaterialTheme.typography.titleMedium)
                 Text(text = task.description, style = MaterialTheme.typography.labelMedium)
             }
-
         }
     }
-
 }
 
