@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.todo
+package box.example.showcase.ui.pages.notes
 
 import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
@@ -12,34 +12,34 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Feather
 
-class TodoPage() :
+class NotesPage() :
     Page(
         FontAwesomeIcons.Solid.Feather,
-        R.string.todo_page_route,
-        R.string.todo_page_title
+        R.string.notes_page_route,
+        R.string.notes_page_title
     ) {
-    lateinit var taskEdit: MutableState<Boolean>
+    lateinit var noteEdit: MutableState<Boolean>
 
     @Composable
     override fun Content(openDrawer: () -> Unit) {
-        val todoRoot = stringResource(R.string.todo_root)
-        taskEdit = remember { mutableStateOf(false) }
-        val viewModel = mainViewModel.todoViewModel
+        val notesRoot = stringResource(R.string.notes_root)
+        noteEdit = remember { mutableStateOf(false) }
+        val viewModel = mainViewModel.notesViewModel
 
         LaunchedEffect(true) {
-            viewModel.setRoot(todoRoot)
+            viewModel.setRoot(notesRoot)
         }
 
-        if (!taskEdit.value) {
+        if (!noteEdit.value) {
             Surface(color = MaterialTheme.colorScheme.background) {
-                TaskListView(tasks = viewModel.tasks) {
-                    viewModel.add(todoRoot, it)
+                NoteListView(notes = viewModel.notes) {
+                    viewModel.add(notesRoot, it)
                 }
             }
         } else {
-            NewTaskView() {
-                viewModel.add(todoRoot, it)
-                taskEdit.value = false
+            NewNoteView() {
+                viewModel.add(notesRoot, it)
+                noteEdit.value = false
             }
         }
 
@@ -50,7 +50,7 @@ class TodoPage() :
     override fun floatingActionButton() {
         ExtendedFloatingActionButton(
             onClick = {
-                taskEdit.value = true
+                noteEdit.value = true
             },
             icon = {
                 Icon(
@@ -58,7 +58,7 @@ class TodoPage() :
                     contentDescription = "Favorite"
                 )
             },
-            text = { Text(stringResource(R.string.add_todo)) }
+            text = { Text(stringResource(R.string.add_notes)) }
         )
     }
 

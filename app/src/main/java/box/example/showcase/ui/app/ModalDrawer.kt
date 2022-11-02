@@ -53,8 +53,6 @@ fun ModalDrawer(
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var floatingActionButton: @Composable () -> Unit = {}
-
                 Scaffold(
                     topBar = topBar,
                     content = { paddingValues ->

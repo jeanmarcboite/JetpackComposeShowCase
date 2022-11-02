@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.todo
+package box.example.showcase.ui.pages.notes
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TaskView(task: Task, modifier: Modifier = Modifier, onTaskChanged: (Task) -> Unit) {
+fun NoteView(note: Note, modifier: Modifier = Modifier, onNoteChanged: (Note) -> Unit) {
     Card(
         modifier,
         shape = CardDefaults.shape,
@@ -25,16 +25,16 @@ fun TaskView(task: Task, modifier: Modifier = Modifier, onTaskChanged: (Task) ->
             modifier = Modifier.fillMaxWidth(),
         ) {
             Checkbox(
-                checked = task.completed,
+                checked = note.completed,
                 onCheckedChange = {
-                    onTaskChanged(task.copy(completed = !task.completed))
+                    onNoteChanged(note.copy(completed = !note.completed))
                 },
                 modifier = Modifier.padding(8.dp, 0.dp)
             )
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = task.title, style = MaterialTheme.typography.titleMedium)
-                Text(text = task.description, style = MaterialTheme.typography.labelMedium)
+                Text(text = note.title, style = MaterialTheme.typography.titleMedium)
+                Text(text = note.description, style = MaterialTheme.typography.labelMedium)
             }
         }
     }

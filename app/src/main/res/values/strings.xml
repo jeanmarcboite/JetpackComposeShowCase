@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ShowCase</string>
     <string name="dark_mode">dark_mode</string>
-    <string name="start_destination">todo</string>
+    <string name="start_destination">notes</string>
     <string name="home_page_title">Home Page</string>
     <string name="home_page_route">home</string>
     <string name="bored_page_title">Find activity</string>
@@ -14,12 +14,10 @@
     <string name="login_page_route">login</string>
     <string name="notes_page_title">Notes</string>
     <string name="notes_page_route">notes</string>
-    <string name="todo_page_title">Todo</string>
-    <string name="todo_page_route">todo</string>
     <string name="color_page_title">Colors</string>
     <string name="color_page_route">colors</string>
     <string name="profile_image_description">User image</string>
-    <string name="add_todo">Add Todo</string>
+    <string name="add_notes">Add Note</string>
 
-    <string name="todo_root">todos</string>
+    <string name="notes_root">notes</string>
 </resources>

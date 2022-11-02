@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.todo
+package box.example.showcase.ui.pages.notes
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
@@ -12,15 +12,15 @@ import com.google.firebase.ktx.Firebase
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 
-class TodoViewModel() : ViewModel() {
+class NotesViewModel() : ViewModel() {
     val TAG = "boxx [firebase]"
     private val database: DatabaseReference
 
-    //val tasks = mutableStateOf<List<Task>>(listOf())
-    val tasks = mutableStateListOf<Task>()
+    //val notes = mutableStateOf<List<Note>>(listOf())
+    val notes = mutableStateListOf<Note>()
 
     init {
-        Log.d("boxx", "init todoViewModel")
+        Log.d("boxx", "init notesViewModel")
         database = Firebase.database.reference
         Log.d(TAG, "database reference: ${database}")
         val sdf = getDateTimeInstance() //SimpleDateFormat("dd/M/yyyy hh:mm:ss")
@@ -38,11 +38,11 @@ class TodoViewModel() : ViewModel() {
     }
 
     private fun clear() {
-        tasks.clear()
+        notes.clear()
     }
 
-    fun add(root: String, task: Task) {
-        database.child(root).child(task.id).setValue(task)
+    fun add(root: String, note: Note) {
+        database.child(root).child(note.id).setValue(note)
     }
 
     private fun read(root: String) {
@@ -50,8 +50,8 @@ class TodoViewModel() : ViewModel() {
             Log.i("boxx [firebase]", "Got value ${it.value}")
             clear()
             for (data in it.children) {
-                data.getValue(Task::class.java)?.apply {
-                    tasks.add(this)
+                data.getValue(Note::class.java)?.apply {
+                    notes.add(this)
                 }
             }
         }.addOnFailureListener {
@@ -59,11 +59,11 @@ class TodoViewModel() : ViewModel() {
         }
     }
 
-    fun setRoot(todoRoot: String) {
-        read(todoRoot)
+    fun setRoot(notesRoot: String) {
+        read(notesRoot)
         val childEventListener = object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                read(todoRoot)
+                read(notesRoot)
             }
 
             override fun onChildChanged(
@@ -72,15 +72,15 @@ class TodoViewModel() : ViewModel() {
             ) {
                 Log.d("boxxx", "onChildChanged: ${dataSnapshot.key}")
 
-                read(todoRoot)
+                read(notesRoot)
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                read(todoRoot)
+                read(notesRoot)
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                read(todoRoot)
+                read(notesRoot)
             }
 
             override fun onCancelled(error: DatabaseError) {

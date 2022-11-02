@@ -1,8 +1,8 @@
-package box.example.showcase.ui.pages.todo
+package box.example.showcase.ui.pages.notes
 
 import java.util.*
 
-data class Task(
+data class Note(
     val id: String = UUID.randomUUID().toString(),
     val title: String = "",
     val photoUrl: String? = null,
@@ -13,6 +13,9 @@ data class Task(
     val url: String = "",
     val flag: Boolean = false,
     val completed: Boolean = false,
-    val userId: String = ""
+    val userId: String = "",
+    val star: Boolean = false,
+    val archived: Boolean = false,
+    val deleted: Boolean = false
 )
 

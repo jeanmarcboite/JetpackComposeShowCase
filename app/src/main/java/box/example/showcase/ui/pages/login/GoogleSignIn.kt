@@ -42,10 +42,10 @@ fun GoogleSignInScreen(authViewModel: AuthViewModel) {
 fun AuthViewModel.rememberFirebaseAuthLauncher(): ManagedActivityResultLauncher<Intent, ActivityResult> {
     return rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
         val data: Intent? = activityResult.data
-        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        val note = GoogleSignIn.getSignedInAccountFromIntent(data)
         try {
             // Google Sign In was successful, authenticate with Firebase
-            val account = task.getResult(ApiException::class.java)!!
+            val account = note.getResult(ApiException::class.java)!!
             Log.d("Boxxx", "firebaseAuthWithGoogle:" + account.email)
             firebaseAuthWithGoogle(account.idToken!!)
         } catch (e: ApiException) {

@@ -53,8 +53,8 @@ class AuthViewModel() : ViewModel() {
         val auth = Firebase.auth
 
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(context as Activity) { task ->
-                if (task.isSuccessful) {
+            .addOnCompleteListener(context as Activity) { note ->
+                if (note.isSuccessful) {
                     setUser(FirebaseAuth.getInstance().currentUser)
                     Log.d(
                         TAG,
@@ -62,12 +62,12 @@ class AuthViewModel() : ViewModel() {
                     )
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Log.w(TAG, "signInWithEmail:failure", note.exception)
                     state.value = AuthState.LoginError
                     //Toast.makeText(context, "Authentication failed.",
                     //   Toast.LENGTH_SHORT).show()
                     //updateUI(null)
-                    //checkForMultiFactorFailure(task.exception!!)
+                    //checkForMultiFactorFailure(note.exception!!)
                 }
 
             }
@@ -78,8 +78,8 @@ class AuthViewModel() : ViewModel() {
         val TAG = "boxxx firebaseAuthWithGoogle"
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         Firebase.auth.signInWithCredential(credential)
-            .addOnCompleteListener() { task ->
-                if (task.isSuccessful) {
+            .addOnCompleteListener() { note ->
+                if (note.isSuccessful) {
                     setUser(FirebaseAuth.getInstance().currentUser)
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(
@@ -88,7 +88,7 @@ class AuthViewModel() : ViewModel() {
                     )
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("boxxx", task.exception.toString())
+                    Log.w("boxxx", note.exception.toString())
                     state.value = AuthState.LoginError
                 }
             }

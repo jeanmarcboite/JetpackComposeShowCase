@@ -21,7 +21,7 @@ import box.example.showcase.ui.app.ModalDrawer
 import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
-import box.example.showcase.ui.pages.todo.TodoViewModel
+import box.example.showcase.ui.pages.notes.NotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -30,13 +30,13 @@ class MainActivity : ComponentActivity() {
     val mainViewModel: MainViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
     val navViewModel: NavViewModel by viewModels()
-    val todoViewModel: TodoViewModel by viewModels()
+    val notesViewModel: NotesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel.readApplicationSettings(ApplicationSettings(this))
         mainViewModel.authViewModel = authViewModel
         mainViewModel.navViewModel = navViewModel
-        mainViewModel.todoViewModel = todoViewModel
+        mainViewModel.notesViewModel = notesViewModel
 
         setContent {
             ShowCaseTheme(mainViewModel.darkMode.value) {

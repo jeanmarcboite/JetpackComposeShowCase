@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.todo
+package box.example.showcase.ui.pages.notes
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,39 +13,39 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewTaskView(
+fun NewNoteView(
     modifier: Modifier = Modifier,
-    onButtonClick: (Task) -> Unit
+    onButtonClick: (Note) -> Unit
 ) {
-    val task = remember {
-        mutableStateOf(Task())
+    val note = remember {
+        mutableStateOf(Note())
     }
     Column {
         OutlinedTextField(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
-            value = task.value.title,
+            value = note.value.title,
             label = { Text("Title") },
             colors = TextFieldDefaults.outlinedTextFieldColors(),
             onValueChange = {
-                task.value = task.value.copy(title = it)
+                note.value = note.value.copy(title = it)
             })
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
-            value = task.value.description,
+            value = note.value.description,
             label = { Text("Description") },
             colors = TextFieldDefaults.outlinedTextFieldColors(),
             onValueChange = {
-                task.value = task.value.copy(description = it)
+                note.value = note.value.copy(description = it)
             })
         Button(
             modifier = modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
-            onClick = { onButtonClick(task.value) }) {
-            Text("Add new task")
+            onClick = { onButtonClick(note.value) }) {
+            Text("Add new note")
         }
 
     }
