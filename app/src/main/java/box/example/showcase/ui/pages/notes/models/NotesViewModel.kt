@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.notes
+package box.example.showcase.ui.pages.notes.models
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf

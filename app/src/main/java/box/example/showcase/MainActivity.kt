@@ -21,7 +21,7 @@ import box.example.showcase.ui.app.ModalDrawer
 import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
-import box.example.showcase.ui.pages.notes.NotesViewModel
+import box.example.showcase.ui.pages.notes.models.NotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
