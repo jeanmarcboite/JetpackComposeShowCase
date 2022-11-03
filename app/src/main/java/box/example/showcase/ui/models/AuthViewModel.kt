@@ -20,19 +20,18 @@ enum class AuthState {
 }
 
 class AuthViewModel() : ViewModel() {
+    private val TAG = "boxx [AuthViewModel]"
     val state: MutableState<AuthState> = mutableStateOf(AuthState.NotLoggedIn)
     val user: MutableState<FirebaseUser?> = mutableStateOf(null)
 
     var googleSignInClient: GoogleSignInClient? = null
 
     init {
-        Log.d("boxx [Firebase.auth]", Firebase.auth.toString())
-        Log.d("boxx [Firebase.auth]", Firebase.auth.currentUser.toString())
         user.value = FirebaseAuth.getInstance().currentUser
         if (user.value != null)
             state.value = AuthState.LoggedIn
-        //FirebaseApp.initializeApp(application.applicationContext)
-        Log.d("boxx", "Firebase user: " + FirebaseAuth.getInstance().currentUser.toString())
+
+        Log.i(TAG, "Firebase user: " + FirebaseAuth.getInstance().currentUser.toString())
     }
 
     fun setUser(firebaseUser: FirebaseUser?) {
@@ -49,7 +48,7 @@ class AuthViewModel() : ViewModel() {
     }
 
     fun firebaseAuthWithEmail(context: Context, email: String, password: String) {
-        val TAG = "boxxx firebaseAuthWithEmail"
+        val TAG = "boxxx [firebaseAuthWithEmail]"
         val auth = Firebase.auth
 
         auth.signInWithEmailAndPassword(email, password)
@@ -75,7 +74,7 @@ class AuthViewModel() : ViewModel() {
     }
 
     fun firebaseAuthWithGoogle(idToken: String) {
-        val TAG = "boxxx firebaseAuthWithGoogle"
+        val TAG = "boxx [firebaseAuthWithGoogle]"
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         Firebase.auth.signInWithCredential(credential)
             .addOnCompleteListener() { note ->
@@ -88,7 +87,7 @@ class AuthViewModel() : ViewModel() {
                     )
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w("boxxx", note.exception.toString())
+                    Log.e(TAG, note.exception.toString())
                     state.value = AuthState.LoginError
                 }
             }

@@ -1,7 +1,6 @@
 package box.example.showcase.ui.pages.color
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,7 +34,6 @@ class ColorPage() : Page(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content(openDrawer: () -> Unit) {
-        Log.d("boxx", "ColorPage")
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()

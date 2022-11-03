@@ -13,28 +13,22 @@ import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 
 class NotesViewModel() : ViewModel() {
-    val TAG = "boxx [firebase]"
-    private val database: DatabaseReference
-
-    //val notes = mutableStateOf<List<Note>>(listOf())
+    private val TAG = "boxx [firebase]"
+    private val database: DatabaseReference = Firebase.database.reference
     val notes = mutableStateListOf<Note>()
 
     init {
-        Log.d("boxx", "init notesViewModel")
-        database = Firebase.database.reference
-        Log.d(TAG, "database reference: ${database}")
+        Log.d(TAG, "database reference: $database")
         val sdf = getDateTimeInstance() //SimpleDateFormat("dd/M/yyyy hh:mm:ss")
         val currentDate = sdf.format(Date())
         database.child("log").setValue(currentDate)
 
 
         database.child("version").get().addOnSuccessListener {
-            Log.i("boxx [firebase]", "Got value ${it.value}")
+            Log.i(TAG, "Database version ${it.value}")
         }.addOnFailureListener {
-            Log.e("boxx [firebase]", "Error getting data", it)
+            Log.e(TAG, "Error getting data", it)
         }
-
-
     }
 
     private fun clear() {
@@ -47,7 +41,7 @@ class NotesViewModel() : ViewModel() {
 
     private fun read(root: String) {
         database.child(root).get().addOnSuccessListener {
-            Log.i("boxx [firebase]", "Got value ${it.value}")
+            Log.v(TAG, "Got value ${it.value}")
             clear()
             for (data in it.children) {
                 data.getValue(Note::class.java)?.apply {
@@ -55,7 +49,7 @@ class NotesViewModel() : ViewModel() {
                 }
             }
         }.addOnFailureListener {
-            Log.e("boxx [firebase]", "Error getting data", it)
+            Log.e(TAG, "Error getting data", it)
         }
     }
 
@@ -70,7 +64,7 @@ class NotesViewModel() : ViewModel() {
                 dataSnapshot: DataSnapshot,
                 previousChildName: String?
             ) {
-                Log.d("boxxx", "onChildChanged: ${dataSnapshot.key}")
+                Log.v(TAG, "onChildChanged: ${dataSnapshot.key}")
 
                 read(notesRoot)
             }

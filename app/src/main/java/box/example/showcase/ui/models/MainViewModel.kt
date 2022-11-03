@@ -36,7 +36,6 @@ class MainViewModel() : ViewModel() {
         mutableStateOf(NoteAction.Delete)
     )
 
-
     init {
         Log.v("boxy", "init MainViewModel")
     }

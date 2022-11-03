@@ -1,6 +1,5 @@
 package box.example.showcase.ui.pages
 
-import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -36,7 +35,6 @@ class Settings() :
 
     @Composable
     override fun Content(openDrawer: () -> Unit) {
-        Log.w("boxxxw", "Settings")
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {

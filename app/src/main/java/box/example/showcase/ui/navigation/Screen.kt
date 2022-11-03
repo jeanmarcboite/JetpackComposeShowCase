@@ -1,6 +1,5 @@
 package box.example.showcase.ui.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,8 +23,6 @@ fun ScreenContent(
     startDestination: Int,
     modifier: Modifier
 ) {
-    Log.d("boxx", "ScreenContent")
-
     val context = LocalContext.current
     NavHost(
         navController = navHostController,

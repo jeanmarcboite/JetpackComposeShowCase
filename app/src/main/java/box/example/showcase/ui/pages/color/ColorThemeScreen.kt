@@ -1,6 +1,5 @@
 package box.example.showcase.ui.pages.color
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,7 +21,6 @@ object ColorThemeScreen : Screen {
     override val route = R.string.color_theme_route
     override val title = R.string.color_theme_title
     override val content: @Composable () -> Unit = {
-        Log.d("boxx", "ColorThemeScreen")
         val colorScheme: ColorScheme = MaterialTheme.colorScheme
         val colorsMap = mapOf(
             "Primary container" to Pair(

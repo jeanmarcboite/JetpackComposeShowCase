@@ -1,6 +1,5 @@
 package box.example.showcase.ui.pages
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -37,7 +36,6 @@ object ColorMapScreen : Screen {
     override val route = R.string.color_page_route
     override val title = R.string.color_page_title
     override val content: @Composable () -> Unit = {
-        Log.d("boxx", "ColorMapScreen")
         ColorListBody(
             onItemClicked = {
                 // navController.navigate("${AppScreens.Detail.route}${it.name}")

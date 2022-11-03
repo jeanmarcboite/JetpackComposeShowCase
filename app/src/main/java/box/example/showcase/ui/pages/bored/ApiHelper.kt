@@ -29,8 +29,8 @@ suspend fun nextActivity(): Activity? {
     val api = ApiHelper.getInstance().create(BoredApi::class.java)
     try {
         val result = api.getActivity()
-        Log.d("boxx [Response]: ", result.toString())
-        Log.d("boxx [Body]: ", result.body().toString())
+        Log.v("boxx [Response]: ", result.toString())
+        Log.v("boxx [Body]: ", result.body().toString())
         return result.body()
     } catch (e: Exception) {
         Log.e("boxx", e.message.toString())
