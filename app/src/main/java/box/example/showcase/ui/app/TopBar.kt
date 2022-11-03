@@ -116,6 +116,7 @@ fun TopBar(
                         { Text("Settings") },
                         onClick = {
                             expanded.value = false
+                            mainViewModel.navViewModel.navigate("settings")
                         })
 
                 }

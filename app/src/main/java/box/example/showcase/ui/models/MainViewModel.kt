@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.ViewModel
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
+import box.example.showcase.ui.pages.notes.NoteAction
 import box.example.showcase.ui.pages.notes.models.NotesViewModel
 
 const val DARK_MODE = "dark_mode"
@@ -19,6 +20,22 @@ class MainViewModel() : ViewModel() {
     lateinit var authViewModel: AuthViewModel
     lateinit var navViewModel: NavViewModel
     lateinit var notesViewModel: NotesViewModel
+
+
+    val leftSwipeToReveal = mutableStateOf(false)
+    val leftSwipeAction = mutableStateOf(NoteAction.Delete)
+    val leftSwipeActions = listOf(
+        mutableStateOf(NoteAction.None),
+        mutableStateOf(NoteAction.None)
+    )
+    val rightSwipeToReveal = mutableStateOf(true)
+    val rightSwipeAction = mutableStateOf(NoteAction.None)
+    val rightSwipeActions = listOf(
+        mutableStateOf(NoteAction.Star),
+        mutableStateOf(NoteAction.Undo),
+        mutableStateOf(NoteAction.Delete)
+    )
+
 
     init {
         Log.v("boxy", "init MainViewModel")
