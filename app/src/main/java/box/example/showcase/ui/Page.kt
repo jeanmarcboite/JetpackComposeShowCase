@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import box.example.showcase.MainViewModel
+import box.example.showcase.ui.navigation.Screen
 
 abstract class Page(
     val icon: ImageVector,
@@ -28,4 +29,6 @@ abstract class Page(
     open suspend fun onButtonClicked() {
         mainViewModel.navViewModel.drawerState.open()
     }
+
+    open val tabs: List<Screen> = listOf()
 }
