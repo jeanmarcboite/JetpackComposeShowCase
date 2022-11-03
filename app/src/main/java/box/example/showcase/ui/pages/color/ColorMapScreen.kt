@@ -120,7 +120,7 @@ fun ColorListItem(
         Spacer(Modifier.width(margin_standard))
         Text(
             text = colorItem.name,
-            style = MaterialTheme.typography.displayMedium,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
     Divider(color = MaterialTheme.colorScheme.onSurface)

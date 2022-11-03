@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package box.example.showcase.ui.theme
 
 import androidx.compose.ui.unit.Dp
@@ -9,7 +11,7 @@ val margin_double: Dp = 32.dp
 val margin_half: Dp = 8.dp
 val margin_quarter = 4.dp
 val touchpoint = 48.dp
-val touchpoint_lg = 64.dp
+val touchpoint_lg = 32.dp
 
 // Card related Values
 val elevation = 4.dp
