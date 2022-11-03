@@ -30,5 +30,6 @@ abstract class Page(
         mainViewModel.navViewModel.drawerState.open()
     }
 
-    open val tabs: List<Screen> = listOf()
+    open val screens: List<Screen> = listOf()
+
 }

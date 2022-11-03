@@ -45,9 +45,9 @@ import box.example.showcase.ui.navigation.Screen
 import java.util.*
 
 @Composable
-fun TabRow(
+fun TabBar(
     screens: List<Screen>,
-    currentTab: Screen,
+    currentScreen: Screen,
     onScreenSelected: (Screen) -> Unit,
 ) {
     Surface(
@@ -61,7 +61,7 @@ fun TabRow(
                     text = stringResource(id = screen.route),
                     icon = screen.icon,
                     onSelected = { onScreenSelected(screen) },
-                    selected = currentTab == screen
+                    selected = currentScreen == screen
                 )
             }
         }

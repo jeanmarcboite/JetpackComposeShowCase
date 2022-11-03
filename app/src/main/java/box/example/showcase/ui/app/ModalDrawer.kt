@@ -73,15 +73,6 @@ fun ModalDrawer(
                         }
                     },
                     floatingActionButton = { navViewModel.selectedItem.value?.floatingActionButton() },
-                    bottomBar = {
-                        BottomAppBar(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                        ) {
-                            navViewModel.selectedItem.value?.route?.let {
-                                Text(context.getString(it))
-                            }
-                        }
-                    }
                 )
             }
         }
