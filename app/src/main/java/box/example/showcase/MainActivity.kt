@@ -1,5 +1,6 @@
 package box.example.showcase
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -23,9 +24,16 @@ import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.pages.notes.models.NotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
+@HiltAndroidApp
+class HiltApp : Application() {
+}
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val mainViewModel: MainViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
