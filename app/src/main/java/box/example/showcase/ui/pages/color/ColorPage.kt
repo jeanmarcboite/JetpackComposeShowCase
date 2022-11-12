@@ -2,18 +2,17 @@ package box.example.showcase.ui.pages.color
 
 import android.content.Context
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
+import box.example.showcase.applib.bored.BoredViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.TabBar
 import box.example.showcase.ui.navigation.Screen
@@ -34,6 +33,7 @@ class ColorPage() : Page(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content(openDrawer: () -> Unit) {
+        val boredViewModel: BoredViewModel = viewModel()
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
@@ -44,6 +44,7 @@ class ColorPage() : Page(
                 BottomAppBar(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ) {
+                    Text("[Bored: ${BoredViewModel.id}]")
                     TabBar(
                         screens,
                         currentScreen = screens.findRoute(context, currentDestination?.route)

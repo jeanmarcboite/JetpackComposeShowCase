@@ -3,6 +3,7 @@ package box.example.showcase
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.app.ModalDrawer
 import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.models.AuthViewModel
+import box.example.showcase.ui.models.ExampleViewModel
 import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.pages.notes.models.NotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
@@ -39,12 +41,16 @@ class MainActivity : ComponentActivity() {
     val authViewModel: AuthViewModel by viewModels()
     val navViewModel: NavViewModel by viewModels()
     val notesViewModel: NotesViewModel by viewModels()
+
+    private val exampleViewModel: ExampleViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel.readApplicationSettings(ApplicationSettings(this))
         mainViewModel.authViewModel = authViewModel
         mainViewModel.navViewModel = navViewModel
         mainViewModel.notesViewModel = notesViewModel
+
+        Log.d("Boxxx", "${exampleViewModel.toString()}")
 
         setContent {
             ShowCaseTheme(mainViewModel.darkMode.value) {
