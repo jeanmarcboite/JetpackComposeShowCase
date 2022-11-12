@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.bored.BoredViewModel
 import box.example.showcase.ui.Page
@@ -30,15 +30,11 @@ class BoredPage() :
         R.string.bored_page_route,
         R.string.bored_page_title
     ) {
-    @Composable
-    fun msg(boredViewModel: BoredViewModel = viewModel()): String {
-        return boredViewModel.msg()
-    }
-
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content(openDrawer: () -> Unit) {
+        val boredViewModel: BoredViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
         val activity: MutableState<Activity?> = remember { mutableStateOf<Activity?>(null) }
         LaunchedEffect(true) {
@@ -49,7 +45,11 @@ class BoredPage() :
                 BottomAppBar(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ) {
-                    Text("[${msg()}]")
+                    WithBored()
+                    Text(
+                        "Content: ${boredViewModel.msg()}",
+                        modifier = Modifier.padding(start = 32.dp)
+                    )
                 }
             },
             content = {
@@ -61,6 +61,11 @@ class BoredPage() :
             }
         )
     }
+}
+
+@Composable
+fun WithBored(boredViewModel: BoredViewModel = hiltViewModel()) {
+    Text("WithBored: ${boredViewModel.msg()}")
 }
 
 @Composable

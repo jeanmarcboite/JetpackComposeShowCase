@@ -11,16 +11,17 @@ import javax.inject.Inject
 // dependencies to view model class
 @HiltViewModel
 class BoredViewModel @Inject constructor(
+    private val id: Int
 ) : ViewModel() {
     init {
-        Log.d("boxxx [Bored]", "creating viewModel ${++id}")
+        Log.d("boxxx [Bored]", "creating viewModel ${++object_id} ${id}")
     }
 
     fun msg(): String {
-        return "BORED $id"
+        return "BORED $id {$object_id}"
     }
 
     companion object stamp {
-        var id = 0
+        var object_id = 0
     }
 }

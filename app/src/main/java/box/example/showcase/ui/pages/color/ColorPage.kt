@@ -7,7 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -33,7 +34,8 @@ class ColorPage() : Page(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content(openDrawer: () -> Unit) {
-        val boredViewModel: BoredViewModel = viewModel()
+        val boredViewModel: BoredViewModel = hiltViewModel()
+        //val boredViewModel: BoredViewModel = viewModel()
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
@@ -44,7 +46,11 @@ class ColorPage() : Page(
                 BottomAppBar(
                     containerColor = MaterialTheme.colorScheme.surface,
                 ) {
-                    Text("[Bored: ${BoredViewModel.id}]")
+                    //Text(boredViewModel.msg())
+                    Text(
+                        "Content: ${boredViewModel.msg()}",
+                        modifier = Modifier.padding(end = 32.dp)
+                    )
                     TabBar(
                         screens,
                         currentScreen = screens.findRoute(context, currentDestination?.route)
