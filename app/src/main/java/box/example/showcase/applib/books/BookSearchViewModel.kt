@@ -5,8 +5,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class BookViewModel @Inject constructor(
+class BookSearchViewModel @Inject constructor(
     val bookService: BookService
 ) : ViewModel() {
+    fun getBooks(query: String): Error? {
+        return bookService.getBooks()
+    }
 
 }
