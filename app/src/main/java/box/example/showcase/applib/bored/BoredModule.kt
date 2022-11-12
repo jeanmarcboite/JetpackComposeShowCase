@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import kotlin.properties.Delegates
 
 @Module
@@ -18,6 +19,18 @@ class BoredModule {
     @Provides
     fun boredID(): Int {
         return id
+    }
+
+    @Provides
+    @Named("other")
+    fun otherID(): Int {
+        return id + 1
+    }
+
+
+    @Provides
+    fun boredIDD(): Double {
+        return 3.14
     }
 
     companion object stamp {
