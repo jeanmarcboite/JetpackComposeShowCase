@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,7 +31,7 @@ class BooksPage() :
         R.string.books_page_route,
         R.string.books_page_title
     ) {
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     override fun Content(openDrawer: () -> Unit) {
         val bookList: MutableState<BookList?> = remember {
@@ -40,7 +42,7 @@ class BooksPage() :
             mutableStateOf("")
         }
         val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
-
+        val keyboardController = LocalSoftwareKeyboardController.current
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top,
@@ -60,6 +62,7 @@ class BooksPage() :
                 keyboardActions = KeyboardActions(
                     onDone = {
                         scope.launch {
+                            keyboardController?.hide()
                             bookList.value = getBooks(bookSearchViewModel, searchString).getOrNull()
                             Log.i("boxxx", "got: ${bookList.value}")
                         }
