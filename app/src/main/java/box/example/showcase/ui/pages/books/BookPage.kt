@@ -1,13 +1,13 @@
 package box.example.showcase.ui.pages.books
 
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -15,12 +15,16 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.books.BookList
 import box.example.showcase.applib.books.BookSearchViewModel
+import box.example.showcase.applib.books.Doc
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -39,12 +43,15 @@ class BooksPage() :
         var progressVisible by rememberSaveable() {
             mutableStateOf(false)
         }
+        var label by rememberSaveable() {
+            mutableStateOf("search titles")
+        }
         val bookList: MutableState<BookList?> = remember {
             mutableStateOf(null)
         }
         val scope = rememberCoroutineScope()
         var searchString by rememberSaveable {
-            mutableStateOf("")
+            mutableStateOf("lord of the")
         }
         val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -59,7 +66,7 @@ class BooksPage() :
                     .padding(bottom = 24.dp),
                 value = searchString,
                 singleLine = true,
-                label = { Text("Search string") },
+                label = { Text(label) },
                 onValueChange = {
                     searchString = it
                 },
@@ -82,7 +89,58 @@ class BooksPage() :
                     strokeWidth = 10.dp
                 )
             }
-            bookList.value?.let { Text(it.toString()) }
+            bookList.value?.let { bookList ->
+                label = "${bookList.numFound} books found"
+                LazyColumn {
+                    items(bookList.docs) {
+                        DocRow(it)
+                    }
+                }
+                Text(bookList.toString())
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun DocRow(doc: Doc) {
+        Column {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+                    .clickable { }
+            ) {
+                OutlinedTextField(
+                    readOnly = true,
+                    value = doc.title,
+                    onValueChange = {},
+                    label = {
+                        Text(
+                            text = doc.author_name?.get(0) ?: "",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontStyle = FontStyle.Italic
+                        )
+                    },
+                    maxLines = 2,
+                    textStyle = TextStyle(
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                )
+                doc.subtitle?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontStyle = FontStyle.Italic,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
         }
     }
 
