@@ -27,7 +27,7 @@ class NavViewModel : ViewModel() {
                 selectedItem.value =
                     pages[navController.currentDestination?.route]!!
             } catch (e: Exception) {
-                Log.e("boxx", "Cannot navigate to {route}: ${e.message}"/*, e*/)
+                Log.e("boxx", "Cannot navigate to ${route}: ${e.message}"/*, e*/)
             }
         }
     }

@@ -78,7 +78,7 @@ class NotesViewModel() : ViewModel() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                TODO("Not yet implemented: onCancelled")
             }
         }
         database.addChildEventListener(childEventListener)
