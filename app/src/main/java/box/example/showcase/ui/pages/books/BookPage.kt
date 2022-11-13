@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -12,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -34,6 +36,9 @@ class BooksPage() :
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     override fun Content(openDrawer: () -> Unit) {
+        var progressVisible by rememberSaveable() {
+            mutableStateOf(false)
+        }
         val bookList: MutableState<BookList?> = remember {
             mutableStateOf(null)
         }
@@ -61,13 +66,22 @@ class BooksPage() :
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
+                        progressVisible = true
                         scope.launch {
                             keyboardController?.hide()
                             bookList.value = getBooks(bookSearchViewModel, searchString).getOrNull()
                             Log.i("boxxx", "got: ${bookList.value}")
+                            progressVisible = false
                         }
                     }
                 ))
+            if (progressVisible) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(100.dp),
+                    color = Color.Green,
+                    strokeWidth = 10.dp
+                )
+            }
             bookList.value?.let { Text(it.toString()) }
         }
     }
