@@ -7,11 +7,11 @@ class OpenLibraryBookService : BookService {
     override suspend fun getBooks(query: String): Response<BookList> {
         Log.d("boxx [OpenLibraryBookService]: ", query)
         val api = OpenLibraryApiHelper.getInstance()
-        val result: Response<BookList> = api.getBooks(/*"lord+of+the"*/)
+        val result: Response<BookList> = api.getBooks(query)
         Log.d("boxx [Response]: ", result.toString())
         Log.d("boxx [Body]: ", result.body().toString())
 
-        return api.getBooks(/*"lord+of+the"*/)
+        return result
     }
 }
 

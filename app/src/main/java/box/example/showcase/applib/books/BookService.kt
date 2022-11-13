@@ -13,14 +13,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
-interface BookApiQ {
-    @GET("search.json")
-    fun getBooks(@Query("title") query: String): Result<String>
-}
-
 interface BookApi {
-    @GET("search.json?title=lord")
-    suspend fun getBooks(): Response<BookList>
+    @GET("search.json")
+    suspend fun getBooks(@Query("title") query: String): Response<BookList>
 }
 
 interface BookService {
