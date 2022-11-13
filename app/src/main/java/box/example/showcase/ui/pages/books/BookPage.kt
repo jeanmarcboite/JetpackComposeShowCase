@@ -28,6 +28,7 @@ import box.example.showcase.applib.books.Doc
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.BookReader
 import kotlinx.coroutines.launch
 
@@ -69,6 +70,14 @@ class BooksPage() :
                 label = { Text(label) },
                 onValueChange = {
                     searchString = it
+                },
+                trailingIcon = {
+                    Icon(
+                        FontAwesomeIcons.Solid.ArrowLeft,
+                        "error",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(16.dp)
+                    )
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
