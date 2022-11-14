@@ -65,6 +65,7 @@ fun ModalDrawer(
                         ) {
                             navViewModel.pages.values.forEach { page ->
                                 composable(context.getString(page.route)) {
+                                    page.parseArguments(it.arguments)
                                     page.Content {
 
                                     }

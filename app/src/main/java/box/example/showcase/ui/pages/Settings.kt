@@ -33,6 +33,10 @@ class Settings :
 
     override fun showInDrawer() = false
 
+    override suspend fun onButtonClicked() {
+        mainViewModel.navViewModel.navController.popBackStack()
+    }
+
     @Composable
     override fun Content(openDrawer: () -> Unit) {
         Column(

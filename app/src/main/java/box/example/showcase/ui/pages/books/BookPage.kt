@@ -50,7 +50,7 @@ class BooksPage :
         }
         val scope = rememberCoroutineScope()
         var searchString by rememberSaveable {
-            mutableStateOf("lord of the")
+            mutableStateOf("lord of the rings")
         }
         val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -115,7 +115,11 @@ class BooksPage :
                 label = "${bookList.numFound} books found"
                 LazyColumn {
                     items(bookList.docs) {
-                        it.ViewSummary()
+                        it.ViewSummary() {
+                            val destination = "book${it.key}"
+                            Log.d("boxxx", "navigate to $destination")
+                            mainViewModel.navViewModel.navigate(destination)
+                        }
                     }
                 }
                 Text(bookList.toString())

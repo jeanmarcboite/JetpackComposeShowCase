@@ -49,6 +49,7 @@ object ApiHelper {
         if (BuildConfig.DEBUG) {
             // development build
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+            logging.setLevel(HttpLoggingInterceptor.Level.NONE)
         } else {
             // production build
             logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
