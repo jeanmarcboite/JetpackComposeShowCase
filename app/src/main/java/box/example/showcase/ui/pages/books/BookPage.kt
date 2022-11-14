@@ -104,13 +104,14 @@ class BooksPage :
                 ))
             Row {
                 RadioButton(queryOptions.keys.toList(), selectedOption, onOptionSelected)
+                Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = {
                         search()
                     },
                     modifier = Modifier
                         .padding(1.dp)
-                        .fillMaxWidth(),
+                        .width(128.dp),
                     shape = RoundedCornerShape(20.dp)
                 ) {
                     Text("Search")
