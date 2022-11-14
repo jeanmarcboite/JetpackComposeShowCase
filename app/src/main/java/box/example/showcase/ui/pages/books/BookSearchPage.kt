@@ -30,7 +30,7 @@ import compose.icons.fontawesomeicons.solid.BookReader
 import compose.icons.fontawesomeicons.solid.CaretSquareLeft
 import kotlinx.coroutines.launch
 
-class BooksPage :
+class BookSearchPage :
     Page(
         FontAwesomeIcons.Solid.BookReader,
         R.string.books_page_route,
