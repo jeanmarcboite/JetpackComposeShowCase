@@ -1,10 +1,7 @@
 package box.example.showcase.ui.pages.books
 
 import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -20,6 +17,9 @@ import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.OpenLibraryApiHelper
 import box.example.showcase.applib.books.models.Author
 import box.example.showcase.applib.books.models.Book
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.SkullCrossbones
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +43,7 @@ fun Book.View() {
     }
 
     Column {
-        Card() {
+        Card(modifier = Modifier.padding(16.dp)) {
             val firstAuthor = bookAuthors.value.firstOrNull()?.name ?: ""
             OutlinedTextField(enabled = false, value = title,
                 onValueChange = {}, label = {
@@ -64,24 +64,39 @@ fun Book.View() {
             )
         }
         bookAuthors.value.forEach {
-            it?.View()
+            it?.View(Modifier.padding(32.dp))
         }
     }
 }
 
 @Composable
-fun Author.View() {
+fun Author.View(modifier: Modifier = Modifier) {
     val scroll = rememberScrollState(0)
-    Card {
+    Card(modifier) {
         Row {
-            Text(name)
-            Text(birth_date)
-            Text(death_date)
+            Text(
+                name, style = MaterialTheme.typography.titleLarge,
+                fontStyle = FontStyle.Italic
+            )
+            Spacer(Modifier.weight(1f))
+
+            Text(birth_date ?: "")
+
+            death_date?.apply {
+                Icon(
+                    FontAwesomeIcons.Solid.SkullCrossbones,
+                    contentDescription = "Death",
+                    modifier = Modifier.size(24.dp)
+                )
+                Text(death_date)
+            }
         }
-        Text(alternate_names.toString())
+        alternate_names?.apply {
+            Text(toString())
+        }
         Text(
-            bio, modifier = Modifier.verticalScroll(scroll)
+            bio ?: "", modifier = Modifier.verticalScroll(scroll)
         )
-        Text(wikipedia)
+        Text(wikipedia ?: "")
     }
 }

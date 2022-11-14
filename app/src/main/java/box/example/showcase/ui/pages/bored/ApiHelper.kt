@@ -44,7 +44,9 @@ object ApiHelper {
     fun getInstance(): Retrofit {
         val logging = HttpLoggingInterceptor()
         val httpclient = OkHttpClient.Builder()
-        httpclient.addInterceptor(logging)
+
+        if (false)
+            httpclient.addInterceptor(logging)
 
         if (BuildConfig.DEBUG) {
             // development build
@@ -53,6 +55,7 @@ object ApiHelper {
         } else {
             // production build
             logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
+            logging.setLevel(HttpLoggingInterceptor.Level.NONE)
         }
 
         val gson = GsonBuilder()
