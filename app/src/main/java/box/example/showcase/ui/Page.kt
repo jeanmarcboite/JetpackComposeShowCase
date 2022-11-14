@@ -21,7 +21,7 @@ abstract class Page(
     lateinit var mainViewModel: MainViewModel
     open fun showInDrawer() = true
 
-    open fun parseArguments(arguments: Bundle?) = {}
+    open fun parseArguments(arguments: Bundle?) {}
 
     @Composable
     abstract fun Content(openDrawer: () -> Unit)

@@ -1,5 +1,6 @@
 package box.example.showcase.ui.app
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -67,7 +68,6 @@ fun ModalDrawer(
                                 composable(context.getString(page.route)) {
                                     page.parseArguments(it.arguments)
                                     page.Content {
-
                                     }
                                 }
                             }

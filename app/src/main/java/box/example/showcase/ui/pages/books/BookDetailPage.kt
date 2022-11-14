@@ -25,8 +25,8 @@ class BookDetailPage :
     var bookID = ""
     override fun showInDrawer() = false
 
-    override fun parseArguments(arguments: Bundle?) = {
-        Log.d("boxxx", "parse arguments: $arguments")
+    override fun parseArguments(arguments: Bundle?) {
+        Log.v("boxxx", "parse arguments: $arguments")
         bookID = arguments?.getString("bookID") ?: ""
     }
 
