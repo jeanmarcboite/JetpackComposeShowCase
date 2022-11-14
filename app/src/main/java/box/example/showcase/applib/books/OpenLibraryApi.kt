@@ -1,5 +1,6 @@
 package box.example.showcase.applib.books
 
+import box.example.showcase.applib.books.models.Author
 import box.example.showcase.applib.books.models.Book
 import box.example.showcase.applib.books.models.BookList
 import retrofit2.Response
@@ -16,6 +17,7 @@ http://openlibrary.org/search/authors.json?q=twain
 
 https://openlibrary.org/works/OL45883W.json
 https://openlibrary.org/books/OL7353617M.json
+https://openlibrary.org/authors/OL26320A.json
  **/
 
 interface OpenLibraryApi {
@@ -30,4 +32,8 @@ interface OpenLibraryApi {
 
     @GET("books/{id}.json")
     suspend fun getBook(@Path("id") id: String): Response<Book>
+
+    @GET("authors/{id}.json")
+    suspend fun getAuthor(@Path("id") id: String): Response<Author>
+
 }

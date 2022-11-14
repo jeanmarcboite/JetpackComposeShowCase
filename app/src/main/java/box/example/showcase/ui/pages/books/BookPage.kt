@@ -127,7 +127,7 @@ class BooksPage :
                 label = "${bookList.numFound} books found"
                 LazyColumn {
                     items(bookList.docs) {
-                        it.ViewSummary() {
+                        it.View() {
                             val destination = "book${it.key}"
                             Log.d("boxxx", "navigate to $destination")
                             mainViewModel.navViewModel.navigate(destination)

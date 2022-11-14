@@ -1,5 +1,6 @@
 package box.example.showcase.ui.app
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -14,8 +15,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import box.example.showcase.R
 import box.example.showcase.ui.models.NavViewModel
+import box.example.showcase.ui.pages.bored.ActivityCard
+import box.example.showcase.ui.pages.bored.nextActivity
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModalDrawer(
@@ -69,6 +73,24 @@ fun ModalDrawer(
                                     page.parseArguments(it.arguments)
                                     page.Content {
                                     }
+
+                                    Scaffold(
+                                        bottomBar = {
+                                            BottomAppBar(
+                                                containerColor = MaterialTheme.colorScheme.surface,
+                                            ) {
+                                                Text(
+                                                    "Route: ${navViewModel.navController.currentDestination?.route}",
+                                                    modifier = Modifier.padding(start = 32.dp)
+                                                )
+                                            }
+                                        },
+                                        content = {
+                                            page.Content {
+
+                                            }
+                                        }
+                                    )
                                 }
                             }
                         }
