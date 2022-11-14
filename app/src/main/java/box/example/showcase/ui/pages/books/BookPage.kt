@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -20,7 +21,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
-import box.example.showcase.applib.books.BookList
 import box.example.showcase.applib.books.BookQueryType
 import box.example.showcase.applib.books.BookSearchViewModel
 import box.example.showcase.ui.Page
@@ -45,9 +45,6 @@ class BooksPage :
         var label by rememberSaveable {
             mutableStateOf("search titles")
         }
-        val bookList: MutableState<BookList?> = remember {
-            mutableStateOf(null)
-        }
         val scope = rememberCoroutineScope()
         var searchString by rememberSaveable {
             mutableStateOf("lord of the rings")
@@ -60,6 +57,17 @@ class BooksPage :
             "Title" to BookQueryType.Title, "Author" to BookQueryType.Author
         )
         val (selectedOption, onOptionSelected) = remember { mutableStateOf("Any") }
+        fun search() {
+            progressVisible = true
+            scope.launch {
+                keyboardController?.hide()
+                bookSearchViewModel.getBooks(
+                    searchString,
+                    queryOptions[selectedOption]!!
+                )
+                progressVisible = false
+            }
+        }
 
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -91,19 +99,23 @@ class BooksPage :
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        progressVisible = true
-                        scope.launch {
-                            keyboardController?.hide()
-                            bookList.value = bookSearchViewModel.getBooks(
-                                searchString,
-                                queryOptions[selectedOption]!!
-                            ).getOrNull()
-                            Log.v("boxxx", "got: ${bookList.value}")
-                            progressVisible = false
-                        }
+                        search()
                     }
                 ))
-            RadioButton(queryOptions.keys.toList(), selectedOption, onOptionSelected)
+            Row {
+                RadioButton(queryOptions.keys.toList(), selectedOption, onOptionSelected)
+                Button(
+                    onClick = {
+                        search()
+                    },
+                    modifier = Modifier
+                        .padding(1.dp)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Text("Search")
+                }
+            }
             if (progressVisible) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(100.dp),
@@ -111,7 +123,7 @@ class BooksPage :
                     strokeWidth = 10.dp
                 )
             }
-            bookList.value?.let { bookList ->
+            bookSearchViewModel.bookList.value?.let { bookList ->
                 label = "${bookList.numFound} books found"
                 LazyColumn {
                     items(bookList.docs) {
@@ -122,9 +134,10 @@ class BooksPage :
                         }
                     }
                 }
-                Text(bookList.toString())
+                //Text(bookList.toString())
             }
         }
+
     }
 
     @Composable
