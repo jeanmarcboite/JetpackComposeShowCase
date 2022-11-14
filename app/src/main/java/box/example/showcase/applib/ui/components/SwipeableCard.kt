@@ -10,9 +10,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun SwipeableCard(
                     }
                 }
             ) { change, dragAmount ->
-                change.consumePositionChange()
+                if (change.positionChange() != Offset.Zero) change.consume()
                 offset.value += dragAmount
                 offset.value.coerceIn(-swipeOffset, swipeOffset)
             }
@@ -77,8 +78,8 @@ fun SwipeableCard(
     Card(
         modifier,
         shape = RoundedCornerShape(3.dp),
-    colors = CardDefaults.cardColors(containerColor = backgroundColor),
-    elevation = CardDefaults.cardElevation(if (swiped.value) 40.dp else 2.dp),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        elevation = CardDefaults.cardElevation(if (swiped.value) 40.dp else 2.dp),
     ) {
         Row(horizontalArrangement = if (swiped.value) Arrangement.End else Arrangement.Start) {
             cardContent()

@@ -19,7 +19,7 @@ enum class AuthState {
     LoggedIn
 }
 
-class AuthViewModel() : ViewModel() {
+class AuthViewModel : ViewModel() {
     private val TAG = "boxx [AuthViewModel]"
     val state: MutableState<AuthState> = mutableStateOf(AuthState.NotLoggedIn)
     val user: MutableState<FirebaseUser?> = mutableStateOf(null)
@@ -77,7 +77,7 @@ class AuthViewModel() : ViewModel() {
         val TAG = "boxx [firebaseAuthWithGoogle]"
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         Firebase.auth.signInWithCredential(credential)
-            .addOnCompleteListener() { note ->
+            .addOnCompleteListener { note ->
                 if (note.isSuccessful) {
                     setUser(FirebaseAuth.getInstance().currentUser)
                     // Sign in success, update UI with the signed-in user's information

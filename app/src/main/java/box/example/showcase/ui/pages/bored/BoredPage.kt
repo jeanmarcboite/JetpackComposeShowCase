@@ -24,7 +24,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Beer
 import kotlinx.coroutines.launch
 
-class BoredPage() :
+class BoredPage :
     Page(
         FontAwesomeIcons.Solid.Beer,
         R.string.bored_page_route,

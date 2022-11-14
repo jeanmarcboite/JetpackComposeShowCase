@@ -9,7 +9,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.InfoCircle
 
-class AboutPage() :
+class AboutPage :
     Page(
         FontAwesomeIcons.Solid.InfoCircle,
         R.string.about_page_route,

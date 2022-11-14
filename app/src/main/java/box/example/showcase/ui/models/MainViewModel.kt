@@ -11,7 +11,7 @@ import box.example.showcase.ui.pages.notes.models.NotesViewModel
 
 const val DARK_MODE = "dark_mode"
 
-class MainViewModel() : ViewModel() {
+class MainViewModel : ViewModel() {
     lateinit var applicationSettings: ApplicationSettings
 
     val darkMode = mutableStateOf(false)

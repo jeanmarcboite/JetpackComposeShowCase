@@ -12,7 +12,7 @@ import com.google.firebase.ktx.Firebase
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 
-class NotesViewModel() : ViewModel() {
+class NotesViewModel : ViewModel() {
     private val TAG = "boxx [firebase]"
     private val database: DatabaseReference = Firebase.database.reference
     val notes = mutableStateListOf<Note>()

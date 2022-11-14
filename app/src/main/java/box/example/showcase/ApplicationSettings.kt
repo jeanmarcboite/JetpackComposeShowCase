@@ -9,5 +9,4 @@ val preferences = SettingsPreferences(
 )
 
 
-class ApplicationSettings(context: Context) : SettingsStore(context, preferences) {
-}
+class ApplicationSettings(context: Context) : SettingsStore(context, preferences)

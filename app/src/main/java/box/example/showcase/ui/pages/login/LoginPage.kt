@@ -20,7 +20,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Fire
 
-class LoginPage() :
+class LoginPage :
     Page(
         FontAwesomeIcons.Solid.Fire,
         R.string.login_page_route,

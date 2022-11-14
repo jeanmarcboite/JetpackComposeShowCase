@@ -10,9 +10,12 @@ import javax.inject.Inject
 class BookSearchViewModel @Inject constructor(
     private val bookService: BookService
 ) : ViewModel() {
-    suspend fun getBooks(query: String): Result<BookList?> {
+    suspend fun getBooks(
+        query: String,
+        type: BookQueryType = BookQueryType.Any
+    ): Result<BookList?> {
         try {
-            val result: Response<BookList> = bookService.getBooks(query)
+            val result: Response<BookList> = bookService.getBooks(query, type)
             Log.d("boxxxx", "result: ${result}")
             return Result.success(result.body())
         } catch (e: Exception) {
@@ -21,5 +24,4 @@ class BookSearchViewModel @Inject constructor(
             return Result.failure(e)
         }
     }
-
 }

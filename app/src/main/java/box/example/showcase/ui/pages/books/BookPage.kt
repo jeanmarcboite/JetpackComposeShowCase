@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.books.BookList
+import box.example.showcase.applib.books.BookQueryType
 import box.example.showcase.applib.books.BookSearchViewModel
 import box.example.showcase.applib.books.Doc
 import box.example.showcase.ui.Page
@@ -32,7 +34,7 @@ import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.BookReader
 import kotlinx.coroutines.launch
 
-class BooksPage() :
+class BooksPage :
     Page(
         FontAwesomeIcons.Solid.BookReader,
         R.string.books_page_route,
@@ -41,10 +43,10 @@ class BooksPage() :
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     override fun Content(openDrawer: () -> Unit) {
-        var progressVisible by rememberSaveable() {
+        var progressVisible by rememberSaveable {
             mutableStateOf(false)
         }
-        var label by rememberSaveable() {
+        var label by rememberSaveable {
             mutableStateOf("search titles")
         }
         val bookList: MutableState<BookList?> = remember {
@@ -56,11 +58,19 @@ class BooksPage() :
         }
         val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
         val keyboardController = LocalSoftwareKeyboardController.current
+
+        val queryOptions = mapOf(
+            "Any" to BookQueryType.Any,
+            "Title" to BookQueryType.Title, "Author" to BookQueryType.Author
+        )
+        val (selectedOption, onOptionSelected) = remember { mutableStateOf("Any") }
+
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            RadioButton(queryOptions.keys.toList(), selectedOption, onOptionSelected)
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -85,8 +95,11 @@ class BooksPage() :
                         progressVisible = true
                         scope.launch {
                             keyboardController?.hide()
-                            bookList.value = getBooks(bookSearchViewModel, searchString).getOrNull()
-                            Log.i("boxxx", "got: ${bookList.value}")
+                            bookList.value = bookSearchViewModel.getBooks(
+                                searchString,
+                                queryOptions[selectedOption]!!
+                            ).getOrNull()
+                            Log.v("boxxx", "got: ${bookList.value}")
                             progressVisible = false
                         }
                     }
@@ -106,6 +119,37 @@ class BooksPage() :
                     }
                 }
                 Text(bookList.toString())
+            }
+        }
+    }
+
+    @Composable
+    fun RadioButton(
+        radioOptions: List<String>,
+        selectedOption: String,
+        onOptionSelected: (String) -> Unit
+    ) {
+        Row {
+            radioOptions.forEach { text ->
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .selectable(
+                            selected = (text == selectedOption),
+                            onClick = {
+                                onOptionSelected(text)
+                            }
+                        )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    RadioButton(
+                        selected = (text == selectedOption),
+                        onClick = { onOptionSelected(text) }
+                    )
+                    Text(
+                        text = text,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
             }
         }
     }
@@ -151,30 +195,5 @@ class BooksPage() :
                 }
             }
         }
-    }
-
-
-    private suspend fun getBooks(
-        bookSearchViewModel: BookSearchViewModel,
-        query: String
-    ): Result<BookList?> {
-        //progressBar.visibility = View.VISIBLE
-        val result = bookSearchViewModel.getBooks(query)
-        //progressBar.visibility = View.GONE
-/*
-if (error != null)
-{
-
-Alerment(error.title, error.message).show(
-    childFragmentManager,
-    AlertDialogFragment.TAG
-)
-} else
-{
-recyclerView.adapter?.notifyDataSetChanged()
-}
-}
-*/
-        return result
     }
 }

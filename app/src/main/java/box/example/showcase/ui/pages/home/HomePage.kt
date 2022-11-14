@@ -18,7 +18,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Home
 
-class HomePage() :
+class HomePage :
     Page(
         FontAwesomeIcons.Solid.Home,
         R.string.home_page_route,
@@ -35,7 +35,7 @@ class HomePage() :
 
 @Composable
 fun BoxContent() {
-    Box() {
+    Box {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

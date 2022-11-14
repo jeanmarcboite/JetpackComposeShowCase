@@ -24,7 +24,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Cocktail
 
-class ColorPage() : Page(
+class ColorPage : Page(
     FontAwesomeIcons.Solid.Cocktail,
     R.string.color_page_route,
     R.string.color_page_title

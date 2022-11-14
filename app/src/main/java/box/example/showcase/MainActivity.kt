@@ -32,8 +32,7 @@ import dagger.hilt.android.HiltAndroidApp
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 @HiltAndroidApp
-class HiltApp : Application() {
-}
+class HiltApp : Application()
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -50,7 +49,7 @@ class MainActivity : ComponentActivity() {
         mainViewModel.navViewModel = navViewModel
         mainViewModel.notesViewModel = notesViewModel
 
-        Log.d("Boxxx", "${exampleViewModel.toString()}")
+        Log.d("Boxxx", "$exampleViewModel")
 
         setContent {
             ShowCaseTheme(mainViewModel.darkMode.value) {

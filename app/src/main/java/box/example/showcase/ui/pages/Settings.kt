@@ -22,7 +22,7 @@ import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.pages.notes.NoteAction
 
-class Settings() :
+class Settings :
     Page(
         Icons.Filled.Settings,
         R.string.settings_page_route, R.string.settings_page_title,
@@ -78,7 +78,7 @@ class Settings() :
 
     @Composable
     fun SwipeActions() {
-        Column() {
+        Column {
             SwipeActions(
                 "Left Swipe",
                 mainViewModel.leftSwipeToReveal,
@@ -194,7 +194,7 @@ class Settings() :
         ) {
             Text(label)
             buttons.forEach {
-                Row() {
+                Row {
                     RadioButton(selected = noteAction.value.toString() == it,
                         onClick = { noteAction.value = NoteAction.valueOf(it) })
                     Text(

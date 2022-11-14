@@ -12,7 +12,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Feather
 
-class NotesPage() :
+class NotesPage :
     Page(
         FontAwesomeIcons.Solid.Feather,
         R.string.notes_page_route,
@@ -37,7 +37,7 @@ class NotesPage() :
                 }
             }
         } else {
-            NewNoteView() {
+            NewNoteView {
                 viewModel.add(notesRoot, it)
                 noteEdit.value = false
             }
