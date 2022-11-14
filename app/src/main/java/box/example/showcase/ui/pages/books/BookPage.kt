@@ -26,8 +26,8 @@ import box.example.showcase.applib.books.BookSearchViewModel
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.BookReader
+import compose.icons.fontawesomeicons.solid.CaretSquareLeft
 import kotlinx.coroutines.launch
 
 class BooksPage :
@@ -78,7 +78,7 @@ class BooksPage :
                 },
                 trailingIcon = {
                     Icon(
-                        FontAwesomeIcons.Solid.ArrowLeft,
+                        FontAwesomeIcons.Solid.CaretSquareLeft,
                         "error",
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier
