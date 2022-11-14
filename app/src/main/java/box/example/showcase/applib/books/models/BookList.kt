@@ -1,4 +1,4 @@
-package box.example.showcase.applib.books
+package box.example.showcase.applib.books.models
 
 data class BookList(
     val docs: List<Doc>,

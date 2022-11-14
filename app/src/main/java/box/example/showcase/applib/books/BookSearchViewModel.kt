@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import box.example.showcase.applib.books.models.Book
+import box.example.showcase.applib.books.models.BookList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
 import javax.inject.Inject
@@ -26,6 +28,21 @@ class BookSearchViewModel @Inject constructor(
             return Result.success(bookList.value)
         } catch (e: Exception) {
             Log.e("boxx", "Cannot get books from {$query}: ${e.message}"/*, e*/)
+
+            return Result.failure(e)
+        }
+    }
+
+    suspend fun getBook(
+        bookID: String
+    ): Result<Book?> {
+        try {
+            val result: Response<Book> = bookService.getBook(bookID)
+            Log.d("boxxxx", "result: ${result}")
+
+            return Result.success(result.body())
+        } catch (e: Exception) {
+            Log.e("boxx", "Cannot get book {$bookID}: ${e.message}"/*, e*/)
 
             return Result.failure(e)
         }

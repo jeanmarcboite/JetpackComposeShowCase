@@ -6,9 +6,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import box.example.showcase.R
+import box.example.showcase.applib.books.BookSearchViewModel
+import box.example.showcase.applib.books.models.Book
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -36,6 +42,14 @@ class BookDetailPage :
 
     @Composable
     override fun Content(openDrawer: () -> Unit) {
-        Text("book: $bookID")
+        val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
+        val book = remember {
+            mutableStateOf<Book?>(null)
+        }
+        LaunchedEffect(true) {
+            book.value = bookSearchViewModel.getBook(bookID).getOrNull()
+        }
+        Text("book: ${book.value}")
+
     }
 }
