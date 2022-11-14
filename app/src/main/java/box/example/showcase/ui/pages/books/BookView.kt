@@ -28,6 +28,9 @@ import compose.icons.fontawesomeicons.solid.SkullCrossbones
 @Composable
 fun Book.View() {
     val book = this
+
+    val scroll = rememberScrollState(0)
+
     val bookAuthors = remember {
         mutableStateOf<List<Author?>>(listOf())
     }
@@ -35,7 +38,7 @@ fun Book.View() {
     LaunchedEffect(key1 = true) {
         val api = OpenLibraryApiHelper.getInstance()
         bookAuthors.value = book.authors.map {
-            Log.d("boxx [bookAuthors]", it.author.key.toString())
+            Log.d("boxx [bookAuthors]", it.author.key)
             val parts = it.author.key.split("/")
             val value: Author? = api.getAuthor(parts.last()).body()
             Log.d("boxx [bookAuthors]", "${it.author.key} $value")
@@ -47,7 +50,7 @@ fun Book.View() {
     Column {
         Card(modifier = Modifier.padding(16.dp)) {
             Row {
-                val cover = covers.firstOrNull() //:= "240727"
+                val cover = covers?.firstOrNull() //:= "240727"
                 val coverUrl = "https://covers.openlibrary.org/b/id/$cover-L.jpg"
                 val imageUrl = "https://covers.openlibrary.org/b/olid/OL7440033M-L.jpg"
 
@@ -59,22 +62,47 @@ fun Book.View() {
                 )
                 Column {
                     val firstAuthor = bookAuthors.value.firstOrNull()?.name ?: ""
-                    OutlinedTextField(enabled = false, value = title, onValueChange = {}, label = {
-                        Text(
-                            firstAuthor,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontStyle = FontStyle.Italic
-                        )
-                    }, textStyle = TextStyle(
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold
-                    ), modifier = Modifier
-                        .padding(20.dp)
-                        .fillMaxWidth()
+                    OutlinedTextField(
+                        enabled = false,
+                        value = title,
+                        onValueChange = {},
+                        label = {
+                            Text(
+                                firstAuthor,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontStyle = FontStyle.Italic
+                            )
+                        },
+                        textStyle = TextStyle(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontStyle = FontStyle.Italic,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier
+                            .padding(20.dp)
+                            .fillMaxWidth()
                     )
                     bookAuthors.value.firstOrNull()?.apply {
-                        Text(personal_name, modifier = Modifier.padding(start = 32.dp))
+                        if (personal_name != null) {
+                            Text(personal_name, modifier = Modifier.padding(start = 32.dp))
+                        }
+                    }
+
+
+                    if (book.description != null) {
+                        Log.i("boxxx", book.toString())
+
+                        Log.i("boxxx", book.description.toString())
+                        Log.i("boxxx value", book.description.value)
+                        book.description.value.apply {
+                            Text(
+                                book.description.value,
+                                modifier = Modifier
+                                    .padding(start = 32.dp)
+                                    .height(92.dp)
+                                    .verticalScroll(scroll)
+                            )
+                        }
                     }
                 }
             }
@@ -91,7 +119,9 @@ fun Author.View(modifier: Modifier = Modifier) {
     Card(modifier) {
         Row {
             Text(
-                name, style = MaterialTheme.typography.titleLarge, fontStyle = FontStyle.Italic
+                name ?: "",
+                style = MaterialTheme.typography.titleLarge,
+                fontStyle = FontStyle.Italic
             )
             Spacer(Modifier.weight(1f))
 
