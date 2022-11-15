@@ -35,7 +35,7 @@ fun SwipeableCard(
     val threshold = swipeOffset * swipeThreshold.coerceIn(0f, 1f)
     val modifier = Modifier
         .fillMaxWidth()
-        .padding(16.dp, 8.dp)
+        .padding(3.dp, 8.dp)
         .height(height)
         .offset { IntOffset(offset.value.roundToInt(), 0) }
         .pointerInput(Unit) {
@@ -77,7 +77,7 @@ fun SwipeableCard(
 
     Card(
         modifier,
-        shape = RoundedCornerShape(3.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         elevation = CardDefaults.cardElevation(if (swiped.value) 40.dp else 2.dp),
     ) {
