@@ -1,12 +1,13 @@
-package box.example.showcase
+package box.example.showcase.ui.pages
 
 import android.content.Context
+import box.example.showcase.MainViewModel
 import box.example.showcase.ui.Page
-import box.example.showcase.ui.pages.Settings
 import box.example.showcase.ui.pages.about.AboutPage
 import box.example.showcase.ui.pages.books.BookDetailPage
 import box.example.showcase.ui.pages.books.BookSearchPage
 import box.example.showcase.ui.pages.bored.BoredPage
+import box.example.showcase.ui.pages.calibre.CalibrePage
 import box.example.showcase.ui.pages.color.ColorPage
 import box.example.showcase.ui.pages.home.HomePage
 import box.example.showcase.ui.pages.login.LoginPage
@@ -18,6 +19,7 @@ fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page>
         HomePage(),
         ColorPage(),
         AboutPage(),
+        CalibrePage(),
         BoredPage(),
         BookSearchPage(),
         BookDetailPage(),

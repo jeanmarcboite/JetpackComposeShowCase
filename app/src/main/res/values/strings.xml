@@ -30,4 +30,6 @@
     <string name="words_page_title">Words</string>
     <string name="todo_page_route">todo</string>
     <string name="todo_page_title">Todo</string>
+    <string name="calibre_page_route">calibre</string>
+    <string name="calibre_page_title">Calibre Library</string>
 </resources>
