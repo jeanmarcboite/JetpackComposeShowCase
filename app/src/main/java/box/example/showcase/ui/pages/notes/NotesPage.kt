@@ -40,7 +40,8 @@ class NotesPage :
             }
         } else {
             NewNoteView {
-                viewModel.add(notesRoot, it)
+                if (it != null)
+                    viewModel.add(notesRoot, it)
                 noteEdit.value = false
             }
         }

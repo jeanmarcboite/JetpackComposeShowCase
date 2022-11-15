@@ -38,7 +38,8 @@ class TodoPage :
             }
         } else {
             NewNoteView {
-                viewModel.insert(it)
+                if (it != null)
+                    viewModel.insert(it)
                 noteEdit.value = false
             }
         }

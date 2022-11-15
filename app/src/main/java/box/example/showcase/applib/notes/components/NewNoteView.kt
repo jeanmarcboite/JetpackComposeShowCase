@@ -16,7 +16,7 @@ import box.example.showcase.applib.notes.models.Note
 @Composable
 fun NewNoteView(
     modifier: Modifier = Modifier,
-    onButtonClick: (Note) -> Unit
+    onButtonClick: (Note?) -> Unit
 ) {
     val note = remember {
         mutableStateOf(Note())
@@ -48,6 +48,15 @@ fun NewNoteView(
             onClick = { onButtonClick(note.value) }) {
             Text("Add new note")
         }
-
+        Button(
+            modifier = modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+            ),
+            onClick = { onButtonClick(null) }) {
+            Text("Cancel")
+        }
     }
 }
