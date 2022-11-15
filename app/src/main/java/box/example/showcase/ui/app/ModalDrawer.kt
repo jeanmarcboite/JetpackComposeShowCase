@@ -1,7 +1,6 @@
 package box.example.showcase.ui.app
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -15,8 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import box.example.showcase.R
 import box.example.showcase.ui.models.NavViewModel
-import box.example.showcase.ui.pages.bored.ActivityCard
-import box.example.showcase.ui.pages.bored.nextActivity
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -71,8 +68,7 @@ fun ModalDrawer(
                             navViewModel.pages.values.forEach { page ->
                                 composable(context.getString(page.route)) {
                                     page.parseArguments(it.arguments)
-                                    page.Content {
-                                    }
+                                    page.Content()
 
                                     Scaffold(
                                         bottomBar = {
@@ -86,9 +82,7 @@ fun ModalDrawer(
                                             }
                                         },
                                         content = {
-                                            page.Content {
-
-                                            }
+                                            page.Content()
                                         }
                                     )
                                 }

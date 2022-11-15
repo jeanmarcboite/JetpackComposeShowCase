@@ -38,7 +38,7 @@ class BookSearchPage :
     ) {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         var progressVisible by rememberSaveable {
             mutableStateOf(false)
         }

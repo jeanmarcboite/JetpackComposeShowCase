@@ -19,7 +19,7 @@ class WordsPage :
     ) {
 
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         Column(modifier = Modifier.fillMaxSize()) {
             Text("Words")
         }

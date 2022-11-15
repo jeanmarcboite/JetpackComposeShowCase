@@ -23,7 +23,7 @@ class TodoPage :
     lateinit var noteEdit: MutableState<Boolean>
 
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         noteEdit = remember { mutableStateOf(false) }
         val viewModel = mainViewModel.notesViewModel
         //mainViewModel.notesViewModel.insert(Note(title = "todo"))

@@ -25,7 +25,7 @@ class HomePage :
         R.string.home_page_title
     ) {
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         Column(modifier = Modifier.fillMaxSize()) {
             BoxContent()
         }

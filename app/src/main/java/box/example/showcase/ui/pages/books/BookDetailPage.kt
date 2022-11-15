@@ -40,7 +40,7 @@ class BookDetailPage :
     }
 
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
         val book = remember {
             mutableStateOf<Book?>(null)

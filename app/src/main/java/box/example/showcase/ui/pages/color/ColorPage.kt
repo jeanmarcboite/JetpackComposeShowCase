@@ -33,7 +33,7 @@ class ColorPage : Page(
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         val boredViewModel: BoredViewModel = hiltViewModel()
         //val boredViewModel: BoredViewModel = viewModel()
         val context = LocalContext.current

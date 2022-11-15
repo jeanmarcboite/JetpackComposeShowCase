@@ -31,7 +31,7 @@ class LoginPage :
     //lateinit var googleSignIn: GSignIn
 
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         //googleSignIn = GSignIn(LocalContext.current)
         Column(modifier = Modifier.fillMaxSize()) {
             if (mainViewModel.authViewModel.state.value == AuthState.LoggedIn)

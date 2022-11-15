@@ -23,7 +23,7 @@ class NotesPage :
     lateinit var noteEdit: MutableState<Boolean>
 
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         val notesRoot = stringResource(R.string.notes_root)
         noteEdit = remember { mutableStateOf(false) }
         val viewModel = mainViewModel.firebaseNotesViewModel

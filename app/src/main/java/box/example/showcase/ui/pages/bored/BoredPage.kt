@@ -33,7 +33,7 @@ class BoredPage :
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         val boredViewModel: BoredViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
         val activity: MutableState<Activity?> = remember { mutableStateOf<Activity?>(null) }

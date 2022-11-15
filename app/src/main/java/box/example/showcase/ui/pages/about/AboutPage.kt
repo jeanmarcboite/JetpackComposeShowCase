@@ -16,7 +16,7 @@ class AboutPage :
         R.string.about_page_title
     ) {
     @Composable
-    override fun Content(openDrawer: () -> Unit) {
+    override fun Content() {
         Text("Application " + stringResource(id = R.string.app_name))
     }
 }

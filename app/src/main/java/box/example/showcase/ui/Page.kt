@@ -1,5 +1,6 @@
 package box.example.showcase.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -24,8 +25,9 @@ abstract class Page(
     open fun parseArguments(arguments: Bundle?) {}
 
     @Composable
-    abstract fun Content(openDrawer: () -> Unit)
+    abstract fun Content()
 
+    @SuppressLint("ComposableNaming")
     @Composable
     open fun floatingActionButton() {
     }
