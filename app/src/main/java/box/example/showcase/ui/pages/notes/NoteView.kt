@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import box.example.showcase.ui.pages.notes.models.Note
+import box.example.showcase.applib.notes.models.Note
 
 enum class NoteAction {
     None, Star, Archive, Undo, Delete

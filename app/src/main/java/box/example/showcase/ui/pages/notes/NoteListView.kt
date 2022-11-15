@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import box.example.showcase.ui.pages.notes.models.Note
+import box.example.showcase.applib.notes.models.Note
 
 @Composable
 fun NoteListView(notes: List<Note>, onNote: (Note) -> Unit) {

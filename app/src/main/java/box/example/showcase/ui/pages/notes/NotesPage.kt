@@ -24,7 +24,7 @@ class NotesPage :
     override fun Content(openDrawer: () -> Unit) {
         val notesRoot = stringResource(R.string.notes_root)
         noteEdit = remember { mutableStateOf(false) }
-        val viewModel = mainViewModel.notesViewModel
+        val viewModel = mainViewModel.firebaseNotesViewModel
 
         LaunchedEffect(true) {
             viewModel.setRoot(notesRoot)

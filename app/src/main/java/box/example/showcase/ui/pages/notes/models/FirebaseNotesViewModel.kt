@@ -3,6 +3,7 @@ package box.example.showcase.ui.pages.notes.models
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import box.example.showcase.applib.notes.models.Note
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,7 +13,7 @@ import com.google.firebase.ktx.Firebase
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 
-class NotesViewModel : ViewModel() {
+class FirebaseNotesViewModel : ViewModel() {
     private val TAG = "boxx [firebase]"
     private val database: DatabaseReference = Firebase.database.reference
     val notes = mutableStateListOf<Note>()

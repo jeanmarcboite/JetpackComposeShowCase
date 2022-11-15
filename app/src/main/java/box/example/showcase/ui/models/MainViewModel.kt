@@ -4,10 +4,11 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.ViewModel
+import box.example.showcase.applib.notes.NotesViewModel
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.pages.notes.NoteAction
-import box.example.showcase.ui.pages.notes.models.NotesViewModel
+import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 
 const val DARK_MODE = "dark_mode"
 
@@ -19,6 +20,7 @@ class MainViewModel : ViewModel() {
 
     lateinit var authViewModel: AuthViewModel
     lateinit var navViewModel: NavViewModel
+    lateinit var firebaseNotesViewModel: FirebaseNotesViewModel
     lateinit var notesViewModel: NotesViewModel
 
 

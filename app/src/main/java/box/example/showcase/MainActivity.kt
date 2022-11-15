@@ -18,11 +18,15 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.compose.rememberNavController
+import box.example.showcase.applib.notes.NotesDatabase
+import box.example.showcase.applib.notes.NotesRepository
+import box.example.showcase.applib.notes.NotesViewModel
+import box.example.showcase.applib.notes.NotesViewModelFactory
 import box.example.showcase.ui.app.ModalDrawer
 import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
-import box.example.showcase.ui.pages.notes.models.NotesViewModel
+import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
@@ -37,13 +41,19 @@ class MainActivity : ComponentActivity() {
     val mainViewModel: MainViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
     val navViewModel: NavViewModel by viewModels()
-    val notesViewModel: NotesViewModel by viewModels()
+    val firebaseNotesViewModel: FirebaseNotesViewModel by viewModels()
+    val notesViewModel: NotesViewModel by viewModels {
+        val dao = NotesDatabase.getDatabase(this).dao()
+        val repository = NotesRepository(dao)
+        NotesViewModelFactory(repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel.readApplicationSettings(ApplicationSettings(this))
         mainViewModel.authViewModel = authViewModel
         mainViewModel.navViewModel = navViewModel
+        mainViewModel.firebaseNotesViewModel = firebaseNotesViewModel
         mainViewModel.notesViewModel = notesViewModel
 
         setContent {

@@ -16,8 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import box.example.showcase.applib.notes.models.Note
 import box.example.showcase.applib.ui.components.SwipeableCard
-import box.example.showcase.ui.pages.notes.models.Note
 
 const val ACTION_ITEM_SIZE = 56
 const val CARD_HEIGHT = 80
