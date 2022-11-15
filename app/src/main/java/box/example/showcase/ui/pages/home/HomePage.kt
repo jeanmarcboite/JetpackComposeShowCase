@@ -1,16 +1,24 @@
 package box.example.showcase.ui.pages.home
 
+import android.graphics.Bitmap
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import box.example.showcase.R
 import box.example.showcase.ui.Page
@@ -35,6 +43,10 @@ class HomePage :
 
 @Composable
 fun BoxContent() {
+    val result = remember { mutableStateOf<Bitmap?>(null) }
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) {
+        //result.value = it
+    }
     Box {
         Column(
             modifier = Modifier
@@ -54,6 +66,23 @@ fun BoxContent() {
                 text = " Toggles ",
             )
         }
+        result.value?.let { image ->
+            Image(image.asImageBitmap(), null, modifier = Modifier.fillMaxWidth())
+        }
+    }
+
+    FloatingActionButton(
+        modifier = Modifier
+            //.align(Alignment.BottomEnd)
+            .padding(12.dp),
+        onClick = {
+            launcher.launch(null)
+        },
+        shape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50)),
+        containerColor = Color.Blue,
+        contentColor = Color.White
+    ) {
+        Icon(Icons.Filled.Add, "")
     }
 }
 
