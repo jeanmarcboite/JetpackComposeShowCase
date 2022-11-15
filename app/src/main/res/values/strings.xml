@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ShowCase</string>
     <string name="dark_mode">dark_mode</string>
-    <string name="start_destination">books</string>
+    <string name="start_destination">todo</string>
     <string name="home_page_title">Home Page</string>
     <string name="home_page_route">home</string>
     <string name="bored_page_title">Find activity</string>
@@ -26,4 +26,8 @@
     <string name="books_page_title">Books</string>
     <string name="book_page_route">book/works/{bookID}</string>
     <string name="book_page_title">Book</string>
+    <string name="words_page_route">words</string>
+    <string name="words_page_title">Words</string>
+    <string name="todo_page_route">todo</string>
+    <string name="todo_page_title">Todo</string>
 </resources>

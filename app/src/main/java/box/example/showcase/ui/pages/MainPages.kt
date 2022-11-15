@@ -11,6 +11,7 @@ import box.example.showcase.ui.pages.color.ColorPage
 import box.example.showcase.ui.pages.home.HomePage
 import box.example.showcase.ui.pages.login.LoginPage
 import box.example.showcase.ui.pages.notes.NotesPage
+import box.example.showcase.ui.pages.todo.TodoPage
 
 fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page> {
     val pages = listOf(
@@ -21,6 +22,7 @@ fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page>
         BookSearchPage(),
         BookDetailPage(),
         NotesPage(),
+        TodoPage(),
         LoginPage(),
         Settings()
     )
