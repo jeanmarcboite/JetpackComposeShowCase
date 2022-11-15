@@ -33,7 +33,7 @@ class TodoPage :
         if (!noteEdit.value) {
             Surface(color = MaterialTheme.colorScheme.background) {
                 NoteListView(notes = viewModel.notes) {
-                    viewModel.insert(it)
+                    viewModel.update(it)
                 }
             }
         } else {
