@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.notes
+package box.example.showcase.applib.notes.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

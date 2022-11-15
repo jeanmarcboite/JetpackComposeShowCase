@@ -7,6 +7,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import box.example.showcase.R
+import box.example.showcase.applib.notes.components.NewNoteView
+import box.example.showcase.applib.notes.components.NoteListView
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid

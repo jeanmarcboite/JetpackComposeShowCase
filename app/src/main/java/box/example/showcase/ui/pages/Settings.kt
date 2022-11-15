@@ -19,8 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import box.example.showcase.R
+import box.example.showcase.applib.notes.components.NoteAction
 import box.example.showcase.ui.Page
-import box.example.showcase.ui.pages.notes.NoteAction
 
 class Settings :
     Page(

@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.notes
+package box.example.showcase.applib.notes.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons

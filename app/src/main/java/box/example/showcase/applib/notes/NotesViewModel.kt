@@ -18,11 +18,12 @@ class NotesViewModel(private val repository: NotesRepository) : ViewModel() {
 
     fun insert(note: Note) = viewModelScope.launch {
         repository.insert(note)
+        getAll()
     }
 
-    fun read() = viewModelScope.launch {
-        notes.clear()
-        notes.addAll(repository.getAll())
+    fun update(note: Note) = viewModelScope.launch {
+        repository.update(note)
+        getAll()
     }
 
     suspend fun getAll() {
