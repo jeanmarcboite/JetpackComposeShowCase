@@ -16,9 +16,7 @@ class OpenLibraryBookService : BookService {
     }
 
     override suspend fun getBook(id: String): Response<Book> {
-        val api = OpenLibraryApiHelper.getInstance()
-
-        return api.getBook(id)
+        return OpenLibraryApiHelper.getInstance().getBook(id)
     }
 }
 

@@ -1,8 +1,5 @@
 package box.example.showcase.applib.books.models
 
-data class AuthorK(
-    val author: AuthorKey
-)
 
 data class Book(
     val authors: List<AuthorK>,
@@ -40,6 +37,10 @@ data class Link(
     val title: String,
     val type: Type,
     val url: String
+)
+
+data class AuthorK(
+    val author: AuthorKey
 )
 
 data class AuthorKey(

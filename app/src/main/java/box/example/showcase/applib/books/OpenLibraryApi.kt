@@ -37,5 +37,4 @@ interface OpenLibraryApi {
 
     @GET("authors/{id}.json")
     suspend fun getAuthor(@Path("id") id: String): Response<Author>
-
 }
