@@ -1,5 +1,7 @@
 package box.example.showcase.ui.pages.calibre
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -12,9 +14,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -25,7 +27,7 @@ import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookReader
-import java.io.File
+import kotlinx.coroutines.launch
 
 class CalibrePage :
     Page(
@@ -33,9 +35,11 @@ class CalibrePage :
         R.string.calibre_page_route,
         R.string.calibre_page_title
     ) {
+    @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     override fun Content() {
         val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
         val documentTree = remember { mutableStateOf<Uri?>(null) }
         val scroll = rememberScrollState(0)
         val launcher =
@@ -80,7 +84,7 @@ class CalibrePage :
                         Text("no metadata")
 
                     } else {
-                        readDatabase(metadata)
+                        coroutineScope.launch { readDatabase(context, metadata) }
                         files?.forEach {
                             Card(
                                 modifier = Modifier
@@ -106,19 +110,22 @@ class CalibrePage :
     }
 }
 
-@Composable
-fun readDatabase(metadata: DocumentFile) {
-    val context = LocalContext.current
-    LaunchedEffect(key1 = true) {
-        try {
-            val database: CalibreDatabase =
-                Room.databaseBuilder(context, CalibreDatabase::class.java, metadata.name!!)
-                    .createFromFile(File(metadata.uri.path))
-                    .build()
-            val books = database.dao().getAll()
-            Log.d("boxxxx", books.toString())
-        } catch (e: Exception) {
-            Log.e("boxxx [readDatabase]", "${e.message}: ${e.cause}")
-        }
+suspend fun readDatabase(context: Context, metadata: DocumentFile) {
+    try {
+        Log.d("boxxx [readDatabase]", metadata.uri.path.toString())
+        
+        val database: CalibreDatabase =
+            Room.databaseBuilder(context, CalibreDatabase::class.java, metadata.name!!)
+                .createFromInputStream {
+                    context.contentResolver.openInputStream(metadata.uri)
+                }
+                //.createFromFile(File("/storage/emulated/0/CalibreLibrary/metadata.db"))
+                .build()
+        Log.d("boxxxx [readDatabase]", "get books")
+
+        val books = database.dao().getAll()
+        Log.i("boxxxx [readDatabase]", "books: ${books}")
+    } catch (e: Exception) {
+        Log.e("boxxx [readDatabase]", "${e.message}: ${e.cause}")
     }
 }
