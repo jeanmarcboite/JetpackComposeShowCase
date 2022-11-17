@@ -1,6 +1,7 @@
 package box.example.showcase.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,10 @@ abstract class Page(
     @OptIn(ExperimentalMaterial3Api::class)
     open suspend fun onButtonClicked() {
         mainViewModel.navViewModel.drawerState.open()
+    }
+
+    fun ExampleOpenHelper(context: Context, s: String) {
+
     }
 
     open val screens: List<Screen> = listOf()

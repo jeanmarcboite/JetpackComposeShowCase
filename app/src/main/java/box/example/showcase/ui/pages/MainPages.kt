@@ -10,6 +10,7 @@ import box.example.showcase.ui.pages.bored.BoredPage
 import box.example.showcase.ui.pages.calibre.CalibrePage
 import box.example.showcase.ui.pages.color.ColorPage
 import box.example.showcase.ui.pages.home.HomePage
+import box.example.showcase.ui.pages.lab.LabPage
 import box.example.showcase.ui.pages.login.LoginPage
 import box.example.showcase.ui.pages.notes.NotesPage
 import box.example.showcase.ui.pages.todo.TodoPage
@@ -19,6 +20,7 @@ fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page>
         HomePage(),
         ColorPage(),
         AboutPage(),
+        LabPage(),
         CalibrePage(),
         BoredPage(),
         BookSearchPage(),

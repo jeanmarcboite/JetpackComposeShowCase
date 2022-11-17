@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ShowCase</string>
     <string name="dark_mode">dark_mode</string>
-    <string name="start_destination">calibre</string>
+    <string name="start_destination">lab</string>
     <string name="home_page_title">Home Page</string>
     <string name="home_page_route">home</string>
     <string name="bored_page_title">Find activity</string>
@@ -32,4 +32,6 @@
     <string name="todo_page_title">Todo</string>
     <string name="calibre_page_route">calibre</string>
     <string name="calibre_page_title">Calibre Library</string>
+    <string name="lab_page_route">lab</string>
+    <string name="lab_page_title">Experimental</string>
 </resources>
