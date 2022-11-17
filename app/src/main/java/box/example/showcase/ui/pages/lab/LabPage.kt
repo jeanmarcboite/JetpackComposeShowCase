@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import com.j256.ormlite.android.apptools.OpenHelperManager
+import com.j256.ormlite.table.TableUtils
 import compose.icons.FeatherIcons
 import compose.icons.feathericons.Codepen
 
@@ -22,14 +23,19 @@ class LabPage :
 
         LaunchedEffect(Unit) {
             try {
-                Log.d("boxx [omlite]", "get dbHelper")
+                val databasePath = context.getDatabasePath("entries")
+                Log.d("boxx [omlite]", "database path: $databasePath")
                 val dbHelper = OpenHelperManager.getHelper(context, DatabaseHelper::class.java)
-
+                val connectionSource = dbHelper.connectionSource
+                TableUtils.createTableIfNotExists(connectionSource, LabNote::class.java)
+                TableUtils.createTableIfNotExists(connectionSource, LabNote2::class.java)
                 //val writableDatabase: SQLiteDatabase = dbHelper.writableDatabase
                 //Log.d("boxxx [ormlite]", "writableDatabase isOpen: ${writableDatabase.isOpen}")
                 //writableDatabase.insert("table")
                 val dao = dbHelper.getLabNoteDao()
                 dao.create(LabNote(title = "note"))
+                val dao2 = dbHelper.getLabNote2Dao()
+                dao2.create(LabNote2(title = "note2"))
                 //val dao = dbHelper.getDao(LabNote::class.java)
                 Log.d("boxxx [ormlite]", "queryforAll")
                 val list = dao.queryForAll()
