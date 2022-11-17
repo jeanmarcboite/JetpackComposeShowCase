@@ -21,13 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
-import androidx.room.Room
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookReader
 import kotlinx.coroutines.launch
+import java.io.InputStream
 
 class CalibrePage :
     Page(
@@ -111,9 +111,14 @@ class CalibrePage :
 }
 
 suspend fun readDatabase(context: Context, metadata: DocumentFile) {
+
     try {
         Log.d("boxxx [readDatabase]", metadata.uri.path.toString())
-        
+        val f: InputStream? = context.contentResolver.openInputStream(metadata.uri)
+        //val dbManager = DBManager(context, metadata.uri.toString(), 23)
+        //dbManager.open()
+        //(metadata.uri.toString(), null, SQLiteDatabase.OPEN_READONLY)
+        /*
         val database: CalibreDatabase =
             Room.databaseBuilder(context, CalibreDatabase::class.java, metadata.name!!)
                 .createFromInputStream {
@@ -125,7 +130,10 @@ suspend fun readDatabase(context: Context, metadata: DocumentFile) {
 
         val books = database.dao().getAll()
         Log.i("boxxxx [readDatabase]", "books: ${books}")
+
+         */
     } catch (e: Exception) {
-        Log.e("boxxx [readDatabase]", "${e.message}: ${e.cause}")
+        val cause = if (e.cause != null) ": ${e.cause}" else ""
+        Log.e("boxxx [readDatabase]", "${e.message}$cause")
     }
 }
