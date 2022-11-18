@@ -6,10 +6,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -28,13 +27,14 @@ import box.example.showcase.R
 import box.example.showcase.applib.books.models.calibre.MetadataBook
 import box.example.showcase.applib.books.models.calibre.MetadataDatabaseHelper
 import box.example.showcase.ui.Page
+import box.example.showcase.ui.pages.database.components.View
+import box.example.showcase.ui.theme.margin_half
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.j256.ormlite.dao.GenericRawResults
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
 import kotlinx.coroutines.launch
-import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
@@ -56,13 +56,13 @@ class DatabasePage :
         val scroll = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
         val context = LocalContext.current
-        val databasePath = LocalContext.current.getDatabasePath(DATABASE_NAME)
         val listDocumentFile = remember { mutableStateOf<List<DocumentFile>?>(null) }
+        val listBook = remember { mutableStateOf<List<MetadataBook>?>(null) }
 
         val launcher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
                 it?.run {
-                    copyDatabase(context, this, context.getDatabasePath(DATABASE_NAME))
+                    copyDatabase(context, this)
                 }
             }
 
@@ -74,7 +74,7 @@ class DatabasePage :
                         documentFile.name == DATABASE_NAME
                     }
                     if (metadata?.isFile == true) {
-                        copyDatabase(context, metadata.uri, context.getDatabasePath(DATABASE_NAME))
+                        copyDatabase(context, metadata.uri)
                     }
 
                 }
@@ -110,8 +110,10 @@ class DatabasePage :
                         it.toList()
                     }
                     Log.d("boxxxx", "tables ${results}")
-                    val list = dao.queryForAll()
-                    Log.d("boxxx [ormlite]", "list: ${list}")
+                    val list: MutableList<MetadataBook> = dao.queryForAll()
+                    Log.d("boxxx [ormlite]", "list of ${list.size} books")
+                    listBook.value = list
+
                 } catch (e: Exception) {
                     val errorMessage = if (e.message == null) {
                         ""
@@ -134,6 +136,17 @@ class DatabasePage :
                             withDismissAction = true,
                             duration = SnackbarDuration.Indefinite
                         )
+                    }
+                }
+            }
+
+            listBook.value?.apply {
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(top = margin_half)
+                ) {
+                    items(listBook.value!!) {
+                        it.View()
                     }
                 }
             }
@@ -161,7 +174,7 @@ class DatabasePage :
         }
     }
 
-    fun copyDatabase(context: Context, input: Uri, databasePath: File) {
+    fun copyDatabase(context: Context, input: Uri) {
         databaseAvailable.value = false
         val item = context.contentResolver.openInputStream(input)
         val bytes: ByteArray? = item?.readBytes()
