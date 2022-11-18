@@ -2,7 +2,6 @@ package box.example.showcase.ui.pages.database
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -26,12 +25,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import box.example.showcase.R
+import box.example.showcase.applib.books.models.calibre.MetadataBook
+import box.example.showcase.applib.books.models.calibre.MetadataDatabaseHelper
 import box.example.showcase.ui.Page
-import box.example.showcase.ui.pages.lab.LabNote
 import com.j256.ormlite.android.apptools.OpenHelperManager
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
 import com.j256.ormlite.dao.GenericRawResults
-import com.j256.ormlite.support.ConnectionSource
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
@@ -102,11 +100,17 @@ class DatabasePage :
                 if (dbHelper.isOpen) {
                     Log.d("boxxxx", "database ${dbHelper.databaseName} is open")
                 }
-                val dao = dbHelper.getDao(LabNote::class.java)
                 try {
-                    val results: GenericRawResults<Array<String>> =
-                        dao.queryRaw("SELECT name FROM sqlite_schema WHERE type = 'table'")
-                    Log.d("boxxxx", "tables $results")
+                    val dao = dbHelper.getDao(MetadataBook::class.java)
+                    // Don't kow why sqlite_schema does not work (sqlite version too old?)
+                    val query: GenericRawResults<Array<String>> =
+                        dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'")
+                    val results = query.results.map {
+                        it.toList()
+                    }
+                    Log.d("boxxxx", "tables ${results}")
+                    val list = dao.queryForAll()
+                    Log.d("boxxx [ormlite]", "list: ${list}")
                 } catch (e: Exception) {
                     val errorMessage = if (e.message == null) {
                         ""
@@ -171,19 +175,3 @@ class DatabasePage :
     }
 }
 
-class MetadataDatabaseHelper(context: Context) :
-    OrmLiteSqliteOpenHelper(context, DATABASE_NAME, null, 1) {
-    override fun onCreate(database: SQLiteDatabase?, connectionSource: ConnectionSource?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onUpgrade(
-        database: SQLiteDatabase?,
-        connectionSource: ConnectionSource?,
-        oldVersion: Int,
-        newVersion: Int
-    ) {
-        TODO("Not yet implemented")
-    }
-
-}
