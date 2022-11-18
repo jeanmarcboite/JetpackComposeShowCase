@@ -1,12 +1,15 @@
 package box.example.showcase.ui.app
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,6 +24,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ModalDrawer(
     navViewModel: NavViewModel,
+    snackbarHostState: SnackbarHostState,
     topBar: @Composable () -> Unit = {},
 ) {
     val scope = rememberCoroutineScope()
@@ -47,51 +51,88 @@ fun ModalDrawer(
                     )
                 }
             }
-        },
-        content = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Scaffold(
-                    topBar = topBar,
-                    content = { paddingValues ->
-                        NavHost(
-                            modifier = Modifier
-                                .padding(paddingValues)
-                                .fillMaxSize(),
-                            navController = navViewModel.navController,
-                            startDestination = context.getString(R.string.start_destination)
-                        ) {
-                            navViewModel.pages.values.forEach { page ->
-                                composable(context.getString(page.route)) {
-                                    page.parseArguments(it.arguments)
-                                    page.Content()
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Scaffold(
+                topBar = topBar,
+                content = { paddingValues ->
+                    NavHost(
+                        modifier = Modifier
+                            .padding(paddingValues)
+                            .fillMaxSize(),
+                        navController = navViewModel.navController,
+                        startDestination = context.getString(R.string.start_destination)
+                    ) {
+                        navViewModel.pages.values.forEach { page ->
+                            composable(context.getString(page.route)) {
+                                page.parseArguments(it.arguments)
+                                //page.Content()
 
-                                    Scaffold(
-                                        bottomBar = {
-                                            BottomAppBar(
-                                                containerColor = MaterialTheme.colorScheme.surface,
-                                            ) {
-                                                Text(
-                                                    "Route: ${navViewModel.navController.currentDestination?.route}",
-                                                    modifier = Modifier.padding(start = 32.dp)
-                                                )
-                                            }
-                                        },
-                                        content = {
-                                            page.Content()
+                                Scaffold(
+                                    bottomBar = {
+                                        BottomAppBar(
+                                            containerColor = MaterialTheme.colorScheme.surface,
+                                        ) {
+                                            Text(
+                                                "Route: ${navViewModel.navController.currentDestination?.route}",
+                                                modifier = Modifier.padding(start = 32.dp)
+                                            )
                                         }
-                                    )
-                                }
+                                    },
+                                    content = {
+                                        Column(Modifier.padding(it)) {
+
+                                            page.Content()
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            SnackbarHost(
+                                                //modifier = Modifier.align(Alignment.BottomCenter),
+                                                hostState = snackbarHostState,
+                                                snackbar = { snackbarData: SnackbarData ->
+                                                    Card(
+                                                        shape = RoundedCornerShape(8.dp),
+                                                        border = BorderStroke(2.dp, Color.Red),
+                                                        modifier = Modifier
+                                                            .padding(16.dp)
+                                                            .wrapContentSize()
+                                                    ) {
+                                                        /*
+                                                        Column(
+                                                            modifier = Modifier.padding(8.dp),
+                                                            verticalArrangement = Arrangement.spacedBy(
+                                                                4.dp
+                                                            ),
+                                                            horizontalAlignment = Alignment.CenterHorizontally
+                                                        ) {
+                                                            Icon(
+                                                                imageVector = Icons.Default.Notifications,
+                                                                contentDescription = ""
+                                                            )
+                                                            Text(text = snackbarData.visuals.message)
+                                                        }
+
+                                                         */
+                                                        Snackbar(
+                                                            snackbarData
+                                                        )
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+
                             }
                         }
-                    },
-                    floatingActionButton = { navViewModel.selectedItem.value?.floatingActionButton() },
-                )
-            }
+                    }
+                },
+                floatingActionButton = { navViewModel.selectedItem.value?.floatingActionButton() },
+            )
         }
-    )
+    }
 }

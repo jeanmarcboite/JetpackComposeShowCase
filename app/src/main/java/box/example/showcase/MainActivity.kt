@@ -74,6 +74,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MainScreen() {
         val context = LocalContext.current
+        mainViewModel.snackbarHostState = remember { SnackbarHostState() }
 
         navViewModel.pages = mainPages(context, mainViewModel)
         navViewModel.navController = rememberNavController()
@@ -85,6 +86,7 @@ class MainActivity : ComponentActivity() {
 
         ModalDrawer(
             navViewModel,
+            mainViewModel.snackbarHostState,
             topBar = {
                 TopBar(
                     stringResource(id = R.string.app_name),
