@@ -40,6 +40,7 @@ import java.io.OutputStream
 
 
 const val DATABASE_NAME = "metadata.db"
+const val DATABASE_VERSION = 25
 
 class DatabasePage :
     Page(
