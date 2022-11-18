@@ -63,6 +63,11 @@ class ColorPage : Page(
                 ScreenContent(navController, ColorMapScreen.route, Modifier.padding(it))
             })
     }
+
+    // The bottomAppBar is already inthe content, since we need the navController (we could also use a viewModel
+    @Composable
+    override fun bottomAppBar() {
+    }
 }
 
 fun List<Screen>.findRoute(context: Context, route: String?): Screen {

@@ -70,20 +70,13 @@ fun ModalDrawer(
                         startDestination = context.getString(R.string.start_destination)
                     ) {
                         navViewModel.pages.values.forEach { page ->
-                            composable(context.getString(page.route)) {
-                                page.parseArguments(it.arguments)
+                            composable(context.getString(page.route)) { navBackStackEntry ->
+                                page.parseArguments(navBackStackEntry.arguments)
                                 //page.Content()
 
                                 Scaffold(
                                     bottomBar = {
-                                        BottomAppBar(
-                                            containerColor = MaterialTheme.colorScheme.surface,
-                                        ) {
-                                            Text(
-                                                "Route: ${navViewModel.navController.currentDestination?.route}",
-                                                modifier = Modifier.padding(start = 32.dp)
-                                            )
-                                        }
+                                        page.bottomAppBar()
                                     },
                                     content = {
                                         Column(Modifier.padding(it)) {

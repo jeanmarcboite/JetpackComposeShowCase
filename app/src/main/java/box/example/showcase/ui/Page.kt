@@ -1,14 +1,19 @@
 package box.example.showcase.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NamedNavArgument
 import box.example.showcase.MainViewModel
 import box.example.showcase.ui.navigation.Screen
@@ -28,6 +33,18 @@ abstract class Page(
     @Composable
     abstract fun Content()
 
+    @Composable
+    open fun bottomAppBar() {
+        BottomAppBar(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ) {
+            Text(
+                "Route: ${mainViewModel.navViewModel.navController.currentDestination?.route}",
+                modifier = Modifier.padding(start = 32.dp)
+            )
+        }
+    }
+
     @SuppressLint("ComposableNaming")
     @Composable
     open fun floatingActionButton() {
@@ -36,10 +53,6 @@ abstract class Page(
     @OptIn(ExperimentalMaterial3Api::class)
     open suspend fun onButtonClicked() {
         mainViewModel.navViewModel.drawerState.open()
-    }
-
-    fun ExampleOpenHelper(context: Context, s: String) {
-
     }
 
     open val screens: List<Screen> = listOf()
