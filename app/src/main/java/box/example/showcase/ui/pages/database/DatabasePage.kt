@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import box.example.showcase.R
+import box.example.showcase.applib.books.models.calibre.MetadataAuthor
 import box.example.showcase.applib.books.models.calibre.MetadataBook
 import box.example.showcase.applib.books.models.calibre.MetadataDatabaseHelper
 import box.example.showcase.ui.Page
@@ -58,6 +59,7 @@ class DatabasePage :
         val context = LocalContext.current
         val listDocumentFile = remember { mutableStateOf<List<DocumentFile>?>(null) }
         val listBook = remember { mutableStateOf<List<MetadataBook>?>(null) }
+        val listAuthor = remember { mutableStateOf<List<MetadataAuthor>?>(null) }
 
         val launcher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
@@ -113,6 +115,9 @@ class DatabasePage :
                     val list: MutableList<MetadataBook> = dao.queryForAll()
                     Log.d("boxxx [ormlite]", "list of ${list.size} books")
                     listBook.value = list
+
+                    listBook.value = dbHelper.getDao(MetadataBook::class.java).queryForAll()
+                    listAuthor.value = dbHelper.getDao(MetadataAuthor::class.java).queryForAll()
 
                 } catch (e: Exception) {
                     val errorMessage = if (e.message == null) {
