@@ -108,10 +108,24 @@ class DatabasePage :
                         dao.queryRaw("SELECT name FROM sqlite_schema WHERE type = 'table'")
                     Log.d("boxxxx", "tables $results")
                 } catch (e: Exception) {
-                    Log.e("boxxx", e.message.toString())
+                    val errorMessage = if (e.message == null) {
+                        ""
+                    } else {
+                        val err = StringBuilder()
+                        err.append(e.message)
+                        var ecause = e.cause
+                        while (ecause != null) {
+                            err.append(": ")
+                            err.append(ecause.message)
+                            ecause = ecause.cause
+                        }
+                        err.toString()
+                    }
+                    Log.e("boxxx [readDatabase]", errorMessage)
+                    e.printStackTrace()
                     coroutineScope.launch {
                         mainViewModel.snackbarHostState.showSnackbar(
-                            e.message.toString(),
+                            errorMessage,
                             withDismissAction = true,
                             duration = SnackbarDuration.Indefinite
                         )

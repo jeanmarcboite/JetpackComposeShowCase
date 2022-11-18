@@ -101,22 +101,6 @@ fun ModalDrawer(
                                                             .padding(16.dp)
                                                             .wrapContentSize()
                                                     ) {
-                                                        /*
-                                                        Column(
-                                                            modifier = Modifier.padding(8.dp),
-                                                            verticalArrangement = Arrangement.spacedBy(
-                                                                4.dp
-                                                            ),
-                                                            horizontalAlignment = Alignment.CenterHorizontally
-                                                        ) {
-                                                            Icon(
-                                                                imageVector = Icons.Default.Notifications,
-                                                                contentDescription = ""
-                                                            )
-                                                            Text(text = snackbarData.visuals.message)
-                                                        }
-
-                                                         */
                                                         Snackbar(
                                                             snackbarData
                                                         )
