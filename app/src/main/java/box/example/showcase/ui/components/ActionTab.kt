@@ -3,11 +3,9 @@ package box.example.showcase.ui.components
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
@@ -61,7 +59,6 @@ fun IconAction(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .background(color = tabTintColor)
             .clickable(
                 onClick = onClick,
                 enabled = enabled,
@@ -76,14 +73,15 @@ fun IconAction(
     ) {
         val contentColor = MaterialTheme.colorScheme.onBackground
         CompositionLocalProvider(LocalContentColor provides contentColor) {
+            val color = if (selected) contentColor else contentColor.copy(0.4f)
             Icon(
                 imageVector = icon,
                 contentDescription = text,
-                tint = contentColor,
+                tint = color,
                 modifier = Modifier
                     .size(24.dp)
             )
-            Text(text, color = contentColor)
+            Text(text, color = color)
 
         }
     }
