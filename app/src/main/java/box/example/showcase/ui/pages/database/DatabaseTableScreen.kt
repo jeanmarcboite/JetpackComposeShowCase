@@ -8,11 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.vector.ImageVector
 import box.example.showcase.R
+import box.example.showcase.applib.books.models.calibre.MetadataAuthor
 import box.example.showcase.applib.books.models.calibre.MetadataBook
 import box.example.showcase.ui.pages.database.components.View
 import box.example.showcase.ui.theme.margin_half
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Book
+import compose.icons.tablericons.MoodHappy
 
 interface DatabaseTableScreen {
     val icon: ImageVector
@@ -27,6 +29,29 @@ class BooksScreen(val list: MutableState<List<MetadataBook>?>) : DatabaseTableSc
     override val icon = TablerIcons.Book
     override val route = R.string.calibre_book_table_route
     override val title = R.string.calibre_book_table_title
+
+    @Composable
+    override fun content() {
+        if (list.value != null) {
+            Log.i("boxxxx [books]", list.value.toString())
+        }
+
+        list.value?.apply {
+            LazyColumn(
+                contentPadding = PaddingValues(top = margin_half)
+            ) {
+                items(list.value!!) {
+                    it.View()
+                }
+            }
+        }
+    }
+}
+
+class AuthorsScreen(val list: MutableState<List<MetadataAuthor>?>) : DatabaseTableScreen {
+    override val icon = TablerIcons.MoodHappy
+    override val route = R.string.calibre_author_table_route
+    override val title = R.string.calibre_author_table_title
 
     @Composable
     override fun content() {

@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
+import box.example.showcase.applib.books.models.calibre.MetadataAuthor
 import box.example.showcase.applib.books.models.calibre.MetadataBook
 import box.example.showcase.applib.books.models.calibre.MetadataDatabaseHelper
 import box.example.showcase.ui.Page
@@ -70,12 +71,13 @@ class DatabasePage :
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val listBook = remember { mutableStateOf<List<MetadataBook>?>(null) }
+        val listAuthor = remember { mutableStateOf<List<MetadataAuthor>?>(null) }
 
 
-        val tabs = listOf(BooksScreen(listBook))
+        val tabs = listOf(BooksScreen(listBook), AuthorsScreen(listAuthor))
         // Fetch your currentDestination:
         val currentRoute = currentBackStack?.destination?.route
-        getDatabase(listBook)
+        getDatabase(listBook, listAuthor)
         Scaffold(bottomBar = {
             BottomAppBar(
                 actions = {
@@ -113,7 +115,10 @@ class DatabasePage :
 
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
-    fun getDatabase(listBook: MutableState<List<MetadataBook>?>) {
+    fun getDatabase(
+        listBook: MutableState<List<MetadataBook>?>,
+        listAuthor: MutableState<List<MetadataAuthor>?>
+    ) {
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
 
@@ -135,7 +140,7 @@ class DatabasePage :
                 //val list: MutableList<MetadataBook> = dao.queryForAll()
                 //Log.d("boxxx [ormlite]", "list of ${list.size} books")
                 listBook.value = dbHelper.getDao(MetadataBook::class.java).queryForAll()
-                //listAuthor.value = dbHelper.getDao(MetadataAuthor::class.java).queryForAll()
+                listAuthor.value = dbHelper.getDao(MetadataAuthor::class.java).queryForAll()
 
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {
