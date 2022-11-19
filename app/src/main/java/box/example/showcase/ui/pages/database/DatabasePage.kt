@@ -6,9 +6,6 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,12 +16,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
-import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -88,55 +83,20 @@ class DatabasePage :
 
         val tabs = listOf(ColorMapScreen, ColorThemeScreen)
         // Fetch your currentDestination:
-        val currentDestination: NavDestination? = currentBackStack?.destination
+        val currentRoute = currentBackStack?.destination?.route
 
-        val selected = true
-        val color = MaterialTheme.colorScheme.onSurface
-        val durationMillis =
-            if (selected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
-        val animSpec = remember {
-            tween<Color>(
-                durationMillis = durationMillis,
-                easing = LinearEasing,
-                delayMillis = TabFadeInAnimationDelay
-            )
-        }
-        val tabTintColor by animateColorAsState(
-            targetValue = if (selected) color else color.copy(alpha = InactiveTabOpacity),
-            animationSpec = animSpec
-        )
         Scaffold(bottomBar = {
             BottomAppBar(
                 actions = {
                     tabs.forEach { screen ->
                         IconAction(
-                            selected = true, text = context.getString(screen.title),
+                            Modifier.padding(16.dp),
+                            selected = context.getString(screen.route) == currentRoute,
+                            text = context.getString(screen.title),
                             icon = screen.icon
                         ) {
                             navController.navigateSingleTopTo(context.getString(screen.route))
                         }
-                    }
-                    IconAction(
-                        selected = true, text = context.getString(ColorMapScreen.title),
-                        icon = ColorMapScreen.icon
-                    ) {
-                        navController.navigateSingleTopTo(context.getString(ColorMapScreen.route))
-                    }
-                    IconButton(onClick = {
-                        navController.navigateSingleTopTo(context.getString(ColorMapScreen.route))
-                    }) {
-                        Icon(ColorMapScreen.icon, contentDescription = "Localized description")
-                    }
-                    IconButton(onClick = {
-                        navController.navigateSingleTopTo(context.getString(ColorThemeScreen.route))
-                    }) {
-                        Row {
-                            Icon(
-                                ColorThemeScreen.icon,
-                                contentDescription = "Localized description",
-                            )
-                        }
-
                     }
                 },
                 floatingActionButton = {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
@@ -43,7 +44,8 @@ fun IconAction(
     icon: ImageVector,
     onClick: () -> Unit,
 ) {
-    val color = MaterialTheme.colorScheme.onSurface
+    val color =
+        if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer
     val durationMillis = if (selected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
     val animSpec = remember {
         tween<Color>(
@@ -59,7 +61,7 @@ fun IconAction(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
+            .background(color = tabTintColor)
             .clickable(
                 onClick = onClick,
                 enabled = enabled,
@@ -77,13 +79,11 @@ fun IconAction(
             Icon(
                 imageVector = icon,
                 contentDescription = text,
-                tint = tabTintColor,
+                tint = contentColor,
                 modifier = Modifier
                     .size(24.dp)
             )
-            if (selected) {
-                Text(text, color = tabTintColor)
-            }
+            Text(text, color = contentColor)
 
         }
     }
