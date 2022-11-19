@@ -36,4 +36,7 @@
     <string name="lab_page_title">Experimental</string>
     <string name="database_page_title">Databases</string>
     <string name="database_page_route">database</string>
+
+    <string name="calibre_book_table_title">Books</string>
+    <string name="calibre_book_table_route">books</string>
 </resources>

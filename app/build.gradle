@@ -65,6 +65,7 @@ dependencies {
     implementation("br.com.devsrsouza.compose.icons.android:font-awesome:1.0.0")
     implementation("br.com.devsrsouza.compose.icons.android:eva-icons:1.0.0")
     implementation("br.com.devsrsouza.compose.icons.android:feather:1.0.0")
+    implementation("br.com.devsrsouza.compose.icons.android:tabler-icons:1.0.0")
 
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -75,7 +76,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
 // Also declare the dependency for the Google Play services library and specify its version
-    implementation 'com.google.android.gms:play-services-auth:20.3.0'
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
     implementation 'com.google.dagger:hilt-android:2.44'
     //annotationProcessor 'com.google.dagger:hilt-compiler:2.44'
     kapt("com.google.dagger:hilt-android-compiler:2.44")
