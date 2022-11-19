@@ -6,28 +6,38 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
+import androidx.navigation.NavDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
 import box.example.showcase.applib.books.models.calibre.MetadataAuthor
 import box.example.showcase.applib.books.models.calibre.MetadataBook
 import box.example.showcase.applib.books.models.calibre.MetadataDatabaseHelper
 import box.example.showcase.ui.Page
+import box.example.showcase.ui.components.IconAction
+import box.example.showcase.ui.navigation.navigateSingleTopTo
+import box.example.showcase.ui.pages.ColorMapScreen
+import box.example.showcase.ui.pages.color.ColorThemeScreen
 import box.example.showcase.ui.pages.database.components.View
 import box.example.showcase.ui.theme.margin_half
 import com.j256.ormlite.android.apptools.OpenHelperManager
@@ -42,6 +52,19 @@ import java.io.OutputStream
 
 const val DATABASE_NAME = "metadata.db"
 const val DATABASE_VERSION = 25
+private val TabHeight = 56.dp
+private const val InactiveTabOpacity = 0.60f
+
+private const val TabFadeInAnimationDuration = 150
+private const val TabFadeInAnimationDelay = 100
+private const val TabFadeOutAnimationDuration = 100
+
+interface Screen {
+    val icon: ImageVector
+    val route: Int
+    val title: Int
+    val content: @Composable () -> Unit
+}
 
 class DatabasePage :
     Page(
@@ -51,9 +74,101 @@ class DatabasePage :
     ) {
     val databaseAvailable = mutableStateOf(false)
 
-    @SuppressLint("CoroutineCreationDuringComposition")
+    @Composable
+    override fun bottomAppBar() {
+    }
+
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val context = LocalContext.current
+        val navController = rememberNavController()
+        val currentBackStack by navController.currentBackStackEntryAsState()
+
+        val tabs = listOf(ColorMapScreen, ColorThemeScreen)
+        // Fetch your currentDestination:
+        val currentDestination: NavDestination? = currentBackStack?.destination
+
+        val selected = true
+        val color = MaterialTheme.colorScheme.onSurface
+        val durationMillis =
+            if (selected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
+        val animSpec = remember {
+            tween<Color>(
+                durationMillis = durationMillis,
+                easing = LinearEasing,
+                delayMillis = TabFadeInAnimationDelay
+            )
+        }
+        val tabTintColor by animateColorAsState(
+            targetValue = if (selected) color else color.copy(alpha = InactiveTabOpacity),
+            animationSpec = animSpec
+        )
+        Scaffold(bottomBar = {
+            BottomAppBar(
+                actions = {
+                    tabs.forEach { screen ->
+                        IconAction(
+                            selected = true, text = context.getString(screen.title),
+                            icon = screen.icon
+                        ) {
+                            navController.navigateSingleTopTo(context.getString(screen.route))
+                        }
+                    }
+                    IconAction(
+                        selected = true, text = context.getString(ColorMapScreen.title),
+                        icon = ColorMapScreen.icon
+                    ) {
+                        navController.navigateSingleTopTo(context.getString(ColorMapScreen.route))
+                    }
+                    IconButton(onClick = {
+                        navController.navigateSingleTopTo(context.getString(ColorMapScreen.route))
+                    }) {
+                        Icon(ColorMapScreen.icon, contentDescription = "Localized description")
+                    }
+                    IconButton(onClick = {
+                        navController.navigateSingleTopTo(context.getString(ColorThemeScreen.route))
+                    }) {
+                        Row {
+                            Icon(
+                                ColorThemeScreen.icon,
+                                contentDescription = "Localized description",
+                            )
+                        }
+
+                    }
+                },
+                floatingActionButton = {
+                    FloatingActionButton(
+                        onClick = { /* do something */ },
+                        containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                    ) {
+                        Icon(Icons.Filled.Add, "Localized description")
+                    }
+                }
+            )
+        }) {
+            NavHost(
+                navController = navController,
+                startDestination = context.getString(ColorMapScreen.route),
+                modifier = Modifier.padding(it)
+            ) {
+                composable(route = context.getString(ColorMapScreen.route)) {
+                    ColorMapScreen.content()
+                }
+                composable(route = context.getString(ColorThemeScreen.route)) {
+                    ColorThemeScreen.content()
+
+                }
+            }
+        }
+    }
+
+    @SuppressLint("CoroutineCreationDuringComposition")
+    @Composable
+    fun CContent() {
         val scroll = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
         val context = LocalContext.current
