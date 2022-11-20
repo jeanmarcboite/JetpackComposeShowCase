@@ -1,8 +1,6 @@
 package box.example.showcase.ui.pages.home
 
 import android.graphics.Bitmap
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,9 +39,6 @@ class HomePage :
 @Composable
 fun BoxContent() {
     val result = remember { mutableStateOf<Bitmap?>(null) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) {
-        //result.value = it
-    }
     Box {
         Column(
             modifier = Modifier

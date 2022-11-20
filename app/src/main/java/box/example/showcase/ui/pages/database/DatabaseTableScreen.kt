@@ -1,6 +1,5 @@
 package box.example.showcase.ui.pages.database
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,15 +22,22 @@ abstract class DatabaseTableScreen(val list: MutableState<List<CalibreEntity>?>)
     abstract val title: Int
 
     @Composable
-    open fun content() {
+    fun Content(Content: @Composable (CalibreEntity) -> Unit) {
         list.value?.apply {
             LazyColumn(
                 contentPadding = PaddingValues(top = margin_half)
             ) {
                 items(list.value!!) {
-                    it.View()
+                    Content(it)
                 }
             }
+        }
+    }
+
+    @Composable
+    open fun Content() {
+        Content {
+            it.View()
         }
     }
 }
@@ -42,19 +48,9 @@ class BooksScreen(list: MutableState<List<CalibreEntity>?>) : DatabaseTableScree
     override val title = R.string.calibre_book_table_title
 
     @Composable
-    override fun content() {
-        if (list.value != null) {
-            Log.i("boxxxx [books]", list.value.toString())
-        }
-
-        list.value?.apply {
-            LazyColumn(
-                contentPadding = PaddingValues(top = margin_half)
-            ) {
-                items(list.value!!) {
-                    (it as CalibreBook).View()
-                }
-            }
+    override fun Content() {
+        Content {
+            (it as CalibreBook).View()
         }
     }
 }
@@ -65,19 +61,9 @@ class AuthorsScreen(list: MutableState<List<CalibreEntity>?>) : DatabaseTableScr
     override val title = R.string.calibre_author_table_title
 
     @Composable
-    override fun content() {
-        if (list.value != null) {
-            Log.i("boxxxx [books]", list.value.toString())
-        }
-
-        list.value?.apply {
-            LazyColumn(
-                contentPadding = PaddingValues(top = margin_half)
-            ) {
-                items(list.value!!) {
-                    (it as CalibreAuthor).View()
-                }
-            }
+    override fun Content() {
+        Content {
+            (it as CalibreAuthor).View()
         }
     }
 }

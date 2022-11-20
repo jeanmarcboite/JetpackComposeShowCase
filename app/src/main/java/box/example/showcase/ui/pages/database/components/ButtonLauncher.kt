@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.documentfile.provider.DocumentFile
-import box.example.showcase.ui.pages.database.DATABASE_NAME
+import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
 import java.io.FileOutputStream
 import java.io.OutputStream
 
@@ -29,7 +29,8 @@ fun LauncherButton(databaseAvailable: MutableState<Boolean>) {
         item?.close()
 
         bytes?.run {
-            val output: OutputStream = FileOutputStream(context.getDatabasePath(DATABASE_NAME))
+            val output: OutputStream =
+                FileOutputStream(context.getDatabasePath(CalibreDatabaseHelper.DatabaseName))
             output.write(this, 0, size)
             output.close()
             databaseAvailable.value = true
@@ -49,7 +50,7 @@ fun LauncherButton(databaseAvailable: MutableState<Boolean>) {
             it?.run {
                 val tree = DocumentFile.fromTreeUri(context, this)
                 val metadata: DocumentFile? = tree?.listFiles()?.find { documentFile ->
-                    documentFile.name == DATABASE_NAME
+                    documentFile.name == CalibreDatabaseHelper.DatabaseName
                 }
                 if (metadata?.isFile == true) {
                     copyDatabase(context, metadata.uri)

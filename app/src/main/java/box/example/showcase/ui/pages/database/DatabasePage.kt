@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
@@ -35,33 +34,16 @@ import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
 import kotlinx.coroutines.launch
 
-
-const val DATABASE_NAME = "metadata.db"
-const val DATABASE_VERSION = 25
-private val TabHeight = 56.dp
-private const val InactiveTabOpacity = 0.60f
-
-private const val TabFadeInAnimationDuration = 150
-private const val TabFadeInAnimationDelay = 100
-private const val TabFadeOutAnimationDuration = 100
-
-interface Screen {
-    val icon: ImageVector
-    val route: Int
-    val title: Int
-    val content: @Composable () -> Unit
-}
-
 class DatabasePage :
     Page(
         FontAwesomeIcons.Brands.Whatsapp,
         R.string.database_page_route,
         R.string.database_page_title
     ) {
-    val databaseAvailable = mutableStateOf(false)
+    val databaseAvailable = mutableStateOf(true)
 
     @Composable
-    override fun bottomAppBar() {
+    override fun BottomAppBar() {
     }
 
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -107,14 +89,14 @@ class DatabasePage :
             ) {
                 tabs.forEach { screen ->
                     composable(context.getString(screen.route)) {
-                        screen.content()
+                        screen.Content()
                     }
                 }
             }
         }
     }
 
-    @SuppressLint("CoroutineCreationDuringComposition")
+    @SuppressLint("CoroutineCreationDuringComposition", "ComposableNaming")
     @Composable
     fun getDatabase(
         listBook: MutableState<List<CalibreEntity>?>,

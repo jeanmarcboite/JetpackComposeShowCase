@@ -34,7 +34,7 @@ abstract class Page(
     abstract fun Content()
 
     @Composable
-    open fun bottomAppBar() {
+    open fun BottomAppBar() {
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.surface,
         ) {

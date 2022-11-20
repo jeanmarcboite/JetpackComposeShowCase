@@ -66,7 +66,7 @@ class ColorPage : Page(
 
     // The bottomAppBar is already inthe content, since we need the navController (we could also use a viewModel
     @Composable
-    override fun bottomAppBar() {
+    override fun BottomAppBar() {
     }
 }
 

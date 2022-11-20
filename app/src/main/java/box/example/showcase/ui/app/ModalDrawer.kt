@@ -76,7 +76,7 @@ fun ModalDrawer(
 
                                 Scaffold(
                                     bottomBar = {
-                                        page.bottomAppBar()
+                                        page.BottomAppBar()
                                     },
                                     content = {
                                         Column(Modifier.padding(it)) {
