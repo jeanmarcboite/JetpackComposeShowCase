@@ -19,16 +19,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
-import box.example.showcase.applib.books.models.calibre.BooksAuthorsLink
-import box.example.showcase.applib.books.models.calibre.CalibreAuthor
-import box.example.showcase.applib.books.models.calibre.CalibreBook
-import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
 import box.example.showcase.ui.navigation.navigateSingleTopTo
 import box.example.showcase.ui.pages.database.components.LauncherButton
-import com.j256.ormlite.android.apptools.OpenHelperManager
-import com.j256.ormlite.dao.GenericRawResults
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
@@ -39,8 +33,6 @@ class DatabasePage :
         R.string.database_page_route,
         R.string.database_page_title
     ) {
-    private val databaseAvailable = mutableStateOf(true)
-
     @Composable
     override fun BottomAppBar() {
     }
@@ -54,7 +46,10 @@ class DatabasePage :
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
 
-        val tabs = listOf(BooksScreen(viewModel.books), AuthorsScreen(viewModel.authors))
+        val tabs = listOf(
+            BooksScreen(viewModel.calibreDatabase.books),
+            AuthorsScreen(viewModel.calibreDatabase.authors)
+        )
         // Fetch your currentDestination:
         val currentRoute = currentBackStack?.destination?.route
         getDatabase(viewModel)
@@ -101,45 +96,8 @@ class DatabasePage :
         val context = LocalContext.current
 
         LaunchedEffect(viewModel.databaseVersion.value) {
-            val dbHelper =
-                OpenHelperManager.getHelper(context, CalibreDatabaseHelper::class.java)
-            if (dbHelper.isOpen) {
-                Log.d("boxxxx", "database ${dbHelper.databaseName} is open")
-            }
             try {
-                val dao = dbHelper.getDao(CalibreBook::class.java)
-                // Don't kow why sqlite_schema does not work (sqlite version too old?)
-                val query: GenericRawResults<Array<String>> =
-                    dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'")
-                val results = query.results.map {
-                    it.toList()
-                }
-                Log.d("boxxxx", "tables ${results}")
-                //val list: MutableList<CalibreBook> = dao.queryForAll()
-                //Log.d("boxxx [ormlite]", "list of ${list.size} books")
-                viewModel.books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
-                viewModel.authors.value =
-                    dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
-
-                val books: Map<Int, CalibreBook>? = viewModel.books.value?.associate {
-                    it.id to it as CalibreBook
-                }
-                val authors: Map<Int, CalibreAuthor>? = viewModel.authors.value?.associate {
-                    it.id to it as CalibreAuthor
-                }
-
-                dbHelper.getDao(BooksAuthorsLink::class.java).queryForAll().forEach {
-                    authors?.get(it.author)?.apply {
-                        books?.get(it.book)?.authors?.add(this)
-                    }
-                    books?.get(it.book)?.apply {
-                        authors?.get(it.author)?.books?.add(this)
-                    }
-                }
-
-                books?.forEach {
-                    Log.d("boxxx [book]", it.value.title.toString())
-                }
+                viewModel.calibreDatabase.read(context)
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {
                     ""
