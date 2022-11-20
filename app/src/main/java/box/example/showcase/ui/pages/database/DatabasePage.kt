@@ -121,26 +121,25 @@ class DatabasePage :
                 viewModel.authors.value =
                     dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
 
-                val books: Map<Int, CalibreBook>? = viewModel.books.value?.map {
+                val books: Map<Int, CalibreBook>? = viewModel.books.value?.associate {
                     it.id to it as CalibreBook
-                }?.toMap()
-                val authors: Map<Int, CalibreAuthor>? = viewModel.authors.value?.map {
+                }
+                val authors: Map<Int, CalibreAuthor>? = viewModel.authors.value?.associate {
                     it.id to it as CalibreAuthor
-                }?.toMap()
+                }
 
-                val books_authors_link: MutableList<BooksAuthorsLink> =
-                    dbHelper.getDao(BooksAuthorsLink::class.java).queryForAll()
-                Log.d("boxxxx", "books_authors ${books_authors_link.size} entries")
-                books_authors_link.forEach {
-                    Log.d("boxxx [b-a]", it.toString())
+                dbHelper.getDao(BooksAuthorsLink::class.java).queryForAll().forEach {
                     authors?.get(it.author)?.apply {
                         books?.get(it.book)?.authors?.add(this)
                     }
-                }
-                books?.forEach {
-                    Log.d("boxxx [book]", it.value.toString())
+                    books?.get(it.book)?.apply {
+                        authors?.get(it.author)?.books?.add(this)
+                    }
                 }
 
+                books?.forEach {
+                    Log.d("boxxx [book]", it.value.title.toString())
+                }
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {
                     ""

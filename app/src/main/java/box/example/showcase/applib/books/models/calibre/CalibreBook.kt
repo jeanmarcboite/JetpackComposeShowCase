@@ -47,3 +47,8 @@ data class CalibreBook(
     @DatabaseField
     val uuid: String? = null
 ) : CalibreEntity()
+
+fun CalibreBook?.toString(): String {
+    return if (this != null) title.toString() else "null"
+}
+

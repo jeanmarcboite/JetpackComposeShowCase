@@ -28,5 +28,10 @@ fun CalibreAuthor.View() {
             label = { Text(id.toString()) },
             value = name.toString(),
             onValueChange = {})
+        books.sortedBy {
+            it.title
+        }.forEach {
+            Text(it.title.toString())
+        }
     }
 }

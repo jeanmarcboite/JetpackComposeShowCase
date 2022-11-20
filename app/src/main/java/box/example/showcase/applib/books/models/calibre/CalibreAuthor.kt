@@ -11,4 +11,11 @@ data class CalibreAuthor(
     val sort: String? = null,
     @DatabaseField
     val link: String? = null,
+    val books: MutableList<CalibreBook> = mutableListOf(),
 ) : CalibreEntity()
+
+fun CalibreAuthor?.toString(): String {
+    return if (this != null) name.toString() else "null"
+}
+
+
