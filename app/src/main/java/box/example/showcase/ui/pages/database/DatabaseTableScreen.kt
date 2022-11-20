@@ -8,24 +8,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.vector.ImageVector
 import box.example.showcase.R
-import box.example.showcase.applib.books.models.calibre.MetadataAuthor
-import box.example.showcase.applib.books.models.calibre.MetadataBook
+import box.example.showcase.applib.books.models.calibre.CalibreAuthor
+import box.example.showcase.applib.books.models.calibre.CalibreBook
+import box.example.showcase.applib.books.models.calibre.CalibreEntity
 import box.example.showcase.ui.pages.database.components.View
 import box.example.showcase.ui.theme.margin_half
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Book
 import compose.icons.tablericons.MoodHappy
 
-interface DatabaseTableScreen {
-    val icon: ImageVector
-    val route: Int
-    val title: Int
+abstract class DatabaseTableScreen(val list: MutableState<List<CalibreEntity>?>) {
+    abstract val icon: ImageVector
+    abstract val route: Int
+    abstract val title: Int
 
     @Composable
-    fun content()
+    open fun content() {
+        list.value?.apply {
+            LazyColumn(
+                contentPadding = PaddingValues(top = margin_half)
+            ) {
+                items(list.value!!) {
+                    it.View()
+                }
+            }
+        }
+    }
 }
 
-class BooksScreen(val list: MutableState<List<MetadataBook>?>) : DatabaseTableScreen {
+class BooksScreen(list: MutableState<List<CalibreEntity>?>) : DatabaseTableScreen(list) {
     override val icon = TablerIcons.Book
     override val route = R.string.calibre_book_table_route
     override val title = R.string.calibre_book_table_title
@@ -41,14 +52,14 @@ class BooksScreen(val list: MutableState<List<MetadataBook>?>) : DatabaseTableSc
                 contentPadding = PaddingValues(top = margin_half)
             ) {
                 items(list.value!!) {
-                    it.View()
+                    (it as CalibreBook).View()
                 }
             }
         }
     }
 }
 
-class AuthorsScreen(val list: MutableState<List<MetadataAuthor>?>) : DatabaseTableScreen {
+class AuthorsScreen(list: MutableState<List<CalibreEntity>?>) : DatabaseTableScreen(list) {
     override val icon = TablerIcons.MoodHappy
     override val route = R.string.calibre_author_table_route
     override val title = R.string.calibre_author_table_title
@@ -64,7 +75,7 @@ class AuthorsScreen(val list: MutableState<List<MetadataAuthor>?>) : DatabaseTab
                 contentPadding = PaddingValues(top = margin_half)
             ) {
                 items(list.value!!) {
-                    it.View()
+                    (it as CalibreAuthor).View()
                 }
             }
         }

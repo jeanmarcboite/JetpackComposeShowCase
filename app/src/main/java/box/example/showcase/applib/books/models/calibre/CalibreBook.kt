@@ -16,9 +16,7 @@ import java.util.*
  */
 
 @DatabaseTable(tableName = "books")
-data class MetadataBook(
-    @DatabaseField(generatedId = true)
-    val id: Int = 0,
+data class CalibreBook(
     @DatabaseField
     val author_sort: String = "",
     @DatabaseField
@@ -47,4 +45,4 @@ data class MetadataBook(
     val title: String? = null,
     @DatabaseField
     val uuid: String? = null
-)
+) : CalibreEntity()

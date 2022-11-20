@@ -7,7 +7,6 @@ import box.example.showcase.ui.pages.about.AboutPage
 import box.example.showcase.ui.pages.books.BookDetailPage
 import box.example.showcase.ui.pages.books.BookSearchPage
 import box.example.showcase.ui.pages.bored.BoredPage
-import box.example.showcase.ui.pages.calibre.CalibrePage
 import box.example.showcase.ui.pages.color.ColorPage
 import box.example.showcase.ui.pages.database.DatabasePage
 import box.example.showcase.ui.pages.home.HomePage
@@ -23,7 +22,6 @@ fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page>
         AboutPage(),
         DatabasePage(),
         LabPage(),
-        CalibrePage(),
         BoredPage(),
         BookSearchPage(),
         BookDetailPage(),

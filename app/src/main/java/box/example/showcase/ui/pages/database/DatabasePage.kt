@@ -20,9 +20,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
-import box.example.showcase.applib.books.models.calibre.MetadataAuthor
-import box.example.showcase.applib.books.models.calibre.MetadataBook
-import box.example.showcase.applib.books.models.calibre.MetadataDatabaseHelper
+import box.example.showcase.applib.books.models.calibre.CalibreAuthor
+import box.example.showcase.applib.books.models.calibre.CalibreBook
+import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
+import box.example.showcase.applib.books.models.calibre.CalibreEntity
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
 import box.example.showcase.ui.navigation.navigateSingleTopTo
@@ -70,8 +71,8 @@ class DatabasePage :
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
-        val listBook = remember { mutableStateOf<List<MetadataBook>?>(null) }
-        val listAuthor = remember { mutableStateOf<List<MetadataAuthor>?>(null) }
+        val listBook = remember { mutableStateOf<List<CalibreEntity>?>(null) }
+        val listAuthor = remember { mutableStateOf<List<CalibreEntity>?>(null) }
 
 
         val tabs = listOf(BooksScreen(listBook), AuthorsScreen(listAuthor))
@@ -116,20 +117,20 @@ class DatabasePage :
     @SuppressLint("CoroutineCreationDuringComposition")
     @Composable
     fun getDatabase(
-        listBook: MutableState<List<MetadataBook>?>,
-        listAuthor: MutableState<List<MetadataAuthor>?>
+        listBook: MutableState<List<CalibreEntity>?>,
+        listAuthor: MutableState<List<CalibreEntity>?>
     ) {
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
 
         if (databaseAvailable.value) {
             val dbHelper =
-                OpenHelperManager.getHelper(context, MetadataDatabaseHelper::class.java)
+                OpenHelperManager.getHelper(context, CalibreDatabaseHelper::class.java)
             if (dbHelper.isOpen) {
                 Log.d("boxxxx", "database ${dbHelper.databaseName} is open")
             }
             try {
-                val dao = dbHelper.getDao(MetadataBook::class.java)
+                val dao = dbHelper.getDao(CalibreBook::class.java)
                 // Don't kow why sqlite_schema does not work (sqlite version too old?)
                 val query: GenericRawResults<Array<String>> =
                     dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'")
@@ -137,10 +138,10 @@ class DatabasePage :
                     it.toList()
                 }
                 Log.d("boxxxx", "tables ${results}")
-                //val list: MutableList<MetadataBook> = dao.queryForAll()
+                //val list: MutableList<CalibreBook> = dao.queryForAll()
                 //Log.d("boxxx [ormlite]", "list of ${list.size} books")
-                listBook.value = dbHelper.getDao(MetadataBook::class.java).queryForAll()
-                listAuthor.value = dbHelper.getDao(MetadataAuthor::class.java).queryForAll()
+                listBook.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
+                listAuthor.value = dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
 
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {

@@ -9,11 +9,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import box.example.showcase.applib.books.models.calibre.MetadataAuthor
+import box.example.showcase.applib.books.models.calibre.CalibreAuthor
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MetadataAuthor.View() {
+fun CalibreAuthor.View() {
     Card(
         modifier = Modifier
             .padding(4.dp)
@@ -24,7 +25,7 @@ fun MetadataAuthor.View() {
                 .padding(8.dp)
                 .fillMaxWidth(),
             enabled = false,
-            label = { Text(sort.toString()) },
+            label = { Text(id.toString()) },
             value = name.toString(),
             onValueChange = {})
     }
