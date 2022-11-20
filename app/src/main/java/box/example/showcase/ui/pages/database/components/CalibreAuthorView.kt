@@ -1,15 +1,16 @@
 package box.example.showcase.ui.pages.database.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.CalibreAuthor
+import box.example.showcase.ui.components.OutlinedCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,18 +21,18 @@ fun CalibreAuthor.View() {
             .padding(4.dp)
             .fillMaxWidth()
     ) {
-        OutlinedTextField(
+        OutlinedCard(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth(),
-            enabled = false,
-            label = { Text(id.toString()) },
-            value = name.toString(),
-            onValueChange = {})
-        books.sortedBy {
-            it.title
-        }.forEach {
-            Text(it.title.toString())
+            label = { Text(name.toString()) }) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                books.sortedBy {
+                    it.title
+                }.forEach {
+                    Text(it.title.toString())
+                }
+            }
         }
     }
 }

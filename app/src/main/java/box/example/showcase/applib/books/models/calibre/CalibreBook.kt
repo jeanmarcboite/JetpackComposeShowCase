@@ -20,6 +20,7 @@ data class CalibreBook(
     @DatabaseField
     val author_sort: String = "",
     val authors: MutableList<CalibreAuthor> = mutableListOf(),
+    var comment: String? = null,
     @DatabaseField
     val flags: Int = 0,
     @DatabaseField

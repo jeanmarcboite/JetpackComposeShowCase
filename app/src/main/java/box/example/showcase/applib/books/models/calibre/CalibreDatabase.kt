@@ -4,11 +4,11 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.j256.ormlite.android.apptools.OpenHelperManager
-import com.j256.ormlite.dao.GenericRawResults
 
 class CalibreDatabase {
     val books = mutableStateOf<List<CalibreEntity>?>(null)
     val authors = mutableStateOf<List<CalibreEntity>?>(null)
+    var tables: List<List<String>> = listOf()
 
     fun read(context: Context) {
         val dbHelper =
@@ -18,14 +18,10 @@ class CalibreDatabase {
 
         val dao = dbHelper.getDao(CalibreBook::class.java)
         // Don't kow why sqlite_schema does not work (sqlite version too old?)
-        val query: GenericRawResults<Array<String>> =
-            dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'")
-        val results = query.results.map {
+        tables = dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'").results.map {
             it.toList()
         }
-        Log.d("boxxxx", "tables ${results}")
-        //val list: MutableList<CalibreBook> = dao.queryForAll()
-        //Log.d("boxxx [ormlite]", "list of ${list.size} books")
+
         books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
         authors.value =
             dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
@@ -46,6 +42,12 @@ class CalibreDatabase {
             }
         }
 
+        dbHelper.getDao(CalibreComment::class.java).queryForAll().forEach {
+            books?.get(it.book)?.apply {
+                comment = it.text.toString()
+            }
+        }
+        
         books?.forEach {
             Log.d("boxxx [book]", it.value.title.toString())
         }
