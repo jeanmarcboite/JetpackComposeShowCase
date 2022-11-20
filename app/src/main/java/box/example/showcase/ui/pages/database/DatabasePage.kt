@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
+import box.example.showcase.applib.books.models.calibre.BooksAuthorsLink
 import box.example.showcase.applib.books.models.calibre.CalibreAuthor
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
@@ -119,6 +120,26 @@ class DatabasePage :
                 viewModel.books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
                 viewModel.authors.value =
                     dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
+
+                val books: Map<Int, CalibreBook>? = viewModel.books.value?.map {
+                    it.id to it as CalibreBook
+                }?.toMap()
+                val authors: Map<Int, CalibreAuthor>? = viewModel.authors.value?.map {
+                    it.id to it as CalibreAuthor
+                }?.toMap()
+
+                val books_authors_link: MutableList<BooksAuthorsLink> =
+                    dbHelper.getDao(BooksAuthorsLink::class.java).queryForAll()
+                Log.d("boxxxx", "books_authors ${books_authors_link.size} entries")
+                books_authors_link.forEach {
+                    Log.d("boxxx [b-a]", it.toString())
+                    authors?.get(it.author)?.apply {
+                        books?.get(it.book)?.authors?.add(this)
+                    }
+                }
+                books?.forEach {
+                    Log.d("boxxx [book]", it.value.toString())
+                }
 
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {

@@ -19,6 +19,7 @@ import java.util.*
 data class CalibreBook(
     @DatabaseField
     val author_sort: String = "",
+    val authors: MutableList<CalibreAuthor> = mutableListOf(),
     @DatabaseField
     val flags: Int = 0,
     @DatabaseField

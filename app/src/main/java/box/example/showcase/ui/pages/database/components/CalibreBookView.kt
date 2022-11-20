@@ -19,12 +19,15 @@ fun CalibreBook.View() {
             .padding(4.dp)
             .fillMaxWidth()
     ) {
+        val book_authors = authors.joinToString {
+            it.name.toString()
+        }
         OutlinedTextField(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth(),
             enabled = false,
-            label = { Text(id.toString()) },
+            label = { Text(book_authors) },
             value = title.toString(),
             onValueChange = {})
     }
