@@ -30,6 +30,7 @@ import box.example.showcase.ui.pages.database.CalibreDatabaseViewModel
 import box.example.showcase.ui.pages.mainPages
 import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
+import com.jsramraj.flags.Flags
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 
@@ -77,8 +78,8 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MainScreen() {
         val context = LocalContext.current
-        
 
+        Flags.init(LocalContext.current)
 
         mainViewModel.snackbarHostState = remember { SnackbarHostState() }
 
