@@ -22,7 +22,6 @@ import box.example.showcase.R
 import box.example.showcase.applib.books.models.calibre.CalibreAuthor
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
-import box.example.showcase.applib.books.models.calibre.CalibreEntity
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
 import box.example.showcase.ui.navigation.navigateSingleTopTo
@@ -50,17 +49,16 @@ class DatabasePage :
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val viewModel = mainViewModel.calibreDatabaseViewModel
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
-        val listBook = remember { mutableStateOf<List<CalibreEntity>?>(null) }
-        val listAuthor = remember { mutableStateOf<List<CalibreEntity>?>(null) }
 
 
-        val tabs = listOf(BooksScreen(listBook), AuthorsScreen(listAuthor))
+        val tabs = listOf(BooksScreen(viewModel.books), AuthorsScreen(viewModel.authors))
         // Fetch your currentDestination:
         val currentRoute = currentBackStack?.destination?.route
-        getDatabase(listBook, listAuthor)
+        getDatabase(viewModel)
         Scaffold(bottomBar = {
             BottomAppBar(
                 actions = {
@@ -99,8 +97,7 @@ class DatabasePage :
     @SuppressLint("CoroutineCreationDuringComposition", "ComposableNaming")
     @Composable
     fun getDatabase(
-        listBook: MutableState<List<CalibreEntity>?>,
-        listAuthor: MutableState<List<CalibreEntity>?>
+        viewModel: CalibreDatabaseViewModel
     ) {
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
@@ -122,8 +119,8 @@ class DatabasePage :
                 Log.d("boxxxx", "tables ${results}")
                 //val list: MutableList<CalibreBook> = dao.queryForAll()
                 //Log.d("boxxx [ormlite]", "list of ${list.size} books")
-                listBook.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
-                listAuthor.value = dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
+                viewModel.books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
+                viewModel.authors.value = dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
 
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {
