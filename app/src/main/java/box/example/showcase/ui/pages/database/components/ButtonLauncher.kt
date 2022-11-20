@@ -19,31 +19,32 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 @Composable
-fun LauncherButton(databaseAvailable: MutableState<Boolean>) {
+fun LauncherButton(databaseVersion: MutableState<Int>) {
     val context = LocalContext.current
 
     fun copyDatabase(context: Context, input: Uri) {
-        databaseAvailable.value = false
         val item = context.contentResolver.openInputStream(input)
         val bytes: ByteArray? = item?.readBytes()
         item?.close()
 
-        bytes?.run {
+        bytes?.apply {
             val output: OutputStream =
                 FileOutputStream(context.getDatabasePath(CalibreDatabaseHelper.DatabaseName))
             output.write(this, 0, size)
             output.close()
-            databaseAvailable.value = true
+            databaseVersion.value++
         }
     }
 
-
+/*
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
             it?.run {
                 copyDatabase(context, this)
             }
         }
+
+ */
 
     val directoryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) {

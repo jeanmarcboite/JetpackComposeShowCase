@@ -31,7 +31,6 @@ import com.j256.ormlite.dao.GenericRawResults
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
-import kotlinx.coroutines.launch
 
 class DatabasePage :
     Page(
@@ -39,7 +38,7 @@ class DatabasePage :
         R.string.database_page_route,
         R.string.database_page_title
     ) {
-    val databaseAvailable = mutableStateOf(true)
+    private val databaseAvailable = mutableStateOf(true)
 
     @Composable
     override fun BottomAppBar() {
@@ -53,7 +52,6 @@ class DatabasePage :
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
-
 
         val tabs = listOf(BooksScreen(viewModel.books), AuthorsScreen(viewModel.authors))
         // Fetch your currentDestination:
@@ -75,7 +73,7 @@ class DatabasePage :
                 },
                 floatingActionButton = {
                     LauncherButton(
-                        databaseAvailable
+                        viewModel.databaseVersion
                     )
                 }
             )
@@ -94,15 +92,14 @@ class DatabasePage :
         }
     }
 
-    @SuppressLint("CoroutineCreationDuringComposition", "ComposableNaming")
+    @SuppressLint("ComposableNaming")
     @Composable
     fun getDatabase(
         viewModel: CalibreDatabaseViewModel
     ) {
         val context = LocalContext.current
-        val coroutineScope = rememberCoroutineScope()
 
-        if (databaseAvailable.value) {
+        LaunchedEffect(viewModel.databaseVersion.value) {
             val dbHelper =
                 OpenHelperManager.getHelper(context, CalibreDatabaseHelper::class.java)
             if (dbHelper.isOpen) {
@@ -120,7 +117,8 @@ class DatabasePage :
                 //val list: MutableList<CalibreBook> = dao.queryForAll()
                 //Log.d("boxxx [ormlite]", "list of ${list.size} books")
                 viewModel.books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
-                viewModel.authors.value = dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
+                viewModel.authors.value =
+                    dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
 
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {
@@ -138,16 +136,13 @@ class DatabasePage :
                 }
                 Log.e("boxxx [readDatabase]", errorMessage)
                 e.printStackTrace()
-                coroutineScope.launch {
-                    mainViewModel.snackbarHostState.showSnackbar(
-                        errorMessage,
-                        withDismissAction = true,
-                        duration = SnackbarDuration.Indefinite
-                    )
-                }
+                mainViewModel.snackbarHostState.showSnackbar(
+                    errorMessage,
+                    withDismissAction = true,
+                    duration = SnackbarDuration.Indefinite
+                )
             }
         }
-
     }
 
     @SuppressLint("CoroutineCreationDuringComposition")
