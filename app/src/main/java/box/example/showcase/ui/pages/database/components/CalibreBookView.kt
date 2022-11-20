@@ -36,7 +36,7 @@ fun CalibreBook.View() {
         Column(modifier = Modifier.padding(8.dp)) {
 
             Text(
-                text = title.toString(),
+                text = title.toString() + " " + languages.joinToString(", "),
                 modifier = Modifier
                     .padding(8.dp)
             )

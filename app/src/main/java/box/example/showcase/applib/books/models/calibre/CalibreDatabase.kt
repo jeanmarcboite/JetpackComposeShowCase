@@ -1,7 +1,6 @@
 package box.example.showcase.applib.books.models.calibre
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.j256.ormlite.android.apptools.OpenHelperManager
 
@@ -32,6 +31,11 @@ class CalibreDatabase {
         val authors: Map<Int, CalibreAuthor>? = authors.value?.associate {
             it.id to it as CalibreAuthor
         }
+        val languagesMap: Map<Int, CalibreLanguage>? =
+            dbHelper.getDao(CalibreLanguage::class.java).queryForAll()?.associate {
+                it.id to it as CalibreLanguage
+            }
+
 
         dbHelper.getDao(BooksAuthorsLink::class.java).queryForAll().forEach {
             authors?.get(it.author)?.apply {
@@ -47,9 +51,14 @@ class CalibreDatabase {
                 comment = it.text.toString()
             }
         }
-        
-        books?.forEach {
-            Log.d("boxxx [book]", it.value.title.toString())
-        }
+
+        dbHelper.getDao(CalibreBooksLanguagesLink::class.java).queryForAll()
+            .forEach { languageLink ->
+                books?.get(languageLink.book)?.apply {
+                    if (languagesMap?.get(languageLink.lang_code)?.lang_code != null) {
+                        languages.add(languagesMap?.get(languageLink.lang_code)?.lang_code!!)
+                    }
+                }
+            }
     }
 }
