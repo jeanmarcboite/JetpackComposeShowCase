@@ -136,15 +136,23 @@ class CalibreDatabase {
     }
 
     private fun getCustomColumns(dbHelper: CalibreDatabaseHelper, table: String) {
-        val dao = dbHelper.getDao(CalibreBook::class.java)
-        val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
-        val entriesString: List<String> =
-            dao.queryRaw("select * from $table").results.toList().map {
+        try {
+            val dao = dbHelper.getDao(CalibreBook::class.java)
+            val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
+            val entriesString: List<String> =
+                dao.queryRaw("select * from $table").results.toList().map {
+                    "[" + it.joinToString() + "]"
+                }
+            Log.d("boxxx [getCustom]", "$table > ${entriesString}")
+            entries.forEach {
+                //Log.d("boxxx [getCustom]", "$table > ${it.joinToString()}")
+            }
+            val info = dao.queryRaw("PRAGMA table_info($table)").results.toList().map {
                 "[" + it.joinToString() + "]"
             }
-        Log.d("boxxx [getCustom]", "$table > ${entriesString}")
-        entries.forEach {
-            //Log.d("boxxx [getCustom]", "$table > ${it.joinToString()}")
+            Log.d("boxxx [getCustom]", "$table > ${info}")
+        } catch (e: Exception) {
+            Log.e("boxxx [custom]", e.message.toString())
         }
     }
 }
