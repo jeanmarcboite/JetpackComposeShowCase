@@ -31,7 +31,7 @@ class AuthViewModel : ViewModel() {
         if (user.value != null)
             state.value = AuthState.LoggedIn
 
-        Log.i(TAG, "Firebase user: " + FirebaseAuth.getInstance().currentUser.toString())
+        Log.d(TAG, "Firebase user: " + FirebaseAuth.getInstance().currentUser?.displayName)
     }
 
     fun setUser(firebaseUser: FirebaseUser?) {

@@ -19,14 +19,14 @@ class FirebaseNotesViewModel : ViewModel() {
     val notes = mutableStateListOf<Note>()
 
     init {
-        Log.d(TAG, "database reference: $database")
+        Log.v(TAG, "database reference: $database")
         val sdf = getDateTimeInstance() //SimpleDateFormat("dd/M/yyyy hh:mm:ss")
         val currentDate = sdf.format(Date())
         database.child("log").setValue(currentDate)
 
 
         database.child("version").get().addOnSuccessListener {
-            Log.i(TAG, "Database version ${it.value}")
+            Log.v(TAG, "Database version ${it.value}")
         }.addOnFailureListener {
             Log.e(TAG, "Error getting data", it)
         }

@@ -24,7 +24,7 @@ class LabPage :
         LaunchedEffect(Unit) {
             try {
                 val databasePath = context.getDatabasePath("entries")
-                Log.d("boxx [omlite]", "database path: $databasePath")
+                Log.d("boxx [ormlite]", "database path: $databasePath")
                 val dbHelper = OpenHelperManager.getHelper(context, DatabaseHelper::class.java)
                 val connectionSource = dbHelper.connectionSource
                 TableUtils.createTableIfNotExists(connectionSource, LabNote::class.java)

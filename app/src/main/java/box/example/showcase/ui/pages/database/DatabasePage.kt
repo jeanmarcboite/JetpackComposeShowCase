@@ -69,6 +69,7 @@ class DatabasePage :
                 },
                 floatingActionButton = {
                     LauncherButton(
+                        mainViewModel.snackbarHostState,
                         viewModel.databaseVersion
                     )
                 }

@@ -59,6 +59,9 @@ fun CalibreBook.View() {
                     modifier = Modifier
                         .padding(8.dp)
                 )
+                customColumns.forEach {
+                    Text("ccal ${it.key}: ${it.value.joinToString()}")
+                }
                 comment?.apply {
                     HtmlText(
                         text = this,
