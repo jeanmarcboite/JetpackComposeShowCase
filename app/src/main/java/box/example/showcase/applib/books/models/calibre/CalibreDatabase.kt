@@ -1,6 +1,7 @@
 package box.example.showcase.applib.books.models.calibre
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.j256.ormlite.dao.Dao
@@ -62,8 +63,11 @@ class CalibreDatabase {
                         customColumns[link.value]?.second
                     val book = books?.get(link.book)
                     if (book != null && custom_column != null) {
-                        book.customColumns[link.value] = custom_column
+                        customColumns[link.value]?.first?.apply {
+                            book.customColumns[this] = custom_column
+                        }
                     }
+                    Log.v("boxxx", "book ${link.book} column ${link.value}")
                 }
             }
 

@@ -24,11 +24,14 @@ data class CustomColumnEntry(
 ) : CalibreEntity()
 
 open class CustomColumn : CalibreEntity() {
-    @DatabaseField
-    val book: Int? = null
+    //    @DatabaseField(canBeNull = true)
+    val book: Int = 0
 
     @DatabaseField
     val value: String? = null
+    override fun toString(): String {
+        return value ?: "null"
+    }
 }
 
 open class BooksCustomColumnsLink(

@@ -60,7 +60,7 @@ fun CalibreBook.View() {
                         .padding(8.dp)
                 )
                 customColumns.forEach {
-                    Text("ccal ${it.key}: ${it.value.joinToString()}")
+                    it.View()
                 }
                 comment?.apply {
                     HtmlText(
