@@ -114,7 +114,7 @@ class DatabasePage :
                     err.toString()
                 }
                 Log.e("boxxx [readDatabase]", errorMessage)
-                e.printStackTrace()
+                // e.printStackTrace()
                 mainViewModel.snackbarHostState.showSnackbar(
                     errorMessage,
                     withDismissAction = true,

@@ -25,8 +25,8 @@ class MainViewModel : ViewModel() {
     lateinit var firebaseNotesViewModel: FirebaseNotesViewModel
     lateinit var notesViewModel: NotesViewModel
     lateinit var calibreDatabaseViewModel: CalibreDatabaseViewModel
-    lateinit var snackbarHostState: SnackbarHostState
 
+    var snackbarHostState = SnackbarHostState()
 
     val leftSwipeToReveal = mutableStateOf(false)
     val leftSwipeAction = mutableStateOf(NoteAction.Delete)
@@ -55,6 +55,4 @@ class MainViewModel : ViewModel() {
         darkMode.value = value
         applicationSettings[booleanPreferencesKey(DARK_MODE)] = value
     }
-
-
 }

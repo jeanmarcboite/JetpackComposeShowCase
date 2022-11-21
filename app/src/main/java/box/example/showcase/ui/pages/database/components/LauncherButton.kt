@@ -60,15 +60,25 @@ fun LauncherButton(
                 val metadata: DocumentFile? = tree?.listFiles()?.find { documentFile ->
                     documentFile.name == CalibreDatabaseHelper.DatabaseName
                 }
-                if (metadata?.isFile == true) {
+                val errorMessage = if (metadata?.isFile == true) {
                     copyDatabase(context, metadata.uri)
+                    null
                 } else {
-                    val errorMessage =
+                    val error =
                         "could not find ${CalibreDatabaseHelper.DatabaseName} in directory"
-                    Log.e("boxxx", errorMessage)
-                    coroutineScope.launch {
+                    Log.e("boxxx", error)
+                    error
+                }
+
+                coroutineScope.launch {
+                    if (errorMessage == null) {
                         snackbarHostState.showSnackbar(
-                            "could not find ${CalibreDatabaseHelper.DatabaseName} in directory",
+                            "database copied",
+                            duration = SnackbarDuration.Short
+                        )
+                    } else {
+                        snackbarHostState.showSnackbar(
+                            errorMessage,
                             withDismissAction = true,
                             duration = SnackbarDuration.Indefinite
                         )

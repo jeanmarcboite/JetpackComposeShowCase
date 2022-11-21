@@ -26,6 +26,13 @@ class CalibreDatabase {
                 dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'").results.map {
                     it.toList()
                 }
+
+            getCustomColumns(dbHelper, "custom_column_2")
+            getCustomColumns(dbHelper, "custom_column_3")
+            getCustomColumns(dbHelper, "custom_column_4")
+            getCustomColumns(dbHelper, "custom_column_5")
+            getCustomColumns(dbHelper, "custom_column_6")
+            getCustomColumns(dbHelper, "custom_column_1")
             errorMessage = "cannot get books"
 
             books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
@@ -125,6 +132,19 @@ class CalibreDatabase {
                 }
         } catch (e: Exception) {
             throw Exception(errorMessage, e)
+        }
+    }
+
+    private fun getCustomColumns(dbHelper: CalibreDatabaseHelper, table: String) {
+        val dao = dbHelper.getDao(CalibreBook::class.java)
+        val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
+        val entriesString: List<String> =
+            dao.queryRaw("select * from $table").results.toList().map {
+                "[" + it.joinToString() + "]"
+            }
+        Log.d("boxxx [getCustom]", "$table > ${entriesString}")
+        entries.forEach {
+            //Log.d("boxxx [getCustom]", "$table > ${it.joinToString()}")
         }
     }
 }

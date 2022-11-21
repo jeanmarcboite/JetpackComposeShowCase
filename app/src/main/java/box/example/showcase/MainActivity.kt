@@ -81,8 +81,6 @@ class MainActivity : ComponentActivity() {
 
         Flags.init(LocalContext.current)
 
-        mainViewModel.snackbarHostState = remember { SnackbarHostState() }
-
         navViewModel.pages = mainPages(context, mainViewModel)
         navViewModel.navController = rememberNavController()
 

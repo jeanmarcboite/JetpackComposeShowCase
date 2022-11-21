@@ -34,6 +34,17 @@ open class CustomColumn : CalibreEntity() {
     }
 }
 
+open class CustomColumnB : CalibreEntity() {
+    @DatabaseField(canBeNull = true)
+    val book: Int = 0
+
+    @DatabaseField
+    val value: String? = null
+    override fun toString(): String {
+        return value ?: "null"
+    }
+}
+
 open class BooksCustomColumnsLink(
     @DatabaseField
     val book: Int = 0,
@@ -52,6 +63,13 @@ class CustomColumn2 : CustomColumn()
 
 @DatabaseTable(tableName = "books_custom_column_2_link")
 class BooksCustomColumn2Link : BooksCustomColumnsLink()
+
+
+@DatabaseTable(tableName = "custom_column_3")
+class CustomColumn3 : CustomColumnB()
+
+@DatabaseTable(tableName = "books_custom_column_3_link")
+class BooksCustomColumn3Link : BooksCustomColumnsLink()
 
 
 
