@@ -27,16 +27,19 @@ fun LauncherButton(
     val coroutineScope = rememberCoroutineScope()
 
     fun copyDatabase(context: Context, input: Uri) {
+        val output = context.getDatabasePath(CalibreDatabaseHelper.DatabaseName)
+        Log.d("boxxx [DirectoryLauncher]", "copy datbase ${input} to $output ")
         val item = context.contentResolver.openInputStream(input)
         val bytes: ByteArray? = item?.readBytes()
         item?.close()
 
         bytes?.apply {
             val output: OutputStream =
-                FileOutputStream(context.getDatabasePath(CalibreDatabaseHelper.DatabaseName))
+                FileOutputStream(output)
             output.write(this, 0, size)
             output.close()
             databaseVersion.value++
+            Log.d("boxxx [DirectoryLauncher]", "datbase ${input} copied to $output ")
         }
     }
 
@@ -71,7 +74,6 @@ fun LauncherButton(
                         )
                     }
                 }
-
             }
         }
 

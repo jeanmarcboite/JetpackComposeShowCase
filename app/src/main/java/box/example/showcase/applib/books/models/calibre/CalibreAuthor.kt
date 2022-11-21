@@ -12,10 +12,15 @@ data class CalibreAuthor(
     @DatabaseField
     val link: String? = null,
     val books: MutableList<CalibreBook> = mutableListOf(),
-) : CalibreEntity()
+) : CalibreEntity() {
+    override fun toString(): String {
+        return name.toString()
+    }
 
-fun CalibreAuthor?.toString(): String {
-    return if (this != null) name.toString() else "null"
+    override fun equals(other: Any?): Boolean {
+        return other != null
+                && other.javaClass == javaClass
+                && id == (other as CalibreAuthor).id
+    }
 }
-
 
