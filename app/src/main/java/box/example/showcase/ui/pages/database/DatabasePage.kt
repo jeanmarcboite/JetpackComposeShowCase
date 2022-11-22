@@ -19,6 +19,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
+import box.example.showcase.applib.books.models.calibre.CalibreAuthor
+import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreDatabase
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
@@ -48,8 +50,12 @@ class DatabasePage :
         val currentBackStack by navController.currentBackStackEntryAsState()
 
         val tabs = listOf(
-            BooksScreen(viewModel.calibreDatabase.value?.books?.value),
-            AuthorsScreen(viewModel.calibreDatabase.value?.authors?.value)
+            BooksScreen(viewModel.calibreDatabase.value?.books?.value?.sortedBy {
+                (it as CalibreBook).title
+            }),
+            AuthorsScreen(viewModel.calibreDatabase.value?.authors?.value?.sortedBy {
+                (it as CalibreAuthor).sort
+            })
         )
         // Fetch your currentDestination:
         val currentRoute = currentBackStack?.destination?.route

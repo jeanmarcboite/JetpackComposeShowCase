@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable
 data class CalibreAuthor(
     @DatabaseField
     val name: String? = null,
-    @DatabaseField
+    @DatabaseField(columnName = "sort")
     val sort: String? = null,
     @DatabaseField
     val link: String? = null,
