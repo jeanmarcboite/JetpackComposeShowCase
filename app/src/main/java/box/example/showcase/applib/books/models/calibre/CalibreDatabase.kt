@@ -35,8 +35,10 @@ class CalibreDatabase(context: Context) {
             val customColumns = tables.filter { it.startsWith("custom_column_") }
             customColumns.forEach { getCustomColumns(it) }
             errorMessage = "cannot get books"
-
             books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
+            val bookMap: Map<Int, CalibreBook>? = books.value?.associate {
+                it.id to it as CalibreBook
+            }
 
             errorMessage = "cannot get authors"
             authors.value =
@@ -65,10 +67,6 @@ class CalibreDatabase(context: Context) {
                 CustomColumns[customColumnEntry.id] = Pair(customColumnEntry, listCustomColumn)
             }
 
-            val books: Map<Int, CalibreBook>? = books.value?.associate {
-                it.id to it as CalibreBook
-            }
-
             //map i to CustomColumnEntry
             //val customLinks: MutableMap<CustomColumnEntry, List<BooksCustomColumnsLink>> = mutableMapOf()
             // CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>>
@@ -82,7 +80,7 @@ class CalibreDatabase(context: Context) {
                     else -> listOf()
                 }
                 book_custom_column_i_links?.forEach { bookCustomColumnLink ->
-                    val book = books?.get(bookCustomColumnLink.book)
+                    val book = bookMap?.get(bookCustomColumnLink.book)
                     val custom_column: CustomColumn? =
                         custom_column_map[bookCustomColumnLink.value]
 
@@ -109,23 +107,23 @@ class CalibreDatabase(context: Context) {
 
             dbHelper.getDao(BooksAuthorsLink::class.java).queryForAll().forEach {
                 authors?.get(it.author)?.apply {
-                    books?.get(it.book)?.authors?.add(this)
+                    bookMap?.get(it.book)?.authors?.add(this)
                 }
-                books?.get(it.book)?.apply {
+                bookMap?.get(it.book)?.apply {
                     authors?.get(it.author)?.books?.add(this)
                 }
             }
 
             errorMessage = "cannot comments"
             dbHelper.getDao(CalibreComment::class.java).queryForAll().forEach {
-                books?.get(it.book)?.apply {
+                bookMap?.get(it.book)?.apply {
                     comment = it.text.toString()
                 }
             }
 
             dbHelper.getDao(CalibreBooksLanguagesLink::class.java).queryForAll()
                 .forEach { languageLink ->
-                    books?.get(languageLink.book)?.apply {
+                    bookMap?.get(languageLink.book)?.apply {
                         if (languagesMap?.get(languageLink.lang_code)?.lang_code != null) {
                             languages.add(languagesMap.get(languageLink.lang_code)?.lang_code!!)
                         }
