@@ -67,7 +67,7 @@ class CalibreDatabase(context: Context) {
                 )
 
                 // set list of CustomColumn values for custom_column_i
-                CustomColumns[customColumnEntry.id] = Pair(customColumnEntry, listCustomColumn)
+                /*CustomColumns[customColumnEntry.id] = Pair(customColumnEntry, listCustomColumn)*/
             }
 
             //map i to CustomColumnEntry
@@ -162,19 +162,18 @@ class CalibreDatabase(context: Context) {
                 dao.queryRaw("PRAGMA table_info($table)").results.toList()
             log("table info", table_info)
             val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
-            if (table_info.size > 2) {
+            val bookLinks = if (table_info.size > 2) {
                 // table_info = [[0, id, INTEGER, 0, null, 1], [1, book, INTEGER, 0, null, 0], [2, value, BOOL, 1, null, 0]]
                 val idIndex = table_info.find("id")
                 val bookIndex = table_info.find("book")
                 val valueIndex = table_info.find("value")
-                val booksLink = entries.map {
+                entries.map {
                     BooksLink(
                         id = it[idIndex].toInt(),
                         book = it[bookIndex].toInt(),
                         value = it[valueIndex]
                     )
                 }
-                Log.d(TAG, "$table > $booksLink")
             } else if (table_info.size == 2) {
                 // entries is list of possible values
                 val entryMap: Map<Int, String> = entries.associate {
@@ -192,18 +191,18 @@ class CalibreDatabase(context: Context) {
                 val idIndex = link_table_info.find("id")
                 val bookIndex = link_table_info.find("book")
                 val valueIndex = link_table_info.find("value")
-                val booksLink = links.map {
-                    // TODO: get indices from table_info
+                links.map {
                     BooksLink(
                         id = it[idIndex].toInt(),
                         book = it[bookIndex].toInt(),
                         value = entryMap[it[valueIndex].toInt()] ?: ""
                     )
                 }
-                Log.d(TAG, "$table > $booksLink")
+            } else {
+                listOf()
             }
             log("entries", entries)
-            entries.forEach { }
+            Log.d(TAG, "$table > $bookLinks")
         } catch (e: Exception) {
             Log.e("boxxx [custom]", e.message.toString())
         }
