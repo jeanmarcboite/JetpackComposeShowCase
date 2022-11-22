@@ -151,20 +151,59 @@ class CalibreDatabase(context: Context) {
                 }"
             )
         }
+
+        fun List<Array<String>>.find(field: String): Int {
+            return find {
+                it[1] == field
+            }?.get(0)?.toInt() ?: 0
+        }
         try {
-            val table_info = dao.queryRaw("PRAGMA table_info($table)").results.toList()
+            val table_info: List<Array<String>> =
+                dao.queryRaw("PRAGMA table_info($table)").results.toList()
             log("table info", table_info)
-            if (table_info.size == 2) {
-                // we must get book_custom_column_I_link
+            val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
+            if (table_info.size > 2) {
+                // table_info = [[0, id, INTEGER, 0, null, 1], [1, book, INTEGER, 0, null, 0], [2, value, BOOL, 1, null, 0]]
+                val idIndex = table_info.find("id")
+                val bookIndex = table_info.find("book")
+                val valueIndex = table_info.find("value")
+                val booksLink = entries.map {
+                    BooksLink(
+                        id = it[idIndex].toInt(),
+                        book = it[bookIndex].toInt(),
+                        value = it[valueIndex]
+                    )
+                }
+                Log.d(TAG, "$table > $booksLink")
+            } else if (table_info.size == 2) {
+                // entries is list of possible values
+                val entryMap: Map<Int, String> = entries.associate {
+                    it[0].toInt() to it[1]
+                }
+
+                // we must get book_custom_column_I_link: [id, book, value] where value is an index to entry
                 val link_table = "books_${table}_link"
                 val link_table_info =
                     dao.queryRaw("PRAGMA table_info($link_table)").results.toList()
                 log("link info", link_table_info)
+
                 val links = dao.queryRaw("select * from $link_table").results.toList()
                 log("links", links)
+                val idIndex = link_table_info.find("id")
+                val bookIndex = link_table_info.find("book")
+                val valueIndex = link_table_info.find("value")
+                val booksLink = links.map {
+                    // TODO: get indices from table_info
+                    BooksLink(
+                        id = it[idIndex].toInt(),
+                        book = it[bookIndex].toInt(),
+                        value = entryMap[it[valueIndex].toInt()] ?: ""
+                    )
+                }
+                Log.d(TAG, "$table > $booksLink")
             }
-            val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
             log("entries", entries)
+            entries.forEach { }
         } catch (e: Exception) {
             Log.e("boxxx [custom]", e.message.toString())
         }
