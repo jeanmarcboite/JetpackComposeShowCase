@@ -86,7 +86,7 @@ class CalibreDatabase(context: Context) {
                     2 -> dbHelper.getDao(BooksCustomColumn2Link::class.java).queryForAll()
                     else -> listOf()
                 }
-                book_custom_column_i_links?.forEach { bookCustomColumnLink ->
+                book_custom_column_i_links.forEach { bookCustomColumnLink ->
                     val book = bookMap?.get(bookCustomColumnLink.book)
                     val custom_column: CustomColumn? =
                         custom_column_map[bookCustomColumnLink.value]

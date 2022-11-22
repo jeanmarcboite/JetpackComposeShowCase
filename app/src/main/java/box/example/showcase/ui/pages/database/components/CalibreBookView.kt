@@ -56,9 +56,12 @@ fun CalibreBook.View() {
                     OutlinedCard(
                         label = { Text("${it.key}:") }
                     ) {
-                        Row(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.padding(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
                             it.value.forEach {
-                                Badge { Text(it.toString()) }
+                                Badge { Text(it) }
                             }
                         }
                     }
