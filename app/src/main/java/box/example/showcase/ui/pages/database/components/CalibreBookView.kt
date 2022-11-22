@@ -3,7 +3,10 @@ package box.example.showcase.ui.pages.database.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Badge
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,13 +24,6 @@ import com.jsramraj.flags.Flags
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalibreBook.View() {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
-    }
-
     OutlinedCard(
         Modifier
             .padding(4.dp)
@@ -57,16 +53,15 @@ fun CalibreBook.View() {
                         .padding(8.dp)
                 )
                 custom.forEach {
-                    Row() {
-                        Text("${it.key}:")
-                        it.value.forEach {
-                            Badge { Text(it.toString()) }
+                    OutlinedCard(
+                        label = { Text("${it.key}:") }
+                    ) {
+                        Row(modifier = Modifier.padding(16.dp)) {
+                            it.value.forEach {
+                                Badge { Text(it.toString()) }
+                            }
                         }
                     }
-
-                }
-                customColumns.forEach {
-                    it.View()
                 }
                 comment?.apply {
                     HtmlText(

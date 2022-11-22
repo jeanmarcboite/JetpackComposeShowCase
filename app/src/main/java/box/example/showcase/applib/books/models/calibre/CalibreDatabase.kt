@@ -46,10 +46,14 @@ class CalibreDatabase(context: Context) {
             }
 
             errorMessage = "cannot get custom columns"
-            getCustomColumns(bookMap)
 
             val custom_column_entries: List<CustomColumnEntry>? =
                 dbHelper.getDao(CustomColumnEntry::class.java).queryForAll()
+            val customColumnMap = custom_column_entries?.associate {
+                it.id to it
+            }
+            getCustomColumns(bookMap, customColumnMap)
+
             custom_column_entries?.forEach { customColumnEntry ->
                 errorMessage = "cannot get custom column ${customColumnEntry.id}"
                 val listCustomColumn: List<CustomColumn> = when (customColumnEntry.id) {
@@ -135,11 +139,14 @@ class CalibreDatabase(context: Context) {
     }
 
     //private val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> =
-    private fun getCustomColumns(bookMap: Map<Int, CalibreBook>?) {
+    private fun getCustomColumns(
+        bookMap: Map<Int, CalibreBook>?,
+        customColumnMap: Map<Int, CustomColumnEntry>?
+    ) {
         val customColumns = tables.filter { it.startsWith("custom_column_") }
         customColumns.forEach {
-            //val column = it.split("_").last().toInt()
-            val column = it
+            val column = customColumnMap?.get(it.split("_").last().toInt())?.name ?: it
+
             val booksLinks = getCustomColumn(it)
 
             booksLinks?.forEach { booksLink ->
