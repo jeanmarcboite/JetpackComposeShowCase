@@ -21,6 +21,7 @@ data class CalibreBook(
     val author_sort: String = "",
     val authors: MutableList<CalibreAuthor> = mutableListOf(),
     var comment: String? = null,
+    val custom: MutableMap<Int, MutableList<String>> = mutableMapOf(),
     val customColumns: MutableMap<CustomColumnEntry, MutableList<CustomColumn>> = mutableMapOf(),
     val languages: MutableList<String> = mutableListOf(),
     @DatabaseField

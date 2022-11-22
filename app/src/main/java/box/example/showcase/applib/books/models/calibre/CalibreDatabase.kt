@@ -46,7 +46,7 @@ class CalibreDatabase(context: Context) {
             }
 
             errorMessage = "cannot get custom columns"
-            getCustomColumns()
+            getCustomColumns(bookMap)
 
             val custom_column_entries: List<CustomColumnEntry>? =
                 dbHelper.getDao(CustomColumnEntry::class.java).queryForAll()
@@ -134,13 +134,28 @@ class CalibreDatabase(context: Context) {
         }
     }
 
-    private fun getCustomColumns() {
+    //private val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> =
+    private fun getCustomColumns(bookMap: Map<Int, CalibreBook>?) {
+
         val customColumns = tables.filter { it.startsWith("custom_column_") }
-        customColumns.forEach { getCustomColumn(it) }
+        customColumns.forEach {
+            val column = it.split("_").last().toInt()
+            val booksLinks = getCustomColumn(it)
+
+            booksLinks?.forEach { booksLink ->
+                val book = bookMap?.get(booksLink.book)
+                if (book != null) {
+                    if (book.custom[column] == null)
+                        book.custom[column] = mutableListOf()
+
+                    book.custom[column]!!.add(booksLink.value)
+                }
+            }
+        }
 
     }
 
-    private fun getCustomColumn(table: String) {
+    private fun getCustomColumn(table: String): List<BooksLink>? {
         val TAG = "boxxx [getCustom]"
         fun log(info: String, list: List<Array<String>>) {
             Log.d(
@@ -162,7 +177,7 @@ class CalibreDatabase(context: Context) {
                 dao.queryRaw("PRAGMA table_info($table)").results.toList()
             log("table info", table_info)
             val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
-            val bookLinks = if (table_info.size > 2) {
+            val booksLinks = if (table_info.size > 2) {
                 // table_info = [[0, id, INTEGER, 0, null, 1], [1, book, INTEGER, 0, null, 0], [2, value, BOOL, 1, null, 0]]
                 val idIndex = table_info.find("id")
                 val bookIndex = table_info.find("book")
@@ -202,11 +217,13 @@ class CalibreDatabase(context: Context) {
                 listOf()
             }
             log("entries", entries)
-            Log.d(TAG, "$table > $bookLinks")
+            Log.d(TAG, "$table > $booksLinks")
+
+            return booksLinks
         } catch (e: Exception) {
             Log.e("boxxx [custom]", e.message.toString())
         }
 
-
+        return null
     }
 }
