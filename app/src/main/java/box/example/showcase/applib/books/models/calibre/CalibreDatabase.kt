@@ -9,7 +9,7 @@ import com.j256.ormlite.dao.Dao
 class CalibreDatabase {
     val books = mutableStateOf<List<CalibreEntity>?>(null)
     val authors = mutableStateOf<List<CalibreEntity>?>(null)
-    var tables: List<List<String>> = listOf()
+    var tables: List<String> = listOf()
     val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> = mutableMapOf()
     fun read(context: Context) {
         var errorMessage = "database read error"
@@ -24,15 +24,11 @@ class CalibreDatabase {
             // Don't kow why sqlite_schema does not work (sqlite version too old?)
             tables =
                 dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'").results.map {
-                    it.toList()
+                    it.toList().first()
                 }
 
-            getCustomColumns(dbHelper, "custom_column_2")
-            getCustomColumns(dbHelper, "custom_column_3")
-            getCustomColumns(dbHelper, "custom_column_4")
-            getCustomColumns(dbHelper, "custom_column_5")
-            getCustomColumns(dbHelper, "custom_column_6")
-            getCustomColumns(dbHelper, "custom_column_1")
+            val customColumns = tables.filter { it.startsWith("custom_column_") }
+            customColumns.forEach { getCustomColumns(dao, it) }
             errorMessage = "cannot get books"
 
             books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
@@ -135,9 +131,8 @@ class CalibreDatabase {
         }
     }
 
-    private fun getCustomColumns(dbHelper: CalibreDatabaseHelper, table: String) {
+    private fun getCustomColumns(dao: Dao<CalibreBook, *>, table: String) {
         try {
-            val dao = dbHelper.getDao(CalibreBook::class.java)
             val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
             val entriesString: List<String> =
                 dao.queryRaw("select * from $table").results.toList().map {
