@@ -136,10 +136,10 @@ class CalibreDatabase(context: Context) {
 
     //private val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> =
     private fun getCustomColumns(bookMap: Map<Int, CalibreBook>?) {
-
         val customColumns = tables.filter { it.startsWith("custom_column_") }
         customColumns.forEach {
-            val column = it.split("_").last().toInt()
+            //val column = it.split("_").last().toInt()
+            val column = it
             val booksLinks = getCustomColumn(it)
 
             booksLinks?.forEach { booksLink ->
