@@ -32,8 +32,6 @@ class CalibreDatabase(context: Context) {
                     it.toList().first()
                 }
 
-            val customColumns = tables.filter { it.startsWith("custom_column_") }
-            customColumns.forEach { getCustomColumns(it) }
             errorMessage = "cannot get books"
             books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
             val bookMap: Map<Int, CalibreBook>? = books.value?.associate {
@@ -43,9 +41,14 @@ class CalibreDatabase(context: Context) {
             errorMessage = "cannot get authors"
             authors.value =
                 dbHelper.getDao(CalibreAuthor::class.java).queryForAll()
+            val authors: Map<Int, CalibreAuthor>? = authors.value?.associate {
+                it.id to it as CalibreAuthor
+            }
 
             errorMessage = "cannot get custom columns"
-            var custom_column_entries: List<CustomColumnEntry>? =
+            getCustomColumns()
+
+            val custom_column_entries: List<CustomColumnEntry>? =
                 dbHelper.getDao(CustomColumnEntry::class.java).queryForAll()
             custom_column_entries?.forEach { customColumnEntry ->
                 errorMessage = "cannot get custom column ${customColumnEntry.id}"
@@ -93,9 +96,6 @@ class CalibreDatabase(context: Context) {
                 }
             }
 
-            val authors: Map<Int, CalibreAuthor>? = authors.value?.associate {
-                it.id to it as CalibreAuthor
-            }
 
             errorMessage = "cannot get languages"
             val languagesMap: Map<Int, CalibreLanguage>? =
@@ -134,23 +134,41 @@ class CalibreDatabase(context: Context) {
         }
     }
 
-    private fun getCustomColumns(table: String) {
+    private fun getCustomColumns() {
+        val customColumns = tables.filter { it.startsWith("custom_column_") }
+        customColumns.forEach { getCustomColumn(it) }
+
+    }
+
+    private fun getCustomColumn(table: String) {
+        val TAG = "boxxx [getCustom]"
+        fun log(info: String, list: List<Array<String>>) {
+            Log.d(
+                TAG, "$table $info > ${
+                    list.map {
+                        "[" + it.joinToString() + "]"
+                    }
+                }"
+            )
+        }
         try {
+            val table_info = dao.queryRaw("PRAGMA table_info($table)").results.toList()
+            log("table info", table_info)
+            if (table_info.size == 2) {
+                // we must get book_custom_column_I_link
+                val link_table = "books_${table}_link"
+                val link_table_info =
+                    dao.queryRaw("PRAGMA table_info($link_table)").results.toList()
+                log("link info", link_table_info)
+                val links = dao.queryRaw("select * from $link_table").results.toList()
+                log("links", links)
+            }
             val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
-            val entriesString: List<String> =
-                dao.queryRaw("select * from $table").results.toList().map {
-                    "[" + it.joinToString() + "]"
-                }
-            Log.d("boxxx [getCustom]", "$table > ${entriesString}")
-            entries.forEach {
-                //Log.d("boxxx [getCustom]", "$table > ${it.joinToString()}")
-            }
-            val info = dao.queryRaw("PRAGMA table_info($table)").results.toList().map {
-                "[" + it.joinToString() + "]"
-            }
-            Log.d("boxxx [getCustom]", "$table > ${info}")
+            log("entries", entries)
         } catch (e: Exception) {
             Log.e("boxxx [custom]", e.message.toString())
         }
+
+
     }
 }
