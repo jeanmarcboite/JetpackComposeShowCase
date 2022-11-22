@@ -14,8 +14,6 @@ class CalibreDatabase(context: Context) {
 
     private val dao: Dao<CalibreBook, *>
     private val tables: List<String>
-    private val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> =
-        mutableMapOf()
 
     init {
         try {
@@ -53,53 +51,6 @@ class CalibreDatabase(context: Context) {
                 it.id to it
             }
             getCustomColumns(bookMap, customColumnMap)
-
-            custom_column_entries?.forEach { customColumnEntry ->
-                errorMessage = "cannot get custom column ${customColumnEntry.id}"
-                val listCustomColumn: List<CustomColumn> = when (customColumnEntry.id) {
-                    1 -> dbHelper.getDao(CustomColumn1::class.java).queryForAll()
-                    2 -> dbHelper.getDao(CustomColumn2::class.java).queryForAll()
-                    else -> listOf()
-                }
-                Log.v(
-                    "boxxx [custom column]",
-                    "custom column ${customColumnEntry.id}[${customColumnEntry.name}] -> ${
-                        listCustomColumn.joinToString(
-                            " / "
-                        )
-                    }"
-                )
-
-                // set list of CustomColumn values for custom_column_i
-                /*CustomColumns[customColumnEntry.id] = Pair(customColumnEntry, listCustomColumn)*/
-            }
-
-            //map i to CustomColumnEntry
-            //val customLinks: MutableMap<CustomColumnEntry, List<BooksCustomColumnsLink>> = mutableMapOf()
-            // CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>>
-            CustomColumns.forEach { (cc_key: Int, cc_value: Pair<CustomColumnEntry, List<CustomColumn>>) ->
-                val custom_column_map = cc_value.second.associate { it.id to it }
-                // get book_custom_column_i_link
-                errorMessage = "cannot get custom column links $cc_key"
-                val book_custom_column_i_links: List<BooksCustomColumnsLink> = when (cc_key) {
-                    1 -> dbHelper.getDao(BooksCustomColumn1Link::class.java).queryForAll()
-                    2 -> dbHelper.getDao(BooksCustomColumn2Link::class.java).queryForAll()
-                    else -> listOf()
-                }
-                book_custom_column_i_links.forEach { bookCustomColumnLink ->
-                    val book = bookMap?.get(bookCustomColumnLink.book)
-                    val custom_column: CustomColumn? =
-                        custom_column_map[bookCustomColumnLink.value]
-
-                    if (book != null && custom_column != null) {
-                        if (book.customColumns[cc_value.first] == null)
-                            book.customColumns[cc_value.first] = mutableListOf(custom_column)
-                        else
-                            book.customColumns[cc_value.first]!!.add(custom_column)
-                    }
-                }
-            }
-
 
             errorMessage = "cannot get languages"
             val languagesMap: Map<Int, CalibreLanguage>? =

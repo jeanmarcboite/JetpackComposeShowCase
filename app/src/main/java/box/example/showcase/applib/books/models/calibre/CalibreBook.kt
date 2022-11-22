@@ -4,17 +4,6 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 import java.util.*
 
-/*
-@Entity(
-    tableName = "books",
-    indices = [Index(name = "authors_idx", value = ["author_sort"]), Index(
-        name = "books_idx",
-        value = ["sort"]
-    )]
-)
-
- */
-
 @DatabaseTable(tableName = "books")
 data class CalibreBook(
     @DatabaseField
@@ -22,7 +11,6 @@ data class CalibreBook(
     val authors: MutableList<CalibreAuthor> = mutableListOf(),
     var comment: String? = null,
     val custom: MutableMap<String, MutableList<String>> = mutableMapOf(),
-    val customColumns: MutableMap<CustomColumnEntry, MutableList<CustomColumn>> = mutableMapOf(),
     val languages: MutableList<String> = mutableListOf(),
     @DatabaseField
     val flags: Int = 0,
