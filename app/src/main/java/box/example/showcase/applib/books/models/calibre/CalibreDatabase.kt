@@ -89,24 +89,24 @@ class CalibreDatabase(context: Context) {
         }
     }
 
-    //private val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> =
     private fun getCustomColumns(
         bookMap: Map<Int, CalibreBook>?,
         customColumnMap: Map<Int, CustomColumnEntry>?
     ) {
         val customColumns = tables.filter { it.startsWith("custom_column_") }
         customColumns.forEach {
-            val column = customColumnMap?.get(it.split("_").last().toInt())?.name ?: it
+            val column =
+                customColumnMap?.get(it.split("_").last().toInt()) ?: CustomColumnEntry(name = it)
 
             val booksLinks = getCustomColumn(it)
 
             booksLinks?.forEach { booksLink ->
                 val book = bookMap?.get(booksLink.book)
                 if (book != null) {
-                    if (book.custom[column] == null)
-                        book.custom[column] = mutableListOf()
+                    if (book.customColumns[column] == null)
+                        book.customColumns[column] = mutableListOf()
 
-                    book.custom[column]!!.add(booksLink.value)
+                    book.customColumns[column]!!.add(booksLink.value)
                 }
             }
         }

@@ -52,9 +52,9 @@ fun CalibreBook.View() {
                     modifier = Modifier
                         .padding(8.dp)
                 )
-                custom.forEach {
+                customColumns.forEach {
                     OutlinedCard(
-                        label = { Text("${it.key}:") }
+                        label = { Text("${it.key.name}:") }
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
