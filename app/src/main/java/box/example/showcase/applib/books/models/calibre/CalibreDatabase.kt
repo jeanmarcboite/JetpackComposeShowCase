@@ -6,13 +6,18 @@ import androidx.compose.runtime.mutableStateOf
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.j256.ormlite.dao.Dao
 
-class CalibreDatabase {
+class CalibreDatabase(context: Context) {
+    private var errorMessage = "database read error"
+
     val books = mutableStateOf<List<CalibreEntity>?>(null)
     val authors = mutableStateOf<List<CalibreEntity>?>(null)
-    var tables: List<String> = listOf()
-    val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> = mutableMapOf()
-    fun read(context: Context) {
-        var errorMessage = "database read error"
+
+    private val dao: Dao<CalibreBook, *>
+    private val tables: List<String>
+    private val CustomColumns: MutableMap<Int, Pair<CustomColumnEntry, List<CustomColumn>>> =
+        mutableMapOf()
+
+    init {
         try {
             val dbHelper =
                 OpenHelperManager.getHelper(context, CalibreDatabaseHelper::class.java)
@@ -20,7 +25,7 @@ class CalibreDatabase {
                 throw Exception("helper not open")
 
             errorMessage = "cannot get database tables"
-            val dao: Dao<CalibreBook, *> = dbHelper.getDao(CalibreBook::class.java)
+            dao = dbHelper.getDao(CalibreBook::class.java)
             // Don't kow why sqlite_schema does not work (sqlite version too old?)
             tables =
                 dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'").results.map {
@@ -28,7 +33,7 @@ class CalibreDatabase {
                 }
 
             val customColumns = tables.filter { it.startsWith("custom_column_") }
-            customColumns.forEach { getCustomColumns(dao, it) }
+            customColumns.forEach { getCustomColumns(it) }
             errorMessage = "cannot get books"
 
             books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
@@ -131,7 +136,7 @@ class CalibreDatabase {
         }
     }
 
-    private fun getCustomColumns(dao: Dao<CalibreBook, *>, table: String) {
+    private fun getCustomColumns(table: String) {
         try {
             val entries: List<Array<String>> = dao.queryRaw("select * from $table").results.toList()
             val entriesString: List<String> =

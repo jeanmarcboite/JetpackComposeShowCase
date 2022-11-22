@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.R
+import box.example.showcase.applib.books.models.calibre.CalibreDatabase
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
 import box.example.showcase.ui.navigation.navigateSingleTopTo
@@ -47,8 +48,8 @@ class DatabasePage :
         val currentBackStack by navController.currentBackStackEntryAsState()
 
         val tabs = listOf(
-            BooksScreen(viewModel.calibreDatabase.books),
-            AuthorsScreen(viewModel.calibreDatabase.authors)
+            BooksScreen(viewModel.calibreDatabase.value?.books?.value),
+            AuthorsScreen(viewModel.calibreDatabase.value?.authors?.value)
         )
         // Fetch your currentDestination:
         val currentRoute = currentBackStack?.destination?.route
@@ -98,7 +99,7 @@ class DatabasePage :
 
         LaunchedEffect(viewModel.databaseVersion.value) {
             try {
-                viewModel.calibreDatabase.read(context)
+                viewModel.calibreDatabase.value = CalibreDatabase(context)
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {
                     ""
