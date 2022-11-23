@@ -34,11 +34,7 @@ abstract class DatabaseTableScreen(val list: List<CalibreEntity>?) {
     }
 
     @Composable
-    open fun Content() {
-        Content {
-            it.View()
-        }
-    }
+    abstract fun Content()
 }
 
 class BooksScreen(list: List<CalibreEntity>?) : DatabaseTableScreen(list) {

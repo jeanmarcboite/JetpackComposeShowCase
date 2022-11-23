@@ -36,25 +36,6 @@ fun CalibreEntityView(calibreEntity: CalibreEntity) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalibreEntity.View() {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
-            enabled = false,
-            label = { Text(id.toString()) },
-            value = "Entity",
-            onValueChange = {})
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun CalibreRating.View() {
     Card(
         modifier = Modifier
