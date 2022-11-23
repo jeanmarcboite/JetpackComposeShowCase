@@ -40,33 +40,28 @@ fun CalibreEntityView(calibreEntity: CalibreEntity) {
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalibreRating.View() {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
-        RatingBar(
-            value = rating.toFloat(),
-            config = RatingBarConfig()
-                .activeColor(Color.Yellow)
-                .hideInactiveStars(false)
-                .inactiveColor(Color.LightGray)
-                .inactiveBorderColor(Color.Blue)
-                .stepSize(StepSize.ONE)
-                .numStars(10)
-                .isIndicator(true)
-                .size(16.dp)
-                .padding(2.dp)
-                .style(RatingBarStyle.HighLighted),
-            onValueChange = {
-                //rating = it
-            },
-            onRatingChanged = {
-                Log.d("TAG", "onRatingChanged: $it")
-            }
-        )
-    }
+    RatingBar(
+        value = rating.toFloat(),
+        config = RatingBarConfig()
+            .activeColor(Color.Yellow)
+            .hideInactiveStars(false)
+            .inactiveColor(Color.LightGray)
+            .inactiveBorderColor(Color.Blue)
+            .stepSize(StepSize.ONE)
+            .numStars(10)
+            .isIndicator(true)
+            .size(16.dp)
+            .padding(2.dp)
+            .style(RatingBarStyle.HighLighted),
+        onValueChange = {
+            //rating = it
+        },
+        onRatingChanged = {
+            Log.d("TAG", "onRatingChanged: $it")
+        }
+    )
 }
