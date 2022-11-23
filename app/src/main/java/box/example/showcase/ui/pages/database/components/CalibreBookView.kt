@@ -12,6 +12,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.CalibreBook
+import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
 import box.example.showcase.ui.components.OutlinedCard
 import box.example.showcase.ui.pages.database.LanguageMap
 import box.example.showcase.ui.theme.touchpoint_lg
@@ -45,22 +46,8 @@ fun CalibreBook.View() {
             }
             Column(modifier = Modifier.padding(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    customColumns.forEach {
-                        if (it.key.datatype == "bool") {
-                            OutlinedCard(
-                                modifier = Modifier.defaultMinSize(minWidth = 72.dp),
-                                label = { Text("${it.key.name}") }
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.Center,
-                                ) {
-                                    Checkbox(
-                                        checked = it.value.first().toInt() != 0,
-                                        enabled = false, onCheckedChange = {}
-                                    )
-                                }
-                            }
-                        }
+                    customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
+                        entry.ViewIfBool()
                     }
 
                     Text(
@@ -93,8 +80,11 @@ fun CalibreBook.View() {
                             }
                         }
                 }
+                customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
+                    entry.ViewIfComments()
+                }
                 customColumns.forEach {
-                    if (it.key.datatype != "bool") {
+                    if (it.key.datatype != "bool" && it.key.datatype != "comments") {
                         OutlinedCard(
                             modifier = Modifier.fillMaxWidth(),
                             label = { Text("${it.key.name}:") }
@@ -113,6 +103,48 @@ fun CalibreBook.View() {
                 comment?.apply {
                     HtmlText(
                         text = this,
+                        style = TextStyle(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = MaterialTheme.typography.labelMedium.fontSize
+                        )
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfBool() {
+    if (key.datatype == "bool") {
+        OutlinedCard(
+            modifier = Modifier.defaultMinSize(minWidth = 72.dp),
+            label = { Text("${key.name}") }
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Checkbox(
+                    checked = value.first().toInt() != 0,
+                    enabled = false, onCheckedChange = {}
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfComments() {
+    if (key.datatype == "comments") {
+        OutlinedCard(
+            modifier = Modifier.fillMaxSize(),
+            label = { Text("${key.name}") }
+        ) {
+            value?.apply {
+                forEach {
+                    HtmlText(
+                        text = it,
+                        modifier = Modifier.padding(start = 8.dp),
                         style = TextStyle(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             fontSize = MaterialTheme.typography.labelMedium.fontSize
