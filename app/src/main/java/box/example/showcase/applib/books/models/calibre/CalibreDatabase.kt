@@ -45,10 +45,6 @@ class CalibreDatabase(context: Context) {
             }
 
             errorMessage = "cannot get data"
-            val ratings: List<CalibreEntity>? =
-                dbHelper.getDao(CalibreRating::class.java).queryForAll()
-            val publishers: List<CalibreEntity>? =
-                dbHelper.getDao(CalibreLibraryId::class.java).queryForAll()
             val entryMap: Map<String, List<CalibreEntity>?> = mapOf(
                 "data" to dbHelper.getDao(CalibreData::class.java).queryForAll(),
                 "feeds" to dbHelper.getDao(CalibreFeeds::class.java).queryForAll(),
@@ -112,7 +108,7 @@ class CalibreDatabase(context: Context) {
     }
 
     private fun Map<Int, CalibreBook>.readBooksData(table: String, entries: List<CalibreEntity>) {
-        val TAG = "boxxx [getCustom]"
+        val TAG = "boxxx [readBooksData]"
         fun log(info: String, list: List<Array<String>>) {
             Log.d(
                 TAG, "$table $info > ${
@@ -123,6 +119,7 @@ class CalibreDatabase(context: Context) {
             )
         }
         try {
+            Log.d(TAG, "$table entries: $entries")
             val entryMap: Map<Int, CalibreEntity> = entries.associate {
                 it.id to it
             }

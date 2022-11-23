@@ -69,6 +69,9 @@ fun CalibreBook.View() {
                             .padding(8.dp)
                     )
                 }
+                listOf("ratings").forEach {
+                    columns[it]?.first()?.apply { CalibreEntityView(this) }
+                }
                 columns.forEach {
                     OutlinedCard(
                         modifier = Modifier.fillMaxWidth(),
