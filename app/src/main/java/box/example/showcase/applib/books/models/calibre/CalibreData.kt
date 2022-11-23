@@ -38,7 +38,7 @@ data class CalibrePreferences(
 ) : CalibreEntity()
 
 @DatabaseTable(tableName = "publishers")
-class publishers() : CalibreSortableEntity()
+class CalibrePublishers() : CalibreSortableEntity()
 
 @DatabaseTable(tableName = "ratings")
 data class CalibreRating(
@@ -46,7 +46,7 @@ data class CalibreRating(
 ) : CalibreEntity()
 
 @DatabaseTable(tableName = "series")
-class series() : CalibreSortableEntity()
+class CalibreSeries() : CalibreSortableEntity()
 
 @DatabaseTable(tableName = "tags")
 data class CalibreTag(

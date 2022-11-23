@@ -50,8 +50,14 @@ class CalibreDatabase(context: Context) {
             val publishers: List<CalibreEntity>? =
                 dbHelper.getDao(CalibreLibraryId::class.java).queryForAll()
             val entryMap: Map<String, List<CalibreEntity>?> = mapOf(
-                "ratings" to ratings,
-                "publishers" to publishers
+                "data" to dbHelper.getDao(CalibreData::class.java).queryForAll(),
+                "feeds" to dbHelper.getDao(CalibreFeeds::class.java).queryForAll(),
+                "identifiers" to dbHelper.getDao(CalibreIdentifiers::class.java).queryForAll(),
+                "library_id" to dbHelper.getDao(CalibreLibraryId::class.java).queryForAll(),
+                "publishers" to dbHelper.getDao(CalibrePublishers::class.java).queryForAll(),
+                "ratings" to dbHelper.getDao(CalibreRating::class.java).queryForAll(),
+                "series" to dbHelper.getDao(CalibreSeries::class.java).queryForAll(),
+                "tags" to dbHelper.getDao(CalibreTag::class.java).queryForAll(),
             )
             entryMap.forEach { (key, calibreEntities) ->
                 calibreEntities?.apply {
