@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.j256.ormlite.dao.Dao
 
+
 class CalibreDatabase(context: Context) {
     private var errorMessage = "database read error"
 
@@ -43,10 +44,25 @@ class CalibreDatabase(context: Context) {
                 it.id to it as CalibreAuthor
             }
 
+            errorMessage = "cannot get data"
+            val ratings: List<CalibreEntity>? =
+                dbHelper.getDao(CalibreRating::class.java).queryForAll()
+            val publishers: List<CalibreEntity>? =
+                dbHelper.getDao(CalibreLibraryId::class.java).queryForAll()
+            val entryMap: Map<String, List<CalibreEntity>?> = mapOf(
+                "ratings" to ratings,
+                "publishers" to publishers
+            )
+            entryMap.forEach { (key, calibreEntities) ->
+                calibreEntities?.apply {
+                    bookMap?.readBooksData(key, this)
+                }
+            }
+
             errorMessage = "cannot get custom columns"
 
-            val custom_column_entries: List<CustomColumnEntry>? =
-                dbHelper.getDao(CustomColumnEntry::class.java).queryForAll()
+            val custom_column_entries: List<CalibreCustomColumn>? =
+                dbHelper.getDao(CalibreCustomColumn::class.java).queryForAll()
             val customColumnMap = custom_column_entries?.associate {
                 it.id to it
             }
@@ -89,14 +105,59 @@ class CalibreDatabase(context: Context) {
         }
     }
 
+    private fun Map<Int, CalibreBook>.readBooksData(table: String, entries: List<CalibreEntity>) {
+        val TAG = "boxxx [getCustom]"
+        fun log(info: String, list: List<Array<String>>) {
+            Log.d(
+                TAG, "$table $info > ${
+                    list.map {
+                        "[" + it.joinToString() + "]"
+                    }
+                }"
+            )
+        }
+        try {
+            val entryMap: Map<Int, CalibreEntity> = entries.associate {
+                it.id to it
+            }
+            val link_table = "books_${table}_link"
+            val link_table_info =
+                dao.queryRaw("PRAGMA table_info($link_table)").results.toList()
+            log("link info", link_table_info)
+
+            val links = dao.queryRaw("select * from $link_table").results.toList()
+            log("links", links)
+            val idIndex = link_table_info.find("id")
+            val bookIndex = link_table_info.find("book")
+            val valueIndex = 2 // link_table_info.find("value")
+
+            links.forEach {
+                val id = it[idIndex].toInt()
+                val book: CalibreBook? = this[it[bookIndex].toInt()]
+                val value: CalibreEntity? = entryMap[it[valueIndex].toInt()]
+
+                if (value != null)
+                    book?.apply {
+                        if (columns[table] == null)
+                            columns[table] = mutableListOf()
+                        columns[table]!!.add(value)
+                    }
+            }
+
+        } catch (e: Exception) {
+            Log.e("boxxx [custom]", e.message.toString())
+        }
+
+    }
+
     private fun getCustomColumns(
         bookMap: Map<Int, CalibreBook>?,
-        customColumnMap: Map<Int, CustomColumnEntry>?
+        customColumnMap: Map<Int, CalibreCustomColumn>?
     ) {
         val customColumns = tables.filter { it.startsWith("custom_column_") }
         customColumns.forEach {
             val column =
-                customColumnMap?.get(it.split("_").last().toInt()) ?: CustomColumnEntry(name = it)
+                customColumnMap?.get(it.split("_").last().toInt()) ?: CalibreCustomColumn(name = it)
 
             val booksLinks = getCustomColumn(it)
 
@@ -113,6 +174,12 @@ class CalibreDatabase(context: Context) {
 
     }
 
+    private fun List<Array<String>>.find(field: String): Int {
+        return find {
+            it[1] == field
+        }?.get(0)?.toInt() ?: 0
+    }
+
     private fun getCustomColumn(table: String): List<BooksLink>? {
         val TAG = "boxxx [getCustom]"
         fun log(info: String, list: List<Array<String>>) {
@@ -125,11 +192,6 @@ class CalibreDatabase(context: Context) {
             )
         }
 
-        fun List<Array<String>>.find(field: String): Int {
-            return find {
-                it[1] == field
-            }?.get(0)?.toInt() ?: 0
-        }
         try {
             val table_info: List<Array<String>> =
                 dao.queryRaw("PRAGMA table_info($table)").results.toList()

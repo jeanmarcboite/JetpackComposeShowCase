@@ -3,11 +3,9 @@ package box.example.showcase.ui.pages.database.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Badge
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -46,22 +44,59 @@ fun CalibreBook.View() {
                     )
             }
             Column(modifier = Modifier.padding(8.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    customColumns.forEach {
+                        if (it.key.datatype == "bool") {
+                            OutlinedCard(
+                                modifier = Modifier.defaultMinSize(minWidth = 72.dp),
+                                label = { Text("${it.key.name}") }
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    Checkbox(
+                                        checked = it.value.first().toInt() != 0,
+                                        enabled = false, onCheckedChange = {}
+                                    )
+                                }
+                            }
+                        }
+                    }
 
-                Text(
-                    text = title.toString(),
-                    modifier = Modifier
-                        .padding(8.dp)
-                )
-                customColumns.forEach {
+                    Text(
+                        text = title.toString(),
+                        modifier = Modifier
+                            .padding(8.dp)
+                    )
+                }
+                columns.forEach {
                     OutlinedCard(
-                        label = { Text("${it.key.name}:") }
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("${it.key}:") }
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             it.value.forEach {
-                                Badge { Text(it) }
+                                Badge { Text(it.toString()) }
+                            }
+                        }
+                    }
+                }
+                customColumns.forEach {
+                    if (it.key.datatype != "bool") {
+                        OutlinedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("${it.key.name}:") }
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                it.value.forEach {
+                                    Badge { Text(it) }
+                                }
                             }
                         }
                     }

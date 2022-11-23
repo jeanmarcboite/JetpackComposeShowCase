@@ -10,7 +10,8 @@ data class CalibreBook(
     val author_sort: String = "",
     val authors: MutableList<CalibreAuthor> = mutableListOf(),
     var comment: String? = null,
-    val customColumns: MutableMap<CustomColumnEntry, MutableList<String>> = mutableMapOf(),
+    val columns: MutableMap<String, MutableList<CalibreEntity>> = mutableMapOf(),
+    val customColumns: MutableMap<CalibreCustomColumn, MutableList<String>> = mutableMapOf(),
     val languages: MutableList<String> = mutableListOf(),
     @DatabaseField
     val flags: Int = 0,

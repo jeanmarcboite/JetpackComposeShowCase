@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
 @DatabaseTable(tableName = "custom_columns")
-data class CustomColumnEntry(
+data class CalibreCustomColumn(
     @DatabaseField
     val label: String? = null,
     @DatabaseField

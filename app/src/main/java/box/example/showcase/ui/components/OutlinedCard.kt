@@ -2,7 +2,6 @@ package box.example.showcase.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -26,11 +25,9 @@ fun OutlinedCard(
         mutableStateOf(0f)
     }
 
-
     val brush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer)
-    Column(modifier = Modifier
+    Column(modifier = modifier
         .padding(4.dp)
-        .fillMaxWidth()
         .drawWithContent {
             drawContent()
             clipRect { // Not needed if you do not care about painting half stroke outside
