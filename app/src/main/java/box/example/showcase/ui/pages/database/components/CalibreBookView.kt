@@ -79,7 +79,9 @@ fun CalibreBook.View() {
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             it.value.forEach {
-                                Badge { Text(it.toString()) }
+                                Badge {
+                                    CalibreEntityView(calibreEntity = it)
+                                }
                             }
                         }
                     }
