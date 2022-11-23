@@ -69,25 +69,29 @@ fun CalibreBook.View() {
                             .padding(8.dp)
                     )
                 }
-                listOf("ratings").forEach {
-                    columns[it]?.first()?.apply { CalibreEntityView(this) }
+
+                val columnsList = mapOf("ratings" to false, "publishers" to true)
+                columnsList.forEach {
+                    columns[it.key]?.apply { CalibreEntityListView(it.key, it.value, this) }
                 }
+
                 columns.forEach {
-                    OutlinedCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text("${it.key}:") }
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    if (it.key !in (columnsList))
+                        OutlinedCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text("${it.key}:") }
                         ) {
-                            it.value.forEach {
-                                Badge {
-                                    CalibreEntityView(calibreEntity = it)
+                            Row(
+                                modifier = Modifier.padding(16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                it.value.forEach {
+                                    Badge {
+                                        CalibreEntityView(calibreEntity = it)
+                                    }
                                 }
                             }
                         }
-                    }
                 }
                 customColumns.forEach {
                     if (it.key.datatype != "bool") {
