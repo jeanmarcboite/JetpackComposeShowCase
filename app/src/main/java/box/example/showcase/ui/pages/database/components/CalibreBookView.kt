@@ -25,7 +25,7 @@ import com.jsramraj.flags.Flags
 @Composable
 fun CalibreBook.View() {
     OutlinedCard(
-        Modifier
+        modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth(), label = {
             Text(authors.joinToString { it.name.toString() })

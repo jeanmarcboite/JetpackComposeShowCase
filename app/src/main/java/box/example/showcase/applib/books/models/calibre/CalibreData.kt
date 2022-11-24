@@ -27,7 +27,11 @@ data class CalibreIdentifiers(
     val type: String? = null,
     @DatabaseField(columnName = "val")
     val value: String? = null
-) : CalibreBookData()
+) : CalibreBookData() {
+    override fun toString(): String {
+        return "$type:$value"
+    }
+}
 
 @DatabaseTable(tableName = "library_id")
 data class CalibreLibraryId(

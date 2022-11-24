@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -48,12 +49,14 @@ fun List<CalibreEntity>.View() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalibreEntityView(calibreEntity: CalibreEntity) {
-    when (calibreEntity.javaClass) {
-        CalibreRating::class.java -> (calibreEntity as CalibreRating).View()
-        CalibrePublishers::class.java -> (calibreEntity as CalibrePublishers).ViewText()
-        CalibreSeries::class.java -> (calibreEntity as CalibreSeries).ViewText()
-        CalibreTag::class.java -> (calibreEntity as CalibreTag).ViewBadge()
-        else -> Text(calibreEntity.toString())
+    Surface(modifier = Modifier.padding(start = 16.dp)) {
+        when (calibreEntity.javaClass) {
+            CalibreRating::class.java -> (calibreEntity as CalibreRating).View()
+            CalibrePublishers::class.java -> (calibreEntity as CalibrePublishers).ViewText()
+            CalibreSeries::class.java -> (calibreEntity as CalibreSeries).ViewText()
+            CalibreTag::class.java -> (calibreEntity as CalibreTag).ViewBadge()
+            else -> Text(calibreEntity.toString())
+        }
     }
 }
 
@@ -61,7 +64,8 @@ fun CalibreEntityView(calibreEntity: CalibreEntity) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalibreRating.View() {
-    RatingBar(value = rating.toFloat(),
+    RatingBar(
+        value = rating.toFloat(),
         config = RatingBarConfig().activeColor(Color.Yellow).hideInactiveStars(false)
             .inactiveColor(Color.LightGray).inactiveBorderColor(Color.Blue).stepSize(StepSize.ONE)
             .numStars(10).isIndicator(true).size(16.dp).padding(2.dp)
@@ -73,6 +77,7 @@ fun CalibreRating.View() {
             Log.d("TAG", "onRatingChanged: $it")
         })
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
