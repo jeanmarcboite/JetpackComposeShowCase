@@ -1,6 +1,7 @@
 package box.example.showcase.ui.pages.database.components
 
 import android.util.Log
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Badge
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.*
 import box.example.showcase.ui.components.OutlinedCard
@@ -55,6 +57,7 @@ fun CalibreEntityView(calibreEntity: CalibreEntity) {
             CalibrePublishers::class.java -> (calibreEntity as CalibrePublishers).ViewText()
             CalibreSeries::class.java -> (calibreEntity as CalibreSeries).ViewText()
             CalibreTag::class.java -> (calibreEntity as CalibreTag).ViewBadge()
+            CalibreData::class.java -> (calibreEntity as CalibreData).View()
             else -> Text(calibreEntity.toString())
         }
     }
@@ -76,6 +79,29 @@ fun CalibreRating.View() {
         onRatingChanged = {
             Log.d("TAG", "onRatingChanged: $it")
         })
+}
+
+@Composable
+fun CalibreData.View() {
+    Row() {
+        OutlinedCard(label = { Text("fmt") }) {
+            if (format != null) {
+                Text(
+                    format, textAlign = TextAlign.Center
+                )
+            }
+        }
+        OutlinedCard(label = { Text("size") }) {
+            if (uncompressed_size != null) {
+                Text(uncompressed_size.toString())
+            }
+        }
+        OutlinedCard(label = { Text("name") }) {
+            if (name != null) {
+                Text(name)
+            }
+        }
+    }
 }
 
 
