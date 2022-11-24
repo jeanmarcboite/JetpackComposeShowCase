@@ -101,6 +101,9 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.View() {
             "rating" -> {
                 ViewRating(label = it, value = value.first().toFloat())
             }
+            "datetime" -> ViewText(label = it, value = value)
+            "enumeration" -> ViewText(label = it, value = value, color = key.color)
+            else -> ViewBadges(label = it, value = value)
         }
     }
 }
@@ -149,6 +152,24 @@ fun ViewBadges(label: String, value: List<String>) {
         ) {
             value.forEach {
                 Badge { Text(it) }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ViewText(
+    label: String,
+    value: List<String>,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer
+) {
+    OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(label) }) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            value.forEach {
+                Text(it, color = color)
             }
         }
     }

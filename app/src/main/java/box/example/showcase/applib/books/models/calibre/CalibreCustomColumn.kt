@@ -1,5 +1,6 @@
 package box.example.showcase.applib.books.models.calibre
 
+import androidx.compose.ui.graphics.Color
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
 
@@ -21,5 +22,8 @@ data class CalibreCustomColumn(
     val is_multiple: Boolean = false,
     @DatabaseField
     val normalized: Boolean = false,
-) : CalibreEntity()
+) : CalibreEntity() {
+    val color: Color
+        get() = Color.Blue
+}
 
