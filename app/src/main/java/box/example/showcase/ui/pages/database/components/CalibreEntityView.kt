@@ -47,7 +47,7 @@ fun CalibreEntityListView(
 fun CalibreEntityView(calibreEntity: CalibreEntity) {
     when (calibreEntity.javaClass) {
         CalibreRating::class.java -> (calibreEntity as CalibreRating).View()
-        CalibrePublishers::class.java -> (calibreEntity as CalibreSortableEntity).View()
+        CalibrePublishers::class.java -> (calibreEntity as CalibreSortableEntity).ViewText()
         CalibreTag::class.java -> (calibreEntity as CalibreTag).View()
         else -> Text(calibreEntity.toString())
     }
@@ -72,7 +72,13 @@ fun CalibreRating.View() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalibreSortableEntity.View() {
+fun CalibreSortableEntity.ViewText() {
+    Badge(modifier = Modifier.padding(4.dp)) { Text(name ?: "null") }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CalibreSortableEntity.ViewBadge() {
     Badge(modifier = Modifier.padding(4.dp)) { Text(name ?: "null") }
 }
 

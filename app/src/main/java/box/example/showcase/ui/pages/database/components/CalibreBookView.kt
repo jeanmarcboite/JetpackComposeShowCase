@@ -32,17 +32,9 @@ fun CalibreBook.View() {
         }
     ) {
         Row {
+
             languages.forEach {
-                val countryCode = LanguageMap[it]
-                if (countryCode != null)
-                    Image(
-                        painter = rememberAsyncImagePainter(Flags.forCountry(countryCode)),
-                        contentDescription = "flag",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(touchpoint_lg)
-                            .clip(CircleShape)
-                    )
+                LanguageView(it)
             }
             Column(modifier = Modifier.padding(8.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -89,13 +81,7 @@ fun CalibreBook.View() {
                     }
                 }
                 comment?.apply {
-                    HtmlText(
-                        text = this,
-                        style = TextStyle(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            fontSize = MaterialTheme.typography.labelMedium.fontSize
-                        )
-                    )
+                    ViewComment(label = "Comments", value = listOf(this))
                 }
             }
         }
@@ -103,20 +89,37 @@ fun CalibreBook.View() {
 }
 
 @Composable
+fun LanguageView(language: String) {
+    val countryCode = LanguageMap[language]
+    if (countryCode != null)
+        Image(
+            painter = rememberAsyncImagePainter(Flags.forCountry(countryCode)),
+            contentDescription = "flag",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(touchpoint_lg)
+                .clip(CircleShape)
+        )
+}
+
+@Composable
 fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfBool() {
-    if (key.datatype == "bool") {
-        OutlinedCard(
-            modifier = Modifier.defaultMinSize(minWidth = 72.dp),
-            label = { Text("${key.name}") }
+    if (key.datatype == "bool") key.name?.let { ViewBool(label = it, value = value) }
+}
+
+@Composable
+fun ViewBool(label: String, value: List<String>) {
+    OutlinedCard(
+        modifier = Modifier.defaultMinSize(minWidth = 72.dp),
+        label = { Text(label) }
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
         ) {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                Checkbox(
-                    checked = value.first().toInt() != 0,
-                    enabled = false, onCheckedChange = {}
-                )
-            }
+            Checkbox(
+                checked = value.first().toInt() != 0,
+                enabled = false, onCheckedChange = {}
+            )
         }
     }
 }
