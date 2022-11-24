@@ -30,49 +30,46 @@ fun CalibreBook.View() {
             .fillMaxWidth(), label = {
             Text(authors.joinToString { it.name.toString() })
         }) {
-        Row {
-
-            languages.forEach {
-                LanguageView(it)
-            }
-            Column(modifier = Modifier.padding(8.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
-                        entry.ViewIfBool()
-                    }
-
-                    Text(
-                        text = title.toString(), modifier = Modifier.padding(8.dp)
-                    )
-                }
-                // Map<Column, ShowLabel>
-                val columnsList = mapOf(
-                    "tags" to false,
-                    "series" to true,
-                    "ratings" to false,
-                )
-                columnsList.forEach {
-                    Row {
-                        columns[it.key]?.apply { CalibreEntityListView(it.key, it.value, this) }
-                    }
-                }
-                Log.d("boxxx [columns]", "${columns.keys}")
-                columns.forEach {
-                    if (it.key !in (columnsList.keys)) {
-                        CalibreEntityListView(it.key, true, it.value)
-                    }
+        Column(modifier = Modifier.padding(8.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                languages.forEach {
+                    LanguageView(it)
                 }
                 customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
-                    entry.ViewIfComments()
+                    entry.ViewIfBool()
                 }
-                customColumns.forEach {
-                    if (it.key.datatype != "bool" && it.key.datatype != "comments") {
-                        it.key.name?.let { it1 -> ViewBadges(label = it1, value = it.value) }
-                    }
+
+                Text(
+                    text = title.toString(), modifier = Modifier.padding(8.dp)
+                )
+            }
+            // Map<Column, ShowLabel>
+            val columnsList = mapOf(
+                "tags" to false,
+                "series" to true,
+                "ratings" to false,
+            )
+            columnsList.forEach {
+                Row {
+                    columns[it.key]?.apply { CalibreEntityListView(it.key, it.value, this) }
                 }
-                comment?.apply {
-                    ViewComment(label = "Comments", value = listOf(this))
+            }
+            Log.d("boxxx [columns]", "${columns.keys}")
+            columns.forEach {
+                if (it.key !in (columnsList.keys)) {
+                    CalibreEntityListView(it.key, true, it.value)
                 }
+            }
+            customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
+                entry.ViewIfComments()
+            }
+            customColumns.forEach {
+                if (it.key.datatype != "bool" && it.key.datatype != "comments") {
+                    it.key.name?.let { it1 -> ViewBadges(label = it1, value = it.value) }
+                }
+            }
+            comment?.apply {
+                ViewComment(label = "Comments", value = listOf(this))
             }
         }
     }
