@@ -49,19 +49,26 @@ class CalibreDatabase(context: Context) {
             }
 
             errorMessage = "cannot get data"
-            val entryMap: Map<String, List<CalibreEntity>?> = mapOf(
-                "data" to dbHelper.getDao(CalibreData::class.java).queryForAll(),
-                "feeds" to dbHelper.getDao(CalibreFeeds::class.java).queryForAll(),
+            val entryWithLinkMap: Map<String, List<CalibreBookData>?> = mapOf(
                 "identifiers" to dbHelper.getDao(CalibreIdentifiers::class.java).queryForAll(),
+                "data" to dbHelper.getDao(CalibreData::class.java).queryForAll(),
+            )
+            val entryMap: Map<String, List<CalibreEntity>?> = mapOf(
+                "feeds" to dbHelper.getDao(CalibreFeeds::class.java).queryForAll(),
                 "library_id" to dbHelper.getDao(CalibreLibraryId::class.java).queryForAll(),
                 "publishers" to dbHelper.getDao(CalibrePublishers::class.java).queryForAll(),
                 "ratings" to dbHelper.getDao(CalibreRating::class.java).queryForAll(),
                 "series" to dbHelper.getDao(CalibreSeries::class.java).queryForAll(),
                 "tags" to dbHelper.getDao(CalibreTag::class.java).queryForAll(),
             )
-            entryMap.forEach { (key, calibreEntities) ->
+            entryWithLinkMap.forEach { (key, calibreEntities) ->
                 calibreEntities?.apply {
                     bookMap?.readBooksData(key, this)
+                }
+            }
+            entryMap.forEach { (key, calibreEntities) ->
+                calibreEntities?.apply {
+                    bookMap?.readBooksDataAndLinks(key, this)
                 }
             }
 
@@ -111,7 +118,20 @@ class CalibreDatabase(context: Context) {
         }
     }
 
-    private fun Map<Int, CalibreBook>.readBooksData(table: String, entries: List<CalibreEntity>) {
+    private fun Map<Int, CalibreBook>.readBooksData(table: String, entries: List<CalibreBookData>) {
+        entries.forEach {
+            this[it.book]?.apply {
+                if (columns[table] == null)
+                    columns[table] = mutableListOf()
+                columns[table]!!.add(it)
+            }
+        }
+    }
+
+    private fun Map<Int, CalibreBook>.readBooksDataAndLinks(
+        table: String,
+        entries: List<CalibreEntity>
+    ) {
         val TAG = "boxxx [readBooksData]"
         fun log(info: String, list: List<Array<String>>) {
             Log.d(
@@ -134,7 +154,7 @@ class CalibreDatabase(context: Context) {
 
             val links = dao.queryRaw("select * from $link_table").results.toList()
             log("links", links)
-            val idIndex = link_table_info.find("id")
+            // val idIndex = link_table_info.find("id") // don't care
             val bookIndex = link_table_info.find("book")
             val valueIndex = 2 // link_table_info.find("value")
 

@@ -35,3 +35,8 @@ open class CalibreSortableEntity(
         return name.toString()
     }
 }
+
+open class CalibreBookData(
+    @DatabaseField
+    val book: Int = 0,
+) : CalibreEntity()

@@ -1,5 +1,6 @@
 package box.example.showcase.ui.pages.database.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -26,11 +27,9 @@ fun CalibreBook.View() {
     OutlinedCard(
         Modifier
             .padding(4.dp)
-            .fillMaxWidth(),
-        label = {
+            .fillMaxWidth(), label = {
             Text(authors.joinToString { it.name.toString() })
-        }
-    ) {
+        }) {
         Row {
 
             languages.forEach {
@@ -43,34 +42,25 @@ fun CalibreBook.View() {
                     }
 
                     Text(
-                        text = title.toString(),
-                        modifier = Modifier
-                            .padding(8.dp)
+                        text = title.toString(), modifier = Modifier.padding(8.dp)
                     )
                 }
-
-                val columnsList = mapOf("ratings" to false, "publishers" to true)
+                // Map<Column, ShowLabel>
+                val columnsList = mapOf(
+                    "tags" to false,
+                    "series" to true,
+                    "ratings" to false,
+                )
                 columnsList.forEach {
-                    columns[it.key]?.apply { CalibreEntityListView(it.key, it.value, this) }
+                    Row {
+                        columns[it.key]?.apply { CalibreEntityListView(it.key, it.value, this) }
+                    }
                 }
-
+                Log.d("boxxx [columns]", "${columns.keys}")
                 columns.forEach {
-                    if (it.key !in (columnsList))
-                        OutlinedCard(
-                            modifier = Modifier.fillMaxWidth(),
-                            label = { Text("${it.key}:") }
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                it.value.forEach {
-                                    Badge {
-                                        CalibreEntityView(calibreEntity = it)
-                                    }
-                                }
-                            }
-                        }
+                    if (it.key !in (columnsList.keys)) {
+                        CalibreEntityListView(it.key, true, it.value)
+                    }
                 }
                 customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
                     entry.ViewIfComments()
@@ -91,15 +81,14 @@ fun CalibreBook.View() {
 @Composable
 fun LanguageView(language: String) {
     val countryCode = LanguageMap[language]
-    if (countryCode != null)
-        Image(
-            painter = rememberAsyncImagePainter(Flags.forCountry(countryCode)),
-            contentDescription = "flag",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(touchpoint_lg)
-                .clip(CircleShape)
-        )
+    if (countryCode != null) Image(
+        painter = rememberAsyncImagePainter(Flags.forCountry(countryCode)),
+        contentDescription = "flag",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(touchpoint_lg)
+            .clip(CircleShape)
+    )
 }
 
 @Composable
@@ -109,17 +98,11 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfBool() {
 
 @Composable
 fun ViewBool(label: String, value: List<String>) {
-    OutlinedCard(
-        modifier = Modifier.defaultMinSize(minWidth = 72.dp),
-        label = { Text(label) }
-    ) {
+    OutlinedCard(modifier = Modifier.defaultMinSize(minWidth = 72.dp), label = { Text(label) }) {
         Row(
             horizontalArrangement = Arrangement.Center,
         ) {
-            Checkbox(
-                checked = value.first().toInt() != 0,
-                enabled = false, onCheckedChange = {}
-            )
+            Checkbox(checked = value.first().toInt() != 0, enabled = false, onCheckedChange = {})
         }
     }
 }
@@ -131,15 +114,10 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfComments() {
 
 @Composable
 fun ViewComment(label: String, value: List<String>) {
-    OutlinedCard(
-        modifier = Modifier.fillMaxSize(),
-        label = { Text(label) }
-    ) {
+    OutlinedCard(modifier = Modifier.fillMaxSize(), label = { Text(label) }) {
         value.forEach {
             HtmlText(
-                text = it,
-                modifier = Modifier.padding(start = 8.dp),
-                style = TextStyle(
+                text = it, modifier = Modifier.padding(start = 8.dp), style = TextStyle(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = MaterialTheme.typography.labelMedium.fontSize
                 )
@@ -151,13 +129,9 @@ fun ViewComment(label: String, value: List<String>) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewBadges(label: String, value: List<String>) {
-    OutlinedCard(
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(label) }
-    ) {
+    OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(label) }) {
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             value.forEach {
                 Badge { Text(it) }

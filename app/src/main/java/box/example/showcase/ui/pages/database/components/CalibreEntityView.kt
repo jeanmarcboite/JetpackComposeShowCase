@@ -24,21 +24,24 @@ fun CalibreEntityListView(
     calibreEntityList: List<CalibreEntity>?
 ) {
     if (calibreEntityList != null) {
-        if (showLabel) {
+        if (!showLabel) {
+            calibreEntityList.View()
+        } else {
             OutlinedCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp),
                 label = { Text(title) }) {
-                calibreEntityList.forEach {
-                    CalibreEntityView(calibreEntity = it)
-                }
-            }
-        } else {
-            calibreEntityList.forEach {
-                CalibreEntityView(calibreEntity = it)
+                calibreEntityList.View()
             }
         }
+    }
+}
+
+@Composable
+fun List<CalibreEntity>.View() {
+    forEach {
+        CalibreEntityView(calibreEntity = it)
     }
 }
 
@@ -48,6 +51,7 @@ fun CalibreEntityView(calibreEntity: CalibreEntity) {
     when (calibreEntity.javaClass) {
         CalibreRating::class.java -> (calibreEntity as CalibreRating).View()
         CalibrePublishers::class.java -> (calibreEntity as CalibrePublishers).ViewText()
+        CalibreSeries::class.java -> (calibreEntity as CalibreSeries).ViewText()
         CalibreTag::class.java -> (calibreEntity as CalibreTag).ViewBadge()
         else -> Text(calibreEntity.toString())
     }
