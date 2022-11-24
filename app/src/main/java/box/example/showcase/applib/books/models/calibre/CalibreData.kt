@@ -59,7 +59,4 @@ data class CalibreRating(
 class CalibreSeries() : CalibreSortableEntity()
 
 @DatabaseTable(tableName = "tags")
-data class CalibreTag(
-    @DatabaseField
-    val name: String? = null
-) : CalibreEntity()
+class CalibreTag() : CalibreNamedEntity()

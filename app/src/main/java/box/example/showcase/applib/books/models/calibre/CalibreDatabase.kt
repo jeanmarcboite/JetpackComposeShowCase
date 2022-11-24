@@ -10,6 +10,7 @@ import com.j256.ormlite.dao.Dao
 class CalibreDatabase(context: Context) {
     private var errorMessage = "database read error"
 
+    val preferences = mutableStateOf<List<CalibreEntity>?>(null)
     val books = mutableStateOf<List<CalibreEntity>?>(null)
     val authors = mutableStateOf<List<CalibreEntity>?>(null)
 
@@ -24,12 +25,15 @@ class CalibreDatabase(context: Context) {
                 throw Exception("helper not open")
 
             errorMessage = "cannot get database tables"
-            dao = dbHelper.getDao(CalibreBook::class.java)
+            dao = dbHelper.getDao(CalibrePreferences::class.java)
             // Don't kow why sqlite_schema does not work (sqlite version too old?)
             tables =
                 dao.queryRaw("SELECT name FROM sqlite_master WHERE type = 'table'").results.map {
                     it.toList().first()
                 }
+
+            errorMessage = "cannot get preferences"
+            preferences.value = dbHelper.getDao(CalibrePreferences::class.java).queryForAll()
 
             errorMessage = "cannot get books"
             books.value = dbHelper.getDao(CalibreBook::class.java).queryForAll()
@@ -135,7 +139,7 @@ class CalibreDatabase(context: Context) {
             val valueIndex = 2 // link_table_info.find("value")
 
             links.forEach {
-                val id = it[idIndex].toInt()
+                // val id = it[idIndex].toInt() // don't care
                 val book: CalibreBook? = this[it[bookIndex].toInt()]
                 val value: CalibreEntity? = entryMap[it[valueIndex].toInt()]
 

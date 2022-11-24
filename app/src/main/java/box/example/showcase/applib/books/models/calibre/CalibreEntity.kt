@@ -6,6 +6,10 @@ open class CalibreEntity(
     @DatabaseField(generatedId = true)
     val id: Int = 0
 ) {
+    override fun hashCode(): Int {
+        return id
+    }
+
     override fun equals(other: Any?): Boolean {
         return other != null
                 && other.javaClass == javaClass
@@ -14,12 +18,19 @@ open class CalibreEntity(
 }
 
 
-open class CalibreSortableEntity(
+open class CalibreNamedEntity(
     @DatabaseField
     val name: String? = null,
+) : CalibreEntity() {
+    override fun toString(): String {
+        return name.toString()
+    }
+}
+
+open class CalibreSortableEntity(
     @DatabaseField(columnName = "sort")
     val sort: String? = null
-) : CalibreEntity() {
+) : CalibreNamedEntity() {
     override fun toString(): String {
         return name.toString()
     }
