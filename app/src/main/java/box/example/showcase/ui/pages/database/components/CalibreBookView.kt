@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,10 @@ import box.example.showcase.ui.components.OutlinedCard
 import box.example.showcase.ui.pages.database.LanguageMap
 import box.example.showcase.ui.theme.touchpoint_lg
 import coil.compose.rememberAsyncImagePainter
+import com.gowtham.ratingbar.RatingBar
+import com.gowtham.ratingbar.RatingBarConfig
+import com.gowtham.ratingbar.RatingBarStyle
+import com.gowtham.ratingbar.StepSize
 import com.ireward.htmlcompose.HtmlText
 import com.jsramraj.flags.Flags
 
@@ -63,9 +68,9 @@ fun CalibreBook.View() {
             customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
                 entry.ViewIfComments()
             }
-            customColumns.forEach {
-                if (it.key.datatype != "bool" && it.key.datatype != "comments") {
-                    it.key.name?.let { it1 -> ViewBadges(label = it1, value = it.value) }
+            customColumns.forEach { column ->
+                if (column.key.datatype != "bool" && column.key.datatype != "comments") {
+                    column.View()
                 }
             }
             comment?.apply {
@@ -86,6 +91,18 @@ fun LanguageView(language: String) {
             .size(touchpoint_lg)
             .clip(CircleShape)
     )
+}
+
+@Composable
+fun Map.Entry<CalibreCustomColumn, MutableList<String>>.View() {
+    key.name?.let {
+        when (key.datatype) {
+            "bool" -> ViewBool(label = it, value = value)
+            "rating" -> {
+                ViewRating(label = it, value = value.first().toFloat())
+            }
+        }
+    }
 }
 
 @Composable
@@ -136,3 +153,30 @@ fun ViewBadges(label: String, value: List<String>) {
         }
     }
 }
+
+@Composable
+fun ViewRating(label: String, value: Float) {
+    OutlinedCard(modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp), label = { Text(label) }) {
+        ViewRating(value)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ViewRating(value: Float) {
+    RatingBar(
+        value = value,
+        config = RatingBarConfig().activeColor(Color.Yellow).hideInactiveStars(false)
+            .inactiveColor(Color.LightGray).inactiveBorderColor(Color.Blue).stepSize(StepSize.ONE)
+            .numStars(10).isIndicator(true).size(16.dp).padding(2.dp)
+            .style(RatingBarStyle.HighLighted),
+        onValueChange = {
+            //rating = it
+        },
+        onRatingChanged = {
+            Log.d("TAG", "onRatingChanged: $it")
+        })
+}
+

@@ -8,5 +8,15 @@ data class CalibreAuthor(
     @DatabaseField
     val link: String? = null,
     val books: MutableList<CalibreBook> = mutableListOf(),
-) : CalibreSortableEntity()
+) : CalibreSortableEntity() {
+    override fun hashCode(): Int {
+        return id
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other != null
+                && other.javaClass == javaClass
+                && id == (other as CalibreEntity).id
+    }
+}
 
