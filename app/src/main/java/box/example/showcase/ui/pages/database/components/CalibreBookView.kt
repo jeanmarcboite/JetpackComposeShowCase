@@ -85,19 +85,7 @@ fun CalibreBook.View() {
                 }
                 customColumns.forEach {
                     if (it.key.datatype != "bool" && it.key.datatype != "comments") {
-                        OutlinedCard(
-                            modifier = Modifier.fillMaxWidth(),
-                            label = { Text("${it.key.name}:") }
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(16.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                it.value.forEach {
-                                    Badge { Text(it) }
-                                }
-                            }
-                        }
+                        it.key.name?.let { it1 -> ViewBadges(label = it1, value = it.value) }
                     }
                 }
                 comment?.apply {
@@ -135,22 +123,41 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfBool() {
 
 @Composable
 fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfComments() {
-    if (key.datatype == "comments") {
-        OutlinedCard(
-            modifier = Modifier.fillMaxSize(),
-            label = { Text("${key.name}") }
+    if (key.datatype == "comments") key.name?.let { ViewComment(label = it, value = value) }
+}
+
+@Composable
+fun ViewComment(label: String, value: List<String>) {
+    OutlinedCard(
+        modifier = Modifier.fillMaxSize(),
+        label = { Text(label) }
+    ) {
+        value.forEach {
+            HtmlText(
+                text = it,
+                modifier = Modifier.padding(start = 8.dp),
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontSize = MaterialTheme.typography.labelMedium.fontSize
+                )
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ViewBadges(label: String, value: List<String>) {
+    OutlinedCard(
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(label) }
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            value?.apply {
-                forEach {
-                    HtmlText(
-                        text = it,
-                        modifier = Modifier.padding(start = 8.dp),
-                        style = TextStyle(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            fontSize = MaterialTheme.typography.labelMedium.fontSize
-                        )
-                    )
-                }
+            value.forEach {
+                Badge { Text(it) }
             }
         }
     }
