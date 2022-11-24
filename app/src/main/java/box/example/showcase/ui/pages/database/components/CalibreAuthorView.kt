@@ -16,11 +16,6 @@ import box.example.showcase.ui.components.OutlinedCard
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalibreAuthor.View() {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
         OutlinedCard(
             modifier = Modifier
                 .padding(8.dp)
@@ -28,11 +23,10 @@ fun CalibreAuthor.View() {
             label = { Text(name.toString()) }) {
             Column(modifier = Modifier.padding(8.dp)) {
                 books.sortedBy {
-                    it.title
+                    it.sort ?: it.title
                 }.forEach {
                     Text(it.title.toString())
                 }
             }
         }
-    }
 }

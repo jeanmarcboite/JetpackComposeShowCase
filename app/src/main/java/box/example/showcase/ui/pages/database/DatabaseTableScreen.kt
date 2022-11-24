@@ -21,20 +21,20 @@ abstract class DatabaseTableScreen(val list: List<CalibreEntity>?) {
     abstract val title: Int
 
     @Composable
-    fun Content(Content: @Composable (CalibreEntity) -> Unit) {
+    fun Content() {
         list?.apply {
             LazyColumn(
                 contentPadding = PaddingValues(top = margin_half)
             ) {
                 items(list) {
-                    Content(it)
+                    it.ItemView()
                 }
             }
         }
     }
 
     @Composable
-    abstract fun Content()
+    abstract fun CalibreEntity.ItemView()
 }
 
 class BooksScreen(list: List<CalibreEntity>?) : DatabaseTableScreen(list) {
@@ -43,10 +43,8 @@ class BooksScreen(list: List<CalibreEntity>?) : DatabaseTableScreen(list) {
     override val title = R.string.calibre_book_table_title
 
     @Composable
-    override fun Content() {
-        Content {
-            (it as CalibreBook).View()
-        }
+    override fun CalibreEntity.ItemView() {
+        (this as CalibreBook).View()
     }
 }
 
@@ -56,9 +54,7 @@ class AuthorsScreen(list: List<CalibreEntity>?) : DatabaseTableScreen(list) {
     override val title = R.string.calibre_author_table_title
 
     @Composable
-    override fun Content() {
-        Content {
-            (it as CalibreAuthor).View()
-        }
+    override fun CalibreEntity.ItemView() {
+        (this as CalibreAuthor).View()
     }
 }

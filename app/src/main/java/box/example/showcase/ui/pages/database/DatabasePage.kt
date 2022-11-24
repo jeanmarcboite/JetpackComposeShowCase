@@ -51,10 +51,12 @@ class DatabasePage :
 
         val tabs = listOf(
             BooksScreen(viewModel.calibreDatabase.value?.books?.value?.sortedBy {
-                (it as CalibreBook).title
+                val book = it as CalibreBook
+                book.sort ?: book.title
             }),
             AuthorsScreen(viewModel.calibreDatabase.value?.authors?.value?.sortedBy {
-                (it as CalibreAuthor).sort
+                val author = it as CalibreAuthor
+                author.sort ?: author.name
             })
         )
         // Fetch your currentDestination:

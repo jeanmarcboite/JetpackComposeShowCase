@@ -14,5 +14,4 @@ data class CalibreAuthor(
                 && other.javaClass == javaClass
                 && id == (other as CalibreEntity).id
     }
-
 }
