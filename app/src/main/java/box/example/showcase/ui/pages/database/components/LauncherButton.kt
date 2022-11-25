@@ -34,10 +34,10 @@ fun LauncherButton(
         item?.close()
 
         bytes?.apply {
-            val output: OutputStream =
+            val outputStream: OutputStream =
                 FileOutputStream(output)
-            output.write(this, 0, size)
-            output.close()
+            outputStream.write(this, 0, size)
+            outputStream.close()
             databaseVersion.value++
             Log.d("boxxx [DirectoryLauncher]", "datbase ${input} copied to $output ")
         }
