@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.*
 import box.example.showcase.ui.components.OutlinedCard
+import box.example.showcase.ui.components.data.Rating
 
 @Composable
 fun List<CalibreEntity>?.View(
@@ -41,7 +42,7 @@ fun List<CalibreEntity>?.View() {
 fun CalibreEntity.View() {
     Surface(modifier = Modifier.padding(start = 16.dp)) {
         when (javaClass) {
-            CalibreRating::class.java -> (this as CalibreRating).rating.toFloat().ViewRating()
+            CalibreRating::class.java -> (this as CalibreRating).rating.toFloat().Rating()
             CalibrePublishers::class.java -> (this as CalibrePublishers).ViewText()
             CalibreSeries::class.java -> (this as CalibreSeries).ViewText()
             CalibreTag::class.java -> (this as CalibreTag).ViewBadge()

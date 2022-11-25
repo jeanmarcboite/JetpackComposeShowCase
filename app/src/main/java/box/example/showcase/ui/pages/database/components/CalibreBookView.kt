@@ -19,14 +19,11 @@ import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
 import box.example.showcase.ui.components.OutlinedCard
 import box.example.showcase.ui.components.data.Bool
+import box.example.showcase.ui.components.data.Rating
 import box.example.showcase.ui.components.data.ViewHtml
 import box.example.showcase.ui.pages.database.LanguageMap
 import box.example.showcase.ui.theme.touchpoint_lg
 import coil.compose.rememberAsyncImagePainter
-import com.gowtham.ratingbar.RatingBar
-import com.gowtham.ratingbar.RatingBarConfig
-import com.gowtham.ratingbar.RatingBarStyle
-import com.gowtham.ratingbar.StepSize
 import com.jsramraj.flags.Flags
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,7 +104,7 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.View() {
         when (key.datatype) {
             "bool" -> (value.first().toInt() != 0).Bool(it)
             "rating" -> {
-                value.first().toFloat().ViewRating(it)
+                value.first().toFloat().Rating(it)
             }
             "datetime" -> value.View(it)
             "enumeration" -> key.ViewEnumeration(value)
@@ -172,29 +169,5 @@ fun List<String>.View(
     }
 }
 
-@Composable
-fun Float.ViewRating(label: String) {
-    OutlinedCard(modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp), label = { Text(label) }) {
-        ViewRating()
-    }
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Float.ViewRating() {
-    RatingBar(
-        value = this,
-        config = RatingBarConfig().activeColor(Color.Yellow).hideInactiveStars(false)
-            .inactiveColor(Color.LightGray).inactiveBorderColor(Color.Blue).stepSize(StepSize.ONE)
-            .numStars(10).isIndicator(true).size(16.dp).padding(2.dp)
-            .style(RatingBarStyle.HighLighted),
-        onValueChange = {
-            //rating = it
-        },
-        onRatingChanged = {
-            Log.d("TAG", "onRatingChanged: $it")
-        })
-}
 
