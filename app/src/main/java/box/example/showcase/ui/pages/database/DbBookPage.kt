@@ -13,7 +13,7 @@ import androidx.navigation.navArgument
 import box.example.showcase.R
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.ui.Page
-import box.example.showcase.ui.pages.database.components.View
+import box.example.showcase.ui.pages.database.components.ViewDetails
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookReader
@@ -46,6 +46,6 @@ class DbBookPage :
         LaunchedEffect(true) {
             book.value = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
         }
-        book.value?.View()
+        book.value?.ViewDetails()
     }
 }
