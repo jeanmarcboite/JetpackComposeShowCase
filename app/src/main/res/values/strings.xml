@@ -42,4 +42,5 @@
     <string name="calibre_book_table_route">books</string>
     <string name="calibre_author_table_title">Authors</string>
     <string name="calibre_author_table_route">authors</string>
+    <string name="get_book_info">search book</string>
 </resources>
