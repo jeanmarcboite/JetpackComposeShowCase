@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -127,22 +126,6 @@ fun List<String>.ViewBadges(label: String) {
         ) {
             forEach {
                 Badge { Text(it) }
-            }
-        }
-    }
-}
-
-@Composable
-fun List<String>.View(
-    label: String,
-    color: Color = MaterialTheme.colorScheme.onPrimaryContainer
-) {
-    OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(label) }) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            forEach {
-                Text(it, color = color)
             }
         }
     }

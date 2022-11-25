@@ -1,18 +1,13 @@
 package box.example.showcase.ui.pages.database.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Badge
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -112,3 +107,20 @@ fun String.Language() {
             .clip(CircleShape)
     )
 }
+
+@Composable
+fun List<String>.View(
+    label: String,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer
+) {
+    OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(label) }) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            forEach {
+                Text(it, color = color)
+            }
+        }
+    }
+}
+
