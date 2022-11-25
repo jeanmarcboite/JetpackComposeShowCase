@@ -111,10 +111,6 @@ fun NoteBackground(
     swiped: MutableState<Boolean>,
     onNoteChanged: (Note) -> Unit,
 ) {
-    val modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp, vertical = 8.dp)
-
     fun swipeBack() {
         offset.value = 0f
         swiped.value = false

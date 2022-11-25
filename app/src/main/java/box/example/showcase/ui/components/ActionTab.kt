@@ -39,11 +39,10 @@ fun IconAction(
     //colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     text: String,
+    color: Color = MaterialTheme.colorScheme.onPrimaryContainer,
     icon: ImageVector,
     onClick: () -> Unit,
 ) {
-    val color =
-        if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.secondaryContainer
     val durationMillis = if (selected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
     val animSpec = remember {
         tween<Color>(
@@ -71,19 +70,13 @@ fun IconAction(
                 )
             )
     ) {
-        val contentColor = MaterialTheme.colorScheme.onBackground
-        CompositionLocalProvider(LocalContentColor provides contentColor) {
-            val color = if (selected) contentColor else contentColor.copy(0.4f)
             Icon(
                 imageVector = icon,
                 contentDescription = text,
-                tint = color,
+                tint = tabTintColor,
                 modifier = Modifier
                     .size(24.dp)
             )
-            Text(text, color = color)
-
-        }
+            Text(text, color = tabTintColor)
     }
-
 }
