@@ -68,7 +68,7 @@ fun CalibreBook.View() {
             customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
                 entry.ViewIfComments()
             }
-            customColumns.forEach { column ->
+            customColumns.forEach { column: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
                 if (column.key.datatype != "bool" && column.key.datatype != "comments") {
                     column.View()
                 }
@@ -102,10 +102,24 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.View() {
                 ViewRating(label = it, value = value.first().toFloat())
             }
             "datetime" -> ViewText(label = it, value = value)
-            "enumeration" -> ViewText(label = it, value = value, color = key.color)
+            "enumeration" -> key.ViewEnumeration(value)
             else -> ViewBadges(label = it, value = value)
         }
     }
+}
+
+@Composable
+fun CalibreCustomColumn.ViewEnumeration(value: List<String>) {
+    OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(name.toString()) }) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            value.forEach {
+                Text(it, color = colorMap[it] ?: Color.Red)
+            }
+        }
+    }
+
 }
 
 @Composable
@@ -157,7 +171,6 @@ fun ViewBadges(label: String, value: List<String>) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewText(
     label: String,
