@@ -15,44 +15,38 @@ import box.example.showcase.applib.books.models.calibre.*
 import box.example.showcase.ui.components.OutlinedCard
 
 @Composable
-fun CalibreEntityListView(
-    title: String,
-    showLabel: Boolean,
-    calibreEntityList: List<CalibreEntity>?
+fun List<CalibreEntity>?.View(
+    title: String
 ) {
-    if (calibreEntityList != null) {
-        if (!showLabel) {
-            calibreEntityList.View()
-        } else {
-            OutlinedCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                label = { Text(title) }) {
-                calibreEntityList.View()
-            }
+    this?.apply {
+        OutlinedCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            label = { Text(title) }) {
+            View()
         }
     }
 }
 
 @Composable
-fun List<CalibreEntity>.View() {
-    forEach {
-        CalibreEntityView(calibreEntity = it)
+fun List<CalibreEntity>?.View() {
+    this?.forEach {
+        it.View()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalibreEntityView(calibreEntity: CalibreEntity) {
+fun CalibreEntity.View() {
     Surface(modifier = Modifier.padding(start = 16.dp)) {
-        when (calibreEntity.javaClass) {
-            CalibreRating::class.java -> ViewRating((calibreEntity as CalibreRating).rating.toFloat())
-            CalibrePublishers::class.java -> (calibreEntity as CalibrePublishers).ViewText()
-            CalibreSeries::class.java -> (calibreEntity as CalibreSeries).ViewText()
-            CalibreTag::class.java -> (calibreEntity as CalibreTag).ViewBadge()
-            CalibreData::class.java -> (calibreEntity as CalibreData).View()
-            else -> Text(calibreEntity.toString())
+        when (javaClass) {
+            CalibreRating::class.java -> (this as CalibreRating).rating.toFloat().ViewRating()
+            CalibrePublishers::class.java -> (this as CalibrePublishers).ViewText()
+            CalibreSeries::class.java -> (this as CalibreSeries).ViewText()
+            CalibreTag::class.java -> (this as CalibreTag).ViewBadge()
+            CalibreData::class.java -> (this as CalibreData).View()
+            else -> Text(this.toString())
         }
     }
 }

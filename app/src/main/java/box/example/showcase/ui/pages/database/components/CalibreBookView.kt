@@ -38,7 +38,7 @@ fun CalibreBook.View() {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 languages.forEach {
-                    LanguageView(it)
+                    it.LanguageView()
                 }
                 customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
                     entry.ViewIfBool()
@@ -56,13 +56,18 @@ fun CalibreBook.View() {
             )
             columnsList.forEach {
                 Row {
-                    columns[it.key]?.apply { CalibreEntityListView(it.key, it.value, this) }
+                    columns[it.key]?.apply {
+                        if (it.value)
+                            View(it.key)
+                        else
+                            View()
+                    }
                 }
             }
             Log.d("boxxx [columns]", "${columns.keys}")
             columns.forEach {
                 if (it.key !in (columnsList.keys)) {
-                    CalibreEntityListView(it.key, true, it.value)
+                    it.value.View(it.key)
                 }
             }
             customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
@@ -74,15 +79,15 @@ fun CalibreBook.View() {
                 }
             }
             comment?.apply {
-                ViewComment(label = "Comments", value = listOf(this))
+                listOf(this).ViewHtml("Comments")
             }
         }
     }
 }
 
 @Composable
-fun LanguageView(language: String) {
-    val countryCode = LanguageMap[language]
+fun String.LanguageView() {
+    val countryCode = LanguageMap[this]
     if (countryCode != null) Image(
         painter = rememberAsyncImagePainter(Flags.forCountry(countryCode)),
         contentDescription = "flag",
@@ -97,13 +102,13 @@ fun LanguageView(language: String) {
 fun Map.Entry<CalibreCustomColumn, MutableList<String>>.View() {
     key.name?.let {
         when (key.datatype) {
-            "bool" -> ViewBool(label = it, value = value)
+            "bool" -> (value.first().toInt() != 0).View(it)
             "rating" -> {
-                ViewRating(label = it, value = value.first().toFloat())
+                value.first().toFloat().ViewRating(it)
             }
-            "datetime" -> ViewText(label = it, value = value)
+            "datetime" -> value.View(it)
             "enumeration" -> key.ViewEnumeration(value)
-            else -> ViewBadges(label = it, value = value)
+            else -> value.ViewBadges(it)
         }
     }
 }
@@ -124,29 +129,29 @@ fun CalibreCustomColumn.ViewEnumeration(value: List<String>) {
 
 @Composable
 fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfBool() {
-    if (key.datatype == "bool") key.name?.let { ViewBool(label = it, value = value) }
+    if (key.datatype == "bool") key.name?.let { (value.first().toInt() != 0).View(it) }
 }
 
 @Composable
-fun ViewBool(label: String, value: List<String>) {
+fun Boolean.View(label: String) {
     OutlinedCard(modifier = Modifier.defaultMinSize(minWidth = 72.dp), label = { Text(label) }) {
         Row(
             horizontalArrangement = Arrangement.Center,
         ) {
-            Checkbox(checked = value.first().toInt() != 0, enabled = false, onCheckedChange = {})
+            Checkbox(checked = this@View, enabled = false, onCheckedChange = {})
         }
     }
 }
 
 @Composable
 fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfComments() {
-    if (key.datatype == "comments") key.name?.let { ViewComment(label = it, value = value) }
+    if (key.datatype == "comments") key.name?.let { value.ViewHtml(it) }
 }
 
 @Composable
-fun ViewComment(label: String, value: List<String>) {
+fun List<String>.ViewHtml(label: String) {
     OutlinedCard(modifier = Modifier.fillMaxSize(), label = { Text(label) }) {
-        value.forEach {
+        forEach {
             HtmlText(
                 text = it, modifier = Modifier.padding(start = 8.dp), style = TextStyle(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -159,12 +164,12 @@ fun ViewComment(label: String, value: List<String>) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ViewBadges(label: String, value: List<String>) {
+fun List<String>.ViewBadges(label: String) {
     OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(label) }) {
         Row(
             modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            value.forEach {
+            forEach {
                 Badge { Text(it) }
             }
         }
@@ -172,16 +177,15 @@ fun ViewBadges(label: String, value: List<String>) {
 }
 
 @Composable
-fun ViewText(
+fun List<String>.View(
     label: String,
-    value: List<String>,
     color: Color = MaterialTheme.colorScheme.onPrimaryContainer
 ) {
     OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(label) }) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            value.forEach {
+            forEach {
                 Text(it, color = color)
             }
         }
@@ -189,19 +193,19 @@ fun ViewText(
 }
 
 @Composable
-fun ViewRating(label: String, value: Float) {
+fun Float.ViewRating(label: String) {
     OutlinedCard(modifier = Modifier
         .fillMaxWidth()
         .padding(16.dp), label = { Text(label) }) {
-        ViewRating(value)
+        ViewRating()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ViewRating(value: Float) {
+fun Float.ViewRating() {
     RatingBar(
-        value = value,
+        value = this,
         config = RatingBarConfig().activeColor(Color.Yellow).hideInactiveStars(false)
             .inactiveColor(Color.LightGray).inactiveBorderColor(Color.Blue).stepSize(StepSize.ONE)
             .numStars(10).isIndicator(true).size(16.dp).padding(2.dp)
