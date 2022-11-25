@@ -23,6 +23,7 @@ class BookSearchViewModel @Inject constructor(
         try {
             val result: Response<BookList> = bookService.getBooks(query, type)
             Log.d("boxxxx", "result: ${result}")
+            Log.v("boxxxx", " found: ${result.body()}")
 
             bookList.value = result.body()
             return Result.success(bookList.value)

@@ -11,18 +11,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import box.example.showcase.R
+import box.example.showcase.applib.books.BookQueryType
+import box.example.showcase.applib.books.BookSearchViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.pages.database.components.ViewDetails
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookReader
+import kotlinx.coroutines.launch
 
 class DbBookPage :
     Page(
@@ -33,6 +36,7 @@ class DbBookPage :
         arguments = listOf(navArgument("bookID") { type = NavType.StringType })
     ) {
     var bookID = ""
+    var book: CalibreBook? = null
     override fun showInDrawer() = false
     override fun parseArguments(arguments: Bundle?) {
         Log.v("boxxx", "parse arguments: $arguments")
@@ -46,20 +50,38 @@ class DbBookPage :
     @Composable
     override fun Content() {
         val viewModel = mainViewModel.calibreDatabaseViewModel
+        /*
         val book = remember {
             mutableStateOf<CalibreBook?>(null)
         }
         LaunchedEffect(true) {
             book.value = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
         }
-        book.value?.ViewDetails()
+
+         */
+        LaunchedEffect(true) {
+            book = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
+
+        }
+        book?.ViewDetails()
     }
 
     @SuppressLint("ComposableNaming")
     @Composable
     override fun floatingActionButton() {
+        val viewModel = mainViewModel.calibreDatabaseViewModel
+        val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
+        val scope = rememberCoroutineScope()
         ExtendedFloatingActionButton(
             onClick = {
+                if (book != null) {
+                    scope.launch {
+                        bookSearchViewModel.getBooks(
+                            book!!.title!!,
+                            BookQueryType.Title
+                        )
+                    }
+                }
             },
             icon = {
                 Icon(
