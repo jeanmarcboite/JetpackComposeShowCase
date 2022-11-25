@@ -1,9 +1,7 @@
 package box.example.showcase.ui.pages.database.components
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Badge
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -11,9 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
@@ -21,10 +17,6 @@ import box.example.showcase.ui.components.OutlinedCard
 import box.example.showcase.ui.components.data.Bool
 import box.example.showcase.ui.components.data.Rating
 import box.example.showcase.ui.components.data.ViewHtml
-import box.example.showcase.ui.pages.database.LanguageMap
-import box.example.showcase.ui.theme.touchpoint_lg
-import coil.compose.rememberAsyncImagePainter
-import com.jsramraj.flags.Flags
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,7 +30,7 @@ fun CalibreBook.View() {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 languages.forEach {
-                    it.LanguageView()
+                    it.Language()
                 }
                 customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
                     entry.ViewIfBool()
@@ -83,19 +75,6 @@ fun CalibreBook.View() {
             }
         }
     }
-}
-
-@Composable
-fun String.LanguageView() {
-    val countryCode = LanguageMap[this]
-    if (countryCode != null) Image(
-        painter = rememberAsyncImagePainter(Flags.forCountry(countryCode)),
-        contentDescription = "flag",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .size(touchpoint_lg)
-            .clip(CircleShape)
-    )
 }
 
 @Composable
