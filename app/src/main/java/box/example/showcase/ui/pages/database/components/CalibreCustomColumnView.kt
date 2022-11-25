@@ -9,7 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
-import box.example.showcase.ui.components.*
+import box.example.showcase.ui.components.OutlinedCard
+import box.example.showcase.ui.components.data.*
 
 @Composable
 fun Map.Entry<CalibreCustomColumn, MutableList<String>>.View() {

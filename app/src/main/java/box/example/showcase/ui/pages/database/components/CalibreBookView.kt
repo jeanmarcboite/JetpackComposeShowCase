@@ -13,8 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
-import box.example.showcase.ui.components.HtmlText
 import box.example.showcase.ui.components.OutlinedCard
+import box.example.showcase.ui.components.data.HtmlText
+import box.example.showcase.ui.components.data.Language
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,7 +29,7 @@ fun CalibreBook.View() {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 languages.forEach {
-                    it.LanguageView()
+                    it.Language()
                 }
                 customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
                     entry.ViewIfBool()
