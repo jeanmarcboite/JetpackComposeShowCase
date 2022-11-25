@@ -1,8 +1,10 @@
 package box.example.showcase.ui.pages.database.components
 
 import android.util.Log
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Badge
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,9 +15,7 @@ import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
 import box.example.showcase.ui.components.OutlinedCard
-import box.example.showcase.ui.components.data.Bool
-import box.example.showcase.ui.components.data.Rating
-import box.example.showcase.ui.components.data.ViewHtml
+import box.example.showcase.ui.components.data.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,7 +86,7 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.View() {
             }
             "datetime" -> value.View(it)
             "enumeration" -> key.ViewEnumeration(value)
-            else -> value.ViewBadges(it)
+            else -> value.Badges(it)
         }
     }
 }
@@ -115,21 +115,4 @@ fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfBool() {
 fun Map.Entry<CalibreCustomColumn, MutableList<String>>.ViewIfComments() {
     if (key.datatype == "comments") key.name?.let { value.ViewHtml(it) }
 }
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun List<String>.ViewBadges(label: String) {
-    OutlinedCard(modifier = Modifier.fillMaxWidth(), label = { Text(label) }) {
-        Row(
-            modifier = Modifier.padding(16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            forEach {
-                Badge { Text(it) }
-            }
-        }
-    }
-}
-
-
 
