@@ -1,14 +1,21 @@
 package box.example.showcase.ui.pages.database
 
+import android.util.Log
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import box.example.showcase.R
 import box.example.showcase.applib.books.models.calibre.CalibreAuthor
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreEntity
+import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.pages.database.components.View
 import box.example.showcase.ui.theme.margin_half
 import compose.icons.TablerIcons
@@ -37,14 +44,26 @@ abstract class DatabaseTableScreen(val list: List<CalibreEntity>?) {
     abstract fun CalibreEntity.ItemView()
 }
 
-class BooksScreen(list: List<CalibreEntity>?) : DatabaseTableScreen(list) {
+class BooksScreen(val navViewModel: NavViewModel, list: List<CalibreEntity>?) :
+    DatabaseTableScreen(list) {
     override val icon = TablerIcons.Book
     override val route = R.string.calibre_book_table_route
     override val title = R.string.calibre_book_table_title
 
     @Composable
     override fun CalibreEntity.ItemView() {
-        (this as CalibreBook).View()
+        val path = "book/calibre"
+        val book = this as CalibreBook
+        Column {
+            book.View()
+            Button({
+                val destination = "$path/${book.uuid}"
+                Log.d("boxxx", "navigate to $destination")
+                navViewModel.navigate(destination)
+            }, modifier = Modifier.fillMaxWidth()) {
+                Text("Books Details")
+            }
+        }
     }
 }
 

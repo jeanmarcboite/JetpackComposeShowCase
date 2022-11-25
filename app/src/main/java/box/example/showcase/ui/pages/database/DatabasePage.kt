@@ -50,10 +50,12 @@ class DatabasePage :
         val currentBackStack by navController.currentBackStackEntryAsState()
 
         val tabs = listOf(
-            BooksScreen(viewModel.calibreDatabase.value?.books?.value?.sortedBy {
-                val book = it as CalibreBook
-                book.sort ?: book.title
-            }),
+            BooksScreen(
+                mainViewModel.navViewModel,
+                viewModel.calibreDatabase.value?.books?.value?.sortedBy {
+                    val book = it as CalibreBook
+                    book.sort ?: book.title
+                }),
             AuthorsScreen(viewModel.calibreDatabase.value?.authors?.value?.sortedBy {
                 val author = it as CalibreAuthor
                 author.sort ?: author.name

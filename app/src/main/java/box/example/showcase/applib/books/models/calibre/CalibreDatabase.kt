@@ -12,6 +12,7 @@ class CalibreDatabase(context: Context) {
 
     val preferences = mutableStateOf<List<CalibreEntity>?>(null)
     val books = mutableStateOf<List<CalibreEntity>?>(null)
+    val uuidBookMap = mutableStateOf<Map<String, CalibreBook>>(mapOf())
     val authors = mutableStateOf<List<CalibreEntity>?>(null)
 
     private val dao: Dao<CalibreBook, *>
@@ -40,6 +41,11 @@ class CalibreDatabase(context: Context) {
             val bookMap: Map<Int, CalibreBook>? = books.value?.associate {
                 it.id to it as CalibreBook
             }
+            uuidBookMap.value = books.value?.associate {
+                val book = it as CalibreBook
+                (book.uuid ?: "no_uuid") to book
+            } ?: mapOf()
+
 
             errorMessage = "cannot get authors"
             authors.value =

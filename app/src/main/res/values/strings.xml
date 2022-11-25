@@ -24,6 +24,7 @@
     <string name="notes_root">notes</string>
     <string name="books_page_route">books</string>
     <string name="books_page_title">Books</string>
+    <string name="db_book_page_route">book/calibre/{bookID}</string>
     <string name="book_page_route">book/works/{bookID}</string>
     <string name="book_page_title">Book</string>
     <string name="words_page_route">words</string>
