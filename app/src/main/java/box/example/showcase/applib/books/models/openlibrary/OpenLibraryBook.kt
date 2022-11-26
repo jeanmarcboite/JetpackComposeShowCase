@@ -1,4 +1,4 @@
-package box.example.showcase.applib.books.models
+package box.example.showcase.applib.books.models.openlibrary
 
 
 data class Book(

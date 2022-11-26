@@ -1,4 +1,4 @@
-package box.example.showcase.applib.books.models
+package box.example.showcase.applib.books.models.openlibrary
 
 data class BookList(
     val docs: List<Doc>,
@@ -37,7 +37,7 @@ data class Doc(
     val id_amazon: List<String>?,
     val id_bcid: List<String>?,
     val id_canadian_national_library_archive: List<String>?,
-    val id_depósito_legal: List<String>?,
+    @Suppress("NonAsciiCharacters") val id_depósito_legal: List<String>?,
     val id_goodreads: List<String>?,
     val id_google: List<String>?,
     val id_librarything: List<String>?,

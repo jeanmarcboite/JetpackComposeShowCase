@@ -12,8 +12,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import box.example.showcase.R
-import box.example.showcase.applib.books.BookSearchViewModel
-import box.example.showcase.applib.books.models.Book
+import box.example.showcase.applib.books.models.openlibrary.Book
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -41,12 +41,12 @@ class BookDetailPage :
 
     @Composable
     override fun Content() {
-        val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
+        val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val book = remember {
             mutableStateOf<Book?>(null)
         }
         LaunchedEffect(true) {
-            book.value = bookSearchViewModel.getBook(bookID).getOrNull()
+            book.value = openLibraryBookSearchViewModel.getBook(bookID).getOrNull()
         }
         book.value?.View()
 

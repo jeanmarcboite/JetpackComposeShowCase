@@ -21,8 +21,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
-import box.example.showcase.applib.books.BookQueryType
-import box.example.showcase.applib.books.BookSearchViewModel
+import box.example.showcase.applib.books.models.openlibrary.BookQueryType
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -49,7 +49,7 @@ class BookSearchPage :
         var searchString by rememberSaveable {
             mutableStateOf("lord of the rings")
         }
-        val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
+        val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val keyboardController = LocalSoftwareKeyboardController.current
 
         val queryOptions = mapOf(
@@ -61,7 +61,7 @@ class BookSearchPage :
             progressVisible = true
             scope.launch {
                 keyboardController?.hide()
-                bookSearchViewModel.getBooks(
+                openLibraryBookSearchViewModel.getBooks(
                     searchString,
                     queryOptions[selectedOption]!!
                 )
@@ -124,7 +124,7 @@ class BookSearchPage :
                     strokeWidth = 10.dp
                 )
             }
-            bookSearchViewModel.bookList.value?.let { bookList ->
+            openLibraryBookSearchViewModel.bookList.value?.let { bookList ->
                 label = "${bookList.numFound} books found"
                 LazyColumn {
                     items(bookList.docs) {

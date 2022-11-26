@@ -1,17 +1,15 @@
-package box.example.showcase.applib.books
+package box.example.showcase.applib.books.models.openlibrary
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import box.example.showcase.applib.books.models.Book
-import box.example.showcase.applib.books.models.BookList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class BookSearchViewModel @Inject constructor(
+class OpenLibraryBookSearchViewModel @Inject constructor(
     private val bookService: BookService
 ) : ViewModel() {
     var bookList: MutableState<BookList?> = mutableStateOf(null)

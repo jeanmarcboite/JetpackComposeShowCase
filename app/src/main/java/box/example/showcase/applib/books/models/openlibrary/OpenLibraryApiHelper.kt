@@ -1,4 +1,4 @@
-package box.example.showcase.applib.books
+package box.example.showcase.applib.books.models.openlibrary
 
 import box.example.showcase.BuildConfig
 import com.google.gson.GsonBuilder

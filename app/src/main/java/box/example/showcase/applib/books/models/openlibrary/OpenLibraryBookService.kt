@@ -1,7 +1,5 @@
-package box.example.showcase.applib.books
+package box.example.showcase.applib.books.models.openlibrary
 
-import box.example.showcase.applib.books.models.Book
-import box.example.showcase.applib.books.models.BookList
 import retrofit2.Response
 
 class OpenLibraryBookService : BookService {

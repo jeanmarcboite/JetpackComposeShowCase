@@ -15,9 +15,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import box.example.showcase.applib.books.OpenLibraryApiHelper
-import box.example.showcase.applib.books.models.Author
-import box.example.showcase.applib.books.models.Book
+import box.example.showcase.applib.books.models.openlibrary.Author
+import box.example.showcase.applib.books.models.openlibrary.Book
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryApiHelper
 import coil.compose.rememberAsyncImagePainter
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid

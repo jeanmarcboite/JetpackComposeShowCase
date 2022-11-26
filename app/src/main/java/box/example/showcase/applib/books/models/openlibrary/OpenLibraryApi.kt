@@ -1,8 +1,5 @@
-package box.example.showcase.applib.books
+package box.example.showcase.applib.books.models.openlibrary
 
-import box.example.showcase.applib.books.models.Author
-import box.example.showcase.applib.books.models.Book
-import box.example.showcase.applib.books.models.BookList
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

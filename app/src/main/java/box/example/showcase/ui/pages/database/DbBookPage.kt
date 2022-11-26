@@ -17,9 +17,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import box.example.showcase.R
-import box.example.showcase.applib.books.BookQueryType
-import box.example.showcase.applib.books.BookSearchViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreBook
+import box.example.showcase.applib.books.models.openlibrary.BookQueryType
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.pages.database.components.ViewDetails
 import compose.icons.FontAwesomeIcons
@@ -69,14 +69,13 @@ class DbBookPage :
     @SuppressLint("ComposableNaming")
     @Composable
     override fun floatingActionButton() {
-        val viewModel = mainViewModel.calibreDatabaseViewModel
-        val bookSearchViewModel: BookSearchViewModel = hiltViewModel()
+        val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
         ExtendedFloatingActionButton(
             onClick = {
                 if (book != null) {
                     scope.launch {
-                        bookSearchViewModel.getBooks(
+                        openLibraryBookSearchViewModel.getBooks(
                             book!!.title!!,
                             BookQueryType.Title
                         )
