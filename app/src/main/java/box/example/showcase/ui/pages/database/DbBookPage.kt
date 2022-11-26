@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -82,12 +82,12 @@ class DbBookPage :
             },
             icon = {
                 Icon(
-                    Icons.Filled.Info,
+                    Icons.Filled.Search,
                     contentDescription = "Favorite"
                 )
             },
             text = {
-                Text("book: ${viewModel.book.value?.title}")
+                Text("${viewModel.book.value?.title}")
                 //Text(stringResource(R.string.get_book_info))
             }
         )
