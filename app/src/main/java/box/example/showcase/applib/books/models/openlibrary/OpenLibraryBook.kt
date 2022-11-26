@@ -1,7 +1,7 @@
 package box.example.showcase.applib.books.models.openlibrary
 
 
-data class Book(
+data class OpenLibraryBook(
     val authors: List<AuthorK>,
     val covers: List<Int>?,
     val created: Created?,

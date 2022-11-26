@@ -1,6 +1,6 @@
 package box.example.showcase.applib.books.models.openlibrary
 
-data class Author(
+data class OpenLibraryAuthor(
     val alternate_names: List<String>?,
     val bio: String?,
     val birth_date: String?,

@@ -8,6 +8,10 @@ enum class BookQueryType {
 }
 
 interface BookService {
-    suspend fun getBooks(query: String, type: BookQueryType = BookQueryType.Any): Response<BookList>
-    suspend fun getBook(id: String): Response<Book>
+    suspend fun getBooks(
+        query: String,
+        type: BookQueryType = BookQueryType.Any
+    ): Response<OpenLibraryBookList>
+
+    suspend fun getBook(id: String): Response<OpenLibraryBook>
 }

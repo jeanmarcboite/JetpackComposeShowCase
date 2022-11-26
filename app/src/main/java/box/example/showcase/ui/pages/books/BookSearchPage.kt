@@ -54,7 +54,7 @@ class BookSearchPage :
 
         val queryOptions = mapOf(
             "Any" to BookQueryType.Any,
-            "Title" to BookQueryType.Title, "Author" to BookQueryType.Author
+            "Title" to BookQueryType.Title, "OpenLibraryAuthor" to BookQueryType.Author
         )
         val (selectedOption, onOptionSelected) = remember { mutableStateOf("Any") }
         fun search() {
@@ -124,7 +124,7 @@ class BookSearchPage :
                     strokeWidth = 10.dp
                 )
             }
-            openLibraryBookSearchViewModel.bookList.value?.let { bookList ->
+            openLibraryBookSearchViewModel.openLibraryBookList.value?.let { bookList ->
                 label = "${bookList.numFound} books found"
                 LazyColumn {
                     items(bookList.docs) {
@@ -135,7 +135,7 @@ class BookSearchPage :
                         }
                     }
                 }
-                //Text(bookList.toString())
+                //Text(openLibraryBookList.toString())
             }
         }
 

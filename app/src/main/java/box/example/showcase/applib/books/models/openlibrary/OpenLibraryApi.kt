@@ -21,17 +21,17 @@ https://covers.openlibrary.org/b/olid/OL7440033M-S.jpg
 
 interface OpenLibraryApi {
     @GET("search.json")
-    suspend fun getBooksByTitle(@Query("title") query: String): Response<BookList>
+    suspend fun getBooksByTitle(@Query("title") query: String): Response<OpenLibraryBookList>
 
     @GET("search.json")
-    suspend fun getBooksByQ(@Query("q") query: String): Response<BookList>
+    suspend fun getBooksByQ(@Query("q") query: String): Response<OpenLibraryBookList>
 
     @GET("search.json")
-    suspend fun getBooksByAuthor(@Query("author") query: String): Response<BookList>
+    suspend fun getBooksByAuthor(@Query("author") query: String): Response<OpenLibraryBookList>
 
     @GET("books/{id}.json")
-    suspend fun getBook(@Path("id") id: String): Response<Book>
+    suspend fun getBook(@Path("id") id: String): Response<OpenLibraryBook>
 
     @GET("authors/{id}.json")
-    suspend fun getAuthor(@Path("id") id: String): Response<Author>
+    suspend fun getAuthor(@Path("id") id: String): Response<OpenLibraryAuthor>
 }

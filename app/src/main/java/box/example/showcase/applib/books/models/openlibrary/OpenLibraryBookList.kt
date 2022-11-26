@@ -1,6 +1,6 @@
 package box.example.showcase.applib.books.models.openlibrary
 
-data class BookList(
+data class OpenLibraryBookList(
     val docs: List<Doc>,
     val numFound: Int,
     val numFoundExact: Boolean,

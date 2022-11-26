@@ -15,9 +15,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import box.example.showcase.applib.books.models.openlibrary.Author
-import box.example.showcase.applib.books.models.openlibrary.Book
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryApiHelper
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryAuthor
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBook
 import coil.compose.rememberAsyncImagePainter
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -26,13 +26,13 @@ import compose.icons.fontawesomeicons.solid.SkullCrossbones
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Book.View() {
+fun OpenLibraryBook.View() {
     val book = this
 
     val scroll = rememberScrollState(0)
 
     val bookAuthors = remember {
-        mutableStateOf<List<Author?>>(listOf())
+        mutableStateOf<List<OpenLibraryAuthor?>>(listOf())
     }
 
     LaunchedEffect(key1 = true) {
@@ -40,7 +40,7 @@ fun Book.View() {
         bookAuthors.value = book.authors.map {
             Log.d("boxx [bookAuthors]", it.author.key)
             val parts = it.author.key.split("/")
-            val value: Author? = api.getAuthor(parts.last()).body()
+            val value: OpenLibraryAuthor? = api.getAuthor(parts.last()).body()
             Log.d("boxx [bookAuthors]", "${it.author.key} $value")
             value
         }
@@ -114,10 +114,10 @@ fun Book.View() {
 }
 
 @Composable
-fun Author.View(modifier: Modifier = Modifier) {
+fun OpenLibraryAuthor.View(modifier: Modifier = Modifier) {
     val scroll = rememberScrollState(0)
     Card(modifier) {
-        Row {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 name ?: "",
                 style = MaterialTheme.typography.titleLarge,
@@ -125,15 +125,19 @@ fun Author.View(modifier: Modifier = Modifier) {
             )
             Spacer(Modifier.weight(1f))
 
-            Text(birth_date ?: "")
+            Column {
+                Text(birth_date ?: "")
 
-            death_date?.apply {
-                Icon(
-                    FontAwesomeIcons.Solid.SkullCrossbones,
-                    contentDescription = "Death",
-                    modifier = Modifier.size(24.dp)
-                )
-                Text(death_date)
+                death_date?.apply {
+                    Row {
+                        Icon(
+                            FontAwesomeIcons.Solid.SkullCrossbones,
+                            contentDescription = "Death",
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Text(death_date)
+                    }
+                }
             }
         }
         alternate_names?.apply {

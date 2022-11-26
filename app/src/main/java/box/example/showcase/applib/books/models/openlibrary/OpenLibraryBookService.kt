@@ -3,7 +3,10 @@ package box.example.showcase.applib.books.models.openlibrary
 import retrofit2.Response
 
 class OpenLibraryBookService : BookService {
-    override suspend fun getBooks(query: String, type: BookQueryType): Response<BookList> {
+    override suspend fun getBooks(
+        query: String,
+        type: BookQueryType
+    ): Response<OpenLibraryBookList> {
         val api = OpenLibraryApiHelper.getInstance()
 
         return when (type) {
@@ -13,7 +16,7 @@ class OpenLibraryBookService : BookService {
         }
     }
 
-    override suspend fun getBook(id: String): Response<Book> {
+    override suspend fun getBook(id: String): Response<OpenLibraryBook> {
         return OpenLibraryApiHelper.getInstance().getBook(id)
     }
 }

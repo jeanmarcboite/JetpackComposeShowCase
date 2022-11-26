@@ -12,19 +12,19 @@ import javax.inject.Inject
 class OpenLibraryBookSearchViewModel @Inject constructor(
     private val bookService: BookService
 ) : ViewModel() {
-    var bookList: MutableState<BookList?> = mutableStateOf(null)
+    var openLibraryBookList: MutableState<OpenLibraryBookList?> = mutableStateOf(null)
 
     suspend fun getBooks(
         query: String,
         type: BookQueryType = BookQueryType.Any
-    ): Result<BookList?> {
+    ): Result<OpenLibraryBookList?> {
         try {
-            val result: Response<BookList> = bookService.getBooks(query, type)
+            val result: Response<OpenLibraryBookList> = bookService.getBooks(query, type)
             Log.d("boxxxx", "result: ${result}")
             Log.v("boxxxx", " found: ${result.body()}")
 
-            bookList.value = result.body()
-            return Result.success(bookList.value)
+            openLibraryBookList.value = result.body()
+            return Result.success(openLibraryBookList.value)
         } catch (e: Exception) {
             Log.e("boxx", "Cannot get books from {$query}: ${e.message}"/*, e*/)
 
@@ -34,9 +34,9 @@ class OpenLibraryBookSearchViewModel @Inject constructor(
 
     suspend fun getBook(
         bookID: String
-    ): Result<Book?> {
+    ): Result<OpenLibraryBook?> {
         try {
-            val result: Response<Book> = bookService.getBook(bookID)
+            val result: Response<OpenLibraryBook> = bookService.getBook(bookID)
             Log.d("boxxxx", "result: ${result}")
 
             return Result.success(result.body())
