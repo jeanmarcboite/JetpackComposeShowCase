@@ -14,19 +14,22 @@ import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 
 class FirebaseNotesViewModel : ViewModel() {
+    val verbose = false
     private val TAG = "boxx [firebase]"
     private val database: DatabaseReference = Firebase.database.reference
     val notes = mutableStateListOf<Note>()
 
     init {
-        Log.v(TAG, "database reference: $database")
+        if (verbose)
+            Log.v(TAG, "database reference: $database")
         val sdf = getDateTimeInstance() //SimpleDateFormat("dd/M/yyyy hh:mm:ss")
         val currentDate = sdf.format(Date())
         database.child("log").setValue(currentDate)
 
 
         database.child("version").get().addOnSuccessListener {
-            Log.v(TAG, "Database version ${it.value}")
+            if (verbose)
+                Log.v(TAG, "Database version ${it.value}")
         }.addOnFailureListener {
             Log.e(TAG, "Error getting data", it)
         }

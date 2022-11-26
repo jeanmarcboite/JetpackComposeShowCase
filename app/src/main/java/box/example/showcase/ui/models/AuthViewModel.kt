@@ -20,6 +20,7 @@ enum class AuthState {
 }
 
 class AuthViewModel : ViewModel() {
+    private val verbose = false
     private val TAG = "boxx [AuthViewModel]"
     val state: MutableState<AuthState> = mutableStateOf(AuthState.NotLoggedIn)
     val user: MutableState<FirebaseUser?> = mutableStateOf(null)
@@ -31,7 +32,8 @@ class AuthViewModel : ViewModel() {
         if (user.value != null)
             state.value = AuthState.LoggedIn
 
-        Log.d(TAG, "Firebase user: " + FirebaseAuth.getInstance().currentUser?.displayName)
+        if (verbose)
+            Log.v(TAG, "Firebase user: " + FirebaseAuth.getInstance().currentUser?.displayName)
     }
 
     fun setUser(firebaseUser: FirebaseUser?) {

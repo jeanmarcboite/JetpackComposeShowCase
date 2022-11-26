@@ -138,18 +138,26 @@ class CalibreDatabase(context: Context) {
         table: String,
         entries: List<CalibreEntity>
     ) {
+        val verbose = false
         val TAG = "boxxx [readBooksData]"
         fun log(info: String, list: List<Array<String>>) {
-            Log.d(
-                TAG, "$table $info > ${
-                    list.map {
-                        "[" + it.joinToString() + "]"
-                    }
-                }"
-            )
+            if (verbose) {
+                Log.v(
+                    TAG, "$table $info > ${
+                        list.map {
+                            "[" + it.joinToString() + "]"
+                        }
+                    }"
+                )
+            }
+        }
+
+        fun log(info: String) {
+            if (verbose)
+                Log.v(TAG, info)
         }
         try {
-            Log.d(TAG, "$table entries: $entries")
+            log("$table entries: $entries")
             val entryMap: Map<Int, CalibreEntity> = entries.associate {
                 it.id to it
             }
@@ -214,15 +222,17 @@ class CalibreDatabase(context: Context) {
     }
 
     private fun getCustomColumn(table: String): List<BooksLink>? {
+        val verbose = false
         val TAG = "boxxx [getCustom]"
         fun log(info: String, list: List<Array<String>>) {
-            Log.d(
-                TAG, "$table $info > ${
-                    list.map {
-                        "[" + it.joinToString() + "]"
-                    }
-                }"
-            )
+            if (verbose)
+                Log.v(
+                    TAG, "$table $info > ${
+                        list.map {
+                            "[" + it.joinToString() + "]"
+                        }
+                    }"
+                )
         }
 
         try {
@@ -270,7 +280,8 @@ class CalibreDatabase(context: Context) {
                 listOf()
             }
             log("entries", entries)
-            Log.d(TAG, "$table > $booksLinks")
+            if (verbose)
+                Log.v(TAG, "$table > $booksLinks")
 
             return booksLinks
         } catch (e: Exception) {
