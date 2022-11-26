@@ -46,4 +46,25 @@ class OpenLibraryBookSearchViewModel @Inject constructor(
             return Result.failure(e)
         }
     }
+
+    suspend fun getBookByIsbn(
+        bookID: String
+    ): Result<OpenLibraryBook?> {
+        var error: Exception? = null
+        try {
+            val result: Response<OpenLibraryBook> = bookService.getBookByIsbn(bookID)
+            Log.d("boxxxx", "result: ${result}")
+
+            if (result.code() == 200)
+                return Result.success(result.body())
+            
+            error = Exception("error ${result.code()} ${result.message()}")
+        } catch (e: Exception) {
+            error = e
+        }
+
+        Log.e("boxx", "Cannot get book $bookID: ${error!!.message}"/*, e*/)
+
+        return Result.failure(error!!)
+    }
 }

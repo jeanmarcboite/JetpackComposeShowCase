@@ -19,5 +19,9 @@ class OpenLibraryBookService : BookService {
     override suspend fun getBook(id: String): Response<OpenLibraryBook> {
         return OpenLibraryApiHelper.getInstance().getBook(id)
     }
+
+    override suspend fun getBookByIsbn(isbn: String): Response<OpenLibraryBook> {
+        return OpenLibraryApiHelper.getInstance().getBookByIsbn(isbn)
+    }
 }
 

@@ -14,4 +14,5 @@ interface BookService {
     ): Response<OpenLibraryBookList>
 
     suspend fun getBook(id: String): Response<OpenLibraryBook>
+    suspend fun getBookByIsbn(isbn: String): Response<OpenLibraryBook>
 }

@@ -15,6 +15,8 @@ http://openlibrary.org/search/authors.json?q=twain
 https://openlibrary.org/works/OL45883W.json
 https://openlibrary.org/books/OL7353617M.json
 https://openlibrary.org/authors/OL26320A.json
+https://openlibrary.org/isbn/9780140328721.json
+
 
 https://covers.openlibrary.org/b/olid/OL7440033M-S.jpg
  **/
@@ -31,6 +33,9 @@ interface OpenLibraryApi {
 
     @GET("books/{id}.json")
     suspend fun getBook(@Path("id") id: String): Response<OpenLibraryBook>
+
+    @GET("isbn/{isbn}.json")
+    suspend fun getBookByIsbn(@Path("isbn") id: String): Response<OpenLibraryBook>
 
     @GET("authors/{id}.json")
     suspend fun getAuthor(@Path("id") id: String): Response<OpenLibraryAuthor>

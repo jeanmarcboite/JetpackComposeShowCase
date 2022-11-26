@@ -25,14 +25,13 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookReader
 import kotlinx.coroutines.launch
 
-class DbBookPage :
-    Page(
-        FontAwesomeIcons.Solid.BookReader,
-        R.string.db_book_page_route,
-        R.string.book_page_title,
-        Icons.Default.ArrowBack,
-        arguments = listOf(navArgument("bookID") { type = NavType.StringType })
-    ) {
+class DbBookPage : Page(
+    FontAwesomeIcons.Solid.BookReader,
+    R.string.db_book_page_route,
+    R.string.book_page_title,
+    Icons.Default.ArrowBack,
+    arguments = listOf(navArgument("bookID") { type = NavType.StringType })
+) {
     var bookID = ""
     override fun showInDrawer() = false
     override fun parseArguments(arguments: Bundle?) {
@@ -69,27 +68,26 @@ class DbBookPage :
         val viewModel = mainViewModel.calibreDatabaseViewModel.calibreBookViewModel
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
-        ExtendedFloatingActionButton(
-            onClick = {
-                if (viewModel.book.value != null) {
-                    scope.launch {
-                        openLibraryBookSearchViewModel.getBooks(
-                            viewModel.book.value!!.title!!,
-                            BookQueryType.Title
+        ExtendedFloatingActionButton(onClick = {
+            if (viewModel.book.value != null) {
+                scope.launch {
+                    val isbn = viewModel.book.value!!.ISBN
+                    if (isbn != null) {
+                        openLibraryBookSearchViewModel.getBookByIsbn(
+                            isbn
                         )
-                    }
+                    } else openLibraryBookSearchViewModel.getBooks(
+                        viewModel.book.value!!.title!!, BookQueryType.Title
+                    )
                 }
-            },
-            icon = {
-                Icon(
-                    Icons.Filled.Search,
-                    contentDescription = "Favorite"
-                )
-            },
-            text = {
-                Text("${viewModel.book.value?.title}")
-                //Text(stringResource(R.string.get_book_info))
             }
-        )
+        }, icon = {
+            Icon(
+                Icons.Filled.Search, contentDescription = "Favorite"
+            )
+        }, text = {
+            Text("${viewModel.book.value?.title}")
+            //Text(stringResource(R.string.get_book_info))
+        })
     }
 }
