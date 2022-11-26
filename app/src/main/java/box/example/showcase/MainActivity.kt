@@ -62,7 +62,6 @@ class MainActivity : ComponentActivity() {
         mainViewModel.firebaseNotesViewModel = firebaseNotesViewModel
         mainViewModel.notesViewModel = notesViewModel
 
-        calibreDatabaseViewModel.calibreBookViewModel = calibreBookViewModel
         mainViewModel.calibreDatabaseViewModel = calibreDatabaseViewModel
 
         setContent {

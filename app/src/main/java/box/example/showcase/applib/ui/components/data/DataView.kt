@@ -1,4 +1,4 @@
-package box.example.showcase.ui.components.data
+package box.example.showcase.applib.ui.components.data
 
 import android.util.Log
 import androidx.compose.foundation.Image

@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
+import box.example.showcase.applib.ui.components.data.*
 import box.example.showcase.ui.components.OutlinedCard
-import box.example.showcase.ui.components.data.*
 
 @Composable
 fun CalibreBook.ViewHeader(columnsList: Map<String, Boolean>) {

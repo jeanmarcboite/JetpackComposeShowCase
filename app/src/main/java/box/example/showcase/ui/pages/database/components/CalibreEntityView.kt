@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import box.example.showcase.applib.books.models.calibre.*
+import box.example.showcase.applib.ui.components.data.Rating
 import box.example.showcase.ui.components.OutlinedCard
-import box.example.showcase.ui.components.data.Rating
 
 @Composable
 fun List<CalibreEntity>?.View(

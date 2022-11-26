@@ -47,19 +47,9 @@ class DbBookPage : Page(
 
     @Composable
     override fun Content() {
-        val viewModel = mainViewModel.calibreDatabaseViewModel.calibreBookViewModel
-        /*
-        val book = remember {
-            mutableStateOf<CalibreBook?>(null)
-        }
+        val viewModel = mainViewModel.calibreDatabaseViewModel
         LaunchedEffect(true) {
-            book.value = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
-        }
-
-         */
-        LaunchedEffect(true) {
-            //book = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
-            viewModel.getBook(mainViewModel.calibreDatabaseViewModel.calibreDatabase.value, bookID)
+            viewModel.getBook(viewModel.calibreDatabase.value, bookID)
         }
         viewModel.book.value?.ViewDetails()
     }
@@ -67,7 +57,7 @@ class DbBookPage : Page(
     @SuppressLint("ComposableNaming")
     @Composable
     override fun floatingActionButton() {
-        val viewModel = mainViewModel.calibreDatabaseViewModel.calibreBookViewModel
+        val viewModel = mainViewModel.calibreDatabaseViewModel
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
         ExtendedFloatingActionButton(onClick = {
