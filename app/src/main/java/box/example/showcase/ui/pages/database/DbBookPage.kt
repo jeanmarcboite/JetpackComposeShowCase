@@ -18,6 +18,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import box.example.showcase.R
 import box.example.showcase.applib.books.models.calibre.CalibreBook
+import box.example.showcase.applib.books.models.calibre.CalibreBookViewModel
 import box.example.showcase.applib.books.models.openlibrary.BookQueryType
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
@@ -49,7 +50,7 @@ class DbBookPage :
 
     @Composable
     override fun Content() {
-        val viewModel = mainViewModel.calibreDatabaseViewModel
+        val viewModel: CalibreBookViewModel = hiltViewModel()
         /*
         val book = remember {
             mutableStateOf<CalibreBook?>(null)
@@ -60,8 +61,8 @@ class DbBookPage :
 
          */
         LaunchedEffect(true) {
-            book = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
-
+            //book = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
+            viewModel.getBook(mainViewModel.calibreDatabaseViewModel.calibreDatabase.value, bookID)
         }
         book?.ViewDetails()
     }
