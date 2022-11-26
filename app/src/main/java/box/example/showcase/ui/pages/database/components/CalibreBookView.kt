@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -62,6 +64,7 @@ fun CalibreBook.ViewSummary(onClick: () -> Unit = {}) {
 
 @Composable
 fun CalibreBook.ViewDetails() {
+    val scroll = rememberScrollState(0)
     Column(modifier = Modifier.padding(8.dp)) {
         Text(authors.joinToString { it.name.toString() })
         val columnsList = mapOf(
@@ -70,21 +73,23 @@ fun CalibreBook.ViewDetails() {
             "ratings" to false,
         )
         ViewHeader(columnsList)
-        columns.forEach {
-            if (it.key !in (columnsList.keys)) {
-                it.value.View(it.key)
+        Column(modifier = Modifier.verticalScroll(scroll)) {
+            columns.forEach {
+                if (it.key !in (columnsList.keys)) {
+                    it.value.View(it.key)
+                }
             }
-        }
-        customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
-            entry.ViewIfComments()
-        }
-        customColumns.forEach { column: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
-            if (column.key.datatype != "bool" && column.key.datatype != "comments") {
-                column.View()
+            customColumns.forEach { entry: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
+                entry.ViewIfComments()
             }
-        }
-        comment?.apply {
-            listOf(this).ViewHtml("Comments")
+            customColumns.forEach { column: Map.Entry<CalibreCustomColumn, MutableList<String>> ->
+                if (column.key.datatype != "bool" && column.key.datatype != "comments") {
+                    column.View()
+                }
+            }
+            comment?.apply {
+                listOf(this).ViewHtml("Comments")
+            }
         }
     }
 }
