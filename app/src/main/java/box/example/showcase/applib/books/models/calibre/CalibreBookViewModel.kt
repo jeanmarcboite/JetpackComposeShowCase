@@ -23,15 +23,33 @@ class CalibreDatabaseModule {
     fun calibreBookService(): CalibreBookService {
         return CalibreBookService()
     }
+
+    @Provides
+    fun book(): MutableState<CalibreBook?> {
+        return mutableStateOf(null)
+    }
 }
 
 @HiltViewModel
-class CalibreBookViewModel @Inject constructor(
-    private val calibreBookService: CalibreBookService
+class HCalibreBookViewModel @Inject constructor(
+    private val calibreBookService: CalibreBookService,
+    val book: MutableState<CalibreBook?>
 ) : ViewModel() {
-    val book: MutableState<CalibreBook?> = mutableStateOf(null)
+    val id: Int = ++objectId
+    //val book: MutableState<CalibreBook?> = mutableStateOf(null)
 
     fun getBook(calibreDatabase: CalibreDatabase?, uuid: String) {
         book.value = calibreBookService.getBook(calibreDatabase, uuid)
+    }
+
+    companion object {
+        var objectId = 0
+    }
+}
+
+class CalibreBookViewModel() : ViewModel() {
+    val book: MutableState<CalibreBook?> = mutableStateOf(null)
+    fun getBook(calibreDatabase: CalibreDatabase?, uuid: String) {
+        book.value = calibreDatabase?.uuidBookMap?.value?.get(uuid)
     }
 }

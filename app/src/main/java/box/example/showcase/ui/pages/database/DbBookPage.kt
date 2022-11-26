@@ -12,13 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import box.example.showcase.R
-import box.example.showcase.applib.books.models.calibre.CalibreBook
-import box.example.showcase.applib.books.models.calibre.CalibreBookViewModel
 import box.example.showcase.applib.books.models.openlibrary.BookQueryType
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
@@ -37,7 +34,6 @@ class DbBookPage :
         arguments = listOf(navArgument("bookID") { type = NavType.StringType })
     ) {
     var bookID = ""
-    var book: CalibreBook? = null
     override fun showInDrawer() = false
     override fun parseArguments(arguments: Bundle?) {
         Log.v("boxxx", "parse arguments: $arguments")
@@ -50,7 +46,7 @@ class DbBookPage :
 
     @Composable
     override fun Content() {
-        val viewModel: CalibreBookViewModel = hiltViewModel()
+        val viewModel = mainViewModel.calibreDatabaseViewModel.calibreBookViewModel
         /*
         val book = remember {
             mutableStateOf<CalibreBook?>(null)
@@ -64,20 +60,21 @@ class DbBookPage :
             //book = viewModel.calibreDatabase.value?.uuidBookMap?.value?.get(bookID)
             viewModel.getBook(mainViewModel.calibreDatabaseViewModel.calibreDatabase.value, bookID)
         }
-        book?.ViewDetails()
+        viewModel.book.value?.ViewDetails()
     }
 
     @SuppressLint("ComposableNaming")
     @Composable
     override fun floatingActionButton() {
+        val viewModel = mainViewModel.calibreDatabaseViewModel.calibreBookViewModel
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
         ExtendedFloatingActionButton(
             onClick = {
-                if (book != null) {
+                if (viewModel.book.value != null) {
                     scope.launch {
                         openLibraryBookSearchViewModel.getBooks(
-                            book!!.title!!,
+                            viewModel.book.value!!.title!!,
                             BookQueryType.Title
                         )
                     }
@@ -89,7 +86,10 @@ class DbBookPage :
                     contentDescription = "Favorite"
                 )
             },
-            text = { Text(stringResource(R.string.get_book_info)) }
+            text = {
+                Text("book: ${viewModel.book.value?.title}")
+                //Text(stringResource(R.string.get_book_info))
+            }
         )
     }
 }
