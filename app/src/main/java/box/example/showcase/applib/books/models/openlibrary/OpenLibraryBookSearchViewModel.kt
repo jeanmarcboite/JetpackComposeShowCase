@@ -26,7 +26,7 @@ class OpenLibraryBookSearchViewModel @Inject constructor(
             openLibraryBookList.value = result.body()
             return Result.success(openLibraryBookList.value)
         } catch (e: Exception) {
-            Log.e("boxx", "Cannot get books from {$query}: ${e.message}"/*, e*/)
+            Log.e("boxx", "OpenLibrary: Cannot get books from {$query}: ${e.message}"/*, e*/)
 
             return Result.failure(e)
         }
@@ -41,7 +41,7 @@ class OpenLibraryBookSearchViewModel @Inject constructor(
 
             return Result.success(result.body())
         } catch (e: Exception) {
-            Log.e("boxx", "Cannot get book {$bookID}: ${e.message}"/*, e*/)
+            Log.e("boxx", "OpenLibrary: Cannot get book {$bookID}: ${e.message}"/*, e*/)
 
             return Result.failure(e)
         }
@@ -50,21 +50,21 @@ class OpenLibraryBookSearchViewModel @Inject constructor(
     suspend fun getBookByIsbn(
         bookID: String
     ): Result<OpenLibraryBook?> {
-        var error: Exception? = null
+        var error: Exception?
         try {
             val result: Response<OpenLibraryBook> = bookService.getBookByIsbn(bookID)
             Log.d("boxxxx", "result: ${result}")
 
             if (result.code() == 200)
                 return Result.success(result.body())
-            
+
             error = Exception("error ${result.code()} ${result.message()}")
         } catch (e: Exception) {
             error = e
         }
 
-        Log.e("boxx", "Cannot get book $bookID: ${error!!.message}"/*, e*/)
+        Log.e("boxx", "OpenLibrary: Cannot get book $bookID: ${error!!.message}"/*, e*/)
 
-        return Result.failure(error!!)
+        return Result.failure(error)
     }
 }

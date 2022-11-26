@@ -17,6 +17,8 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import box.example.showcase.R
 import box.example.showcase.applib.books.models.openlibrary.BookQueryType
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBook
+import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookList
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.pages.database.components.ViewDetails
@@ -71,14 +73,24 @@ class DbBookPage : Page(
         ExtendedFloatingActionButton(onClick = {
             if (viewModel.book.value != null) {
                 scope.launch {
+                    var result: Result<OpenLibraryBook?>? = null
+
                     val isbn = viewModel.book.value!!.ISBN
                     if (isbn != null) {
-                        openLibraryBookSearchViewModel.getBookByIsbn(
-                            isbn
-                        )
-                    } else openLibraryBookSearchViewModel.getBooks(
-                        viewModel.book.value!!.title!!, BookQueryType.Title
-                    )
+                        result =
+                            openLibraryBookSearchViewModel.getBookByIsbn(
+                                isbn
+                            )
+                    }
+                    if (result == null || result.isFailure) {
+                        // OpenLibraryBookList(docs=[], numFound=0, numFoundExact=true, num_found=0, offset=null, q=, start=0)
+                        val resultBookList: Result<OpenLibraryBookList?> =
+                            openLibraryBookSearchViewModel.getBooks(
+                                viewModel.book.value!!.title!!, BookQueryType.Title
+                            )
+                    } else {
+                        val openLibraryBook: OpenLibraryBook? = result.getOrNull()
+                    }
                 }
             }
         }, icon = {
