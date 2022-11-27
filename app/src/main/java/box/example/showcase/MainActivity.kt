@@ -18,7 +18,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.compose.rememberNavController
-import box.example.showcase.applib.books.models.calibre.CalibreBookViewModel
 import box.example.showcase.applib.notes.NotesDatabase
 import box.example.showcase.applib.notes.NotesRepository
 import box.example.showcase.applib.notes.NotesViewModel
@@ -52,7 +51,6 @@ class MainActivity : ComponentActivity() {
         NotesViewModelFactory(repository)
     }
     val calibreDatabaseViewModel: CalibreDatabaseViewModel by viewModels()
-    val calibreBookViewModel: CalibreBookViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

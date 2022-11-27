@@ -10,11 +10,12 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.books.components.calibre.ViewDetails
+import box.example.showcase.applib.books.models.calibre.CalibreBook
+import box.example.showcase.applib.books.models.calibre.CalibreBookViewModel
 import box.example.showcase.applib.books.models.openlibrary.BookQueryType
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBook
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookList
@@ -45,48 +46,53 @@ class DbBookPage : Page(
 
     @Composable
     override fun Content() {
-        val viewModel = mainViewModel.calibreDatabaseViewModel
-        LaunchedEffect(true) {
-            viewModel.getBook(viewModel.calibreDatabase.value, bookID)
+        val calibreBookViewModel: CalibreBookViewModel = hiltViewModel()
+        Log.d("boxxx [DbBookPage:Content]", "book: ${calibreBookViewModel.book.value}")
+        calibreBookViewModel.book.value?.ViewDetails()
+    }
+
+    suspend fun search(
+        openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel,
+        book: CalibreBook?
+    ) {
+        if (book != null) {
+            var result: Result<OpenLibraryBook?>? = null
+
+            val isbn = book.ISBN
+            if (isbn != null) {
+                result = openLibraryBookSearchViewModel.getBookByIsbn(
+                    isbn
+                )
+            }
+            if (result == null || result.isFailure) {
+                // OpenLibraryBookList(docs=[], numFound=0, numFoundExact=true, num_found=0, offset=null, q=, start=0)
+                val resultBookList: Result<OpenLibraryBookList?> =
+                    openLibraryBookSearchViewModel.getBooks(
+                        book.title!!, BookQueryType.Title
+                    )
+            } else {
+                val openLibraryBook: OpenLibraryBook? = result.getOrNull()
+            }
         }
-        viewModel.book.value?.ViewDetails()
     }
 
     @SuppressLint("ComposableNaming")
     @Composable
     override fun floatingActionButton() {
-        val viewModel = mainViewModel.calibreDatabaseViewModel
+        val calibreBookViewModel: CalibreBookViewModel = hiltViewModel()
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
+        val book = calibreBookViewModel.book.value
         val scope = rememberCoroutineScope()
         ExtendedFloatingActionButton(onClick = {
-            if (viewModel.book.value != null) {
-                scope.launch {
-                    var result: Result<OpenLibraryBook?>? = null
-
-                    val isbn = viewModel.book.value!!.ISBN
-                    if (isbn != null) {
-                        result =
-                            openLibraryBookSearchViewModel.getBookByIsbn(
-                                isbn
-                            )
-                    }
-                    if (result == null || result.isFailure) {
-                        // OpenLibraryBookList(docs=[], numFound=0, numFoundExact=true, num_found=0, offset=null, q=, start=0)
-                        val resultBookList: Result<OpenLibraryBookList?> =
-                            openLibraryBookSearchViewModel.getBooks(
-                                viewModel.book.value!!.title!!, BookQueryType.Title
-                            )
-                    } else {
-                        val openLibraryBook: OpenLibraryBook? = result.getOrNull()
-                    }
-                }
+            scope.launch {
+                search(openLibraryBookSearchViewModel, book)
             }
         }, icon = {
             Icon(
                 Icons.Filled.Search, contentDescription = "Favorite"
             )
         }, text = {
-            Text("${viewModel.book.value?.title}")
+            Text("${book?.title}")
             //Text(stringResource(R.string.get_book_info))
         })
     }
