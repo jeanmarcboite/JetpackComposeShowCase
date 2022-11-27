@@ -20,7 +20,7 @@ object HomeTab : Tab {
         val model: HomeViewModel = viewModel()
         val hiltModel: HiltHomeViewModel = hiltViewModel()
         Column() {
-            Text("viewModel[${model.id}]")
+            Text("viewModel[${model.id}] = $model")
             Text("hiltViewModel[${model.id}] = $hiltModel")
         }
     }
