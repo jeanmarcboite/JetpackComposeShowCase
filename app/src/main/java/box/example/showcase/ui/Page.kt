@@ -14,16 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NamedNavArgument
 import box.example.showcase.MainViewModel
-import box.example.showcase.ui.navigation.Screen
+import box.example.showcase.ui.navigation.Tab
 
 abstract class Page(
     val icon: ImageVector,
     @StringRes val route: Int,
     @StringRes val title: Int,
     val buttonIcon: ImageVector = Icons.Default.Menu,
-    val arguments: List<NamedNavArgument> = emptyList()
 ) {
     lateinit var mainViewModel: MainViewModel
     open fun showInDrawer() = true
@@ -55,6 +53,6 @@ abstract class Page(
         mainViewModel.navViewModel.drawerState.open()
     }
 
-    open val screens: List<Screen> = listOf()
+    open val tabs: List<Tab> = listOf()
 
 }

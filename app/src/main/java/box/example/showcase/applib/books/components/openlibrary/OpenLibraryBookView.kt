@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.books
+package box.example.showcase.applib.books.components.openlibrary
 
 import android.util.Log
 import androidx.compose.foundation.Image

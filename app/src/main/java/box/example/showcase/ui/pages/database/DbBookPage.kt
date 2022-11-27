@@ -13,15 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import box.example.showcase.R
+import box.example.showcase.applib.books.components.calibre.ViewDetails
 import box.example.showcase.applib.books.models.openlibrary.BookQueryType
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBook
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookList
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
-import box.example.showcase.ui.pages.database.components.ViewDetails
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookReader
@@ -32,7 +30,7 @@ class DbBookPage : Page(
     R.string.db_book_page_route,
     R.string.book_page_title,
     Icons.Default.ArrowBack,
-    arguments = listOf(navArgument("bookID") { type = NavType.StringType })
+    //arguments = listOf(navArgument("bookID") { type = NavType.StringType })
 ) {
     var bookID = ""
     override fun showInDrawer() = false

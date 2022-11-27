@@ -17,7 +17,7 @@
     <string name="color_page_title">Colors</string>
     <string name="color_page_route">colors</string>
     <string name="color_theme_title">Theme</string>
-    <string name="color_theme_route">Theme colors</string>
+    <string name="color_theme_route">Theme route</string>
     <string name="profile_image_description">User image</string>
     <string name="add_notes">Add Note</string>
 
@@ -43,4 +43,6 @@
     <string name="calibre_author_table_title">Authors</string>
     <string name="calibre_author_table_route">authors</string>
     <string name="get_book_info">search book</string>
+    <string name="toggle_theme_title">Toggles</string>
+    <string name="toggle_theme_route">toggles</string>
 </resources>

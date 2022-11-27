@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.database.components
+package box.example.showcase.applib.books.components.calibre
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

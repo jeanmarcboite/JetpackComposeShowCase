@@ -1,7 +1,7 @@
 package box.example.showcase.applib.books.models.openlibrary
 
 data class OpenLibraryBookList(
-    val docs: List<Doc>,
+    val docs: List<OpenLibraryDoc>,
     val numFound: Int,
     val numFoundExact: Boolean,
     val num_found: Int,
@@ -10,7 +10,7 @@ data class OpenLibraryBookList(
     val start: Int
 )
 
-data class Doc(
+data class OpenLibraryDoc(
     val _version_: Long,
     val author_alternative_name: List<String>?,
     val author_facet: List<String>?,

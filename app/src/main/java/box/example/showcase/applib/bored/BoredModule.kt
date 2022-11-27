@@ -37,3 +37,4 @@ class BoredModule {
         var object_id = 42
     }
 }
+

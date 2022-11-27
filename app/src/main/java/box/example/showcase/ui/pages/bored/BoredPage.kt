@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.bored.BoredViewModel
+import box.example.showcase.applib.bored.MovieViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.LabeledField
 import compose.icons.FontAwesomeIcons
@@ -35,6 +36,7 @@ class BoredPage :
     @Composable
     override fun Content() {
         val boredViewModel: BoredViewModel = hiltViewModel()
+        val movieViewModel: MovieViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
         val activity: MutableState<Activity?> = remember { mutableStateOf<Activity?>(null) }
         LaunchedEffect(true) {
@@ -50,6 +52,7 @@ class BoredPage :
                         "Content: ${boredViewModel.msg()}",
                         modifier = Modifier.padding(start = 32.dp)
                     )
+                    Text("Content movie: ${movieViewModel}")
                 }
             },
             content = {
@@ -65,7 +68,9 @@ class BoredPage :
 
 @Composable
 fun WithBored(boredViewModel: BoredViewModel = hiltViewModel()) {
+    val movieViewModel: MovieViewModel = hiltViewModel()
     Text("WithBored: ${boredViewModel.msg()}")
+    Text("WithBored movie: ${movieViewModel}")
 }
 
 @Composable

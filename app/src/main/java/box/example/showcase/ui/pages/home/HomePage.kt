@@ -16,166 +16,166 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import box.example.showcase.R
-import box.example.showcase.ui.Page
+import box.example.showcase.ui.TabPage
+import box.example.showcase.ui.navigation.Tab
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Home
+import compose.icons.fontawesomeicons.solid.ToggleOn
 
 class HomePage :
-    Page(
+    TabPage(
         FontAwesomeIcons.Solid.Home,
         R.string.home_page_route,
         R.string.home_page_title
     ) {
+    override val tabs = listOf(ToggleTab)
+}
+
+object ToggleTab : Tab {
+    override val icon = FontAwesomeIcons.Solid.ToggleOn
+    override val route = R.string.toggle_theme_route
+    override val title = R.string.toggle_theme_title
+
+    override val Content: @Composable () -> Unit = {
+        val result = remember { mutableStateOf<Bitmap?>(null) }
+        Box {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(18.dp)
+                    .border(4.dp, MaterialTheme.colorScheme.inversePrimary),
+            ) {
+                Toggles()
+            }
+            Surface(
+                color = MaterialTheme.colorScheme.background,
+                modifier = Modifier
+                    .offset(x = 48.dp, y = 2.dp)
+                    .clip(CircleShape)
+            ) {
+                Text(
+                    text = " Toggles ",
+                )
+            }
+            result.value?.let { image ->
+                Image(image.asImageBitmap(), null, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    override fun Content() {
-        Column(modifier = Modifier.fillMaxSize()) {
-            BoxContent()
-        }
-    }
-}
+    fun Toggles() {
+        OutlinedTextField(
+            value = "this is the text",
+            onValueChange = {},
+            label = { Text("Input") },
+            readOnly = true,
+            modifier = Modifier.padding(32.dp)
+        )
+        Text(
+            text = "Toggles, Switch, Sliders",
+            modifier = Modifier.padding(8.dp)
+        )
 
-
-@Composable
-fun BoxContent() {
-    val result = remember { mutableStateOf<Bitmap?>(null) }
-    Box {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(18.dp)
-                .border(4.dp, MaterialTheme.colorScheme.inversePrimary),
+        var checked by remember { mutableStateOf(true) }
+        var switched by remember { mutableStateOf(true) }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Toggles()
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(
+                    checked = checked,
+                    modifier = Modifier.padding(8.dp),
+                    onCheckedChange = { checked = !checked })
+                Text("check")
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Switch(
+                    checked = switched,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                        checkedTrackColor = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    modifier = Modifier.padding(8.dp),
+                    onCheckedChange = { switched = it }
+                )
+                Text("switch")
+            }
         }
-        Surface(
-            color = MaterialTheme.colorScheme.background,
-            modifier = Modifier
-                .offset(x = 48.dp, y = 2.dp)
-                .clip(CircleShape)
-        ) {
+
+        var selected by remember { mutableStateOf("Kotlin") }
+        Row(modifier = Modifier.padding(16.dp)) {
+            RadioButton(selected = selected == "Kotlin", onClick = { selected = "Kotlin" })
             Text(
-                text = " Toggles ",
+                text = "Kotlin",
+                modifier = Modifier
+                    .clickable(onClick = { selected = "Kotlin" })
+                    .padding(start = 4.dp)
+            )
+            Spacer(modifier = Modifier.size(4.dp))
+            RadioButton(selected = selected == "Java", onClick = { selected = "Java" })
+            Text(
+                text = "Java",
+                modifier = Modifier
+                    .clickable(onClick = { selected = "Java" })
+                    .padding(start = 4.dp)
+            )
+            Spacer(modifier = Modifier.size(4.dp))
+            RadioButton(selected = selected == "Swift", onClick = { selected = "Swift" })
+            Text(
+                text = "Swift",
+                modifier = Modifier
+                    .clickable(onClick = { selected = "Swift" })
+                    .padding(start = 4.dp)
             )
         }
-        result.value?.let { image ->
-            Image(image.asImageBitmap(), null, modifier = Modifier.fillMaxWidth())
-        }
-    }
 
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun Toggles() {
-    OutlinedTextField(
-        value = "this is the text",
-        onValueChange = {},
-        label = { Text("Input") },
-        readOnly = true,
-        modifier = Modifier.padding(32.dp)
-    )
-    Text(
-        text = "Toggles, Switch, Sliders",
-        modifier = Modifier.padding(8.dp)
-    )
+        var sliderState by remember { mutableStateOf(0f) }
 
-    var checked by remember { mutableStateOf(true) }
-    var switched by remember { mutableStateOf(true) }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(
-                checked = checked,
-                modifier = Modifier.padding(8.dp),
-                onCheckedChange = { checked = !checked })
-            Text("check")
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Switch(
-                checked = switched,
-                colors = SwitchDefaults.colors(
-                    checkedThumbColor = MaterialTheme.colorScheme.primary,
-                    checkedTrackColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                modifier = Modifier.padding(8.dp),
-                onCheckedChange = { switched = it }
-            )
-            Text("switch")
-        }
-    }
-
-    var selected by remember { mutableStateOf("Kotlin") }
-    Row(modifier = Modifier.padding(16.dp)) {
-        RadioButton(selected = selected == "Kotlin", onClick = { selected = "Kotlin" })
-        Text(
-            text = "Kotlin",
-            modifier = Modifier
-                .clickable(onClick = { selected = "Kotlin" })
-                .padding(start = 4.dp)
+        Slider(value = sliderState, modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+            onValueChange = { newValue ->
+                sliderState = newValue
+            }
         )
-        Spacer(modifier = Modifier.size(4.dp))
-        RadioButton(selected = selected == "Java", onClick = { selected = "Java" })
-        Text(
-            text = "Java",
-            modifier = Modifier
-                .clickable(onClick = { selected = "Java" })
-                .padding(start = 4.dp)
-        )
-        Spacer(modifier = Modifier.size(4.dp))
-        RadioButton(selected = selected == "Swift", onClick = { selected = "Swift" })
-        Text(
-            text = "Swift",
-            modifier = Modifier
-                .clickable(onClick = { selected = "Swift" })
-                .padding(start = 4.dp)
-        )
-    }
-
-
-    var sliderState by remember { mutableStateOf(0f) }
-
-    Slider(value = sliderState, modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp),
-        onValueChange = { newValue ->
-            sliderState = newValue
-        }
-    )
-    val expanded = remember { mutableStateOf(false) }
-    Box(
-        Modifier
-            .wrapContentSize(Alignment.TopEnd)
-    ) {
-        IconButton(onClick = {
-            expanded.value = true
-        }) {
-            Icon(
-                Icons.Filled.MoreVert,
-                contentDescription = "Localized description"
-            )
-        }
-        DropdownMenu(
-            expanded = expanded.value,
-            onDismissRequest = { expanded.value = false },
+        val expanded = remember { mutableStateOf(false) }
+        Box(
+            Modifier
+                .wrapContentSize(Alignment.TopEnd)
         ) {
-            /*
-            DropdownMenuItem(onClick = {
-                expanded.value = false
+            IconButton(onClick = {
+                expanded.value = true
             }) {
-                Text("First Item")
+                Icon(
+                    Icons.Filled.MoreVert,
+                    contentDescription = "Localized description"
+                )
             }
+            DropdownMenu(
+                expanded = expanded.value,
+                onDismissRequest = { expanded.value = false },
+            ) {
+                /*
+                DropdownMenuItem(onClick = {
+                    expanded.value = false
+                }) {
+                    Text("First Item")
+                }
 
-            DropdownMenuItem(onClick = {
-                expanded.value = false
+                DropdownMenuItem(onClick = {
+                    expanded.value = false
 
-            }) {
-                Text("Second item")
+                }) {
+                    Text("Second item")
+                }
+    */
+                Divider()
             }
-*/
-            Divider()
         }
     }
 }

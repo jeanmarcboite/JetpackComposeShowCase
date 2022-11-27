@@ -8,12 +8,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import box.example.showcase.R
+import box.example.showcase.applib.books.components.calibre.View
+import box.example.showcase.applib.books.components.calibre.ViewSummary
 import box.example.showcase.applib.books.models.calibre.CalibreAuthor
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreEntity
 import box.example.showcase.ui.models.NavViewModel
-import box.example.showcase.ui.pages.database.components.View
-import box.example.showcase.ui.pages.database.components.ViewSummary
 import box.example.showcase.ui.theme.margin_half
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Book

@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import box.example.showcase.R
-import box.example.showcase.ui.navigation.Screen
+import box.example.showcase.ui.navigation.Tab
 import box.example.showcase.ui.pages.color.COLOR_MAP
 import box.example.showcase.ui.theme.margin_half
 import box.example.showcase.ui.theme.margin_standard
@@ -31,11 +31,11 @@ import compose.icons.fontawesomeicons.solid.Cocktail
 
 // gh repo clone mwolfson/jetpackTemplate
 
-object ColorMapScreen : Screen {
+object ColorMapTab : Tab {
     override val icon = FontAwesomeIcons.Solid.Cocktail
     override val route = R.string.color_page_route
     override val title = R.string.color_page_title
-    override val content: @Composable () -> Unit = {
+    override val Content: @Composable () -> Unit = {
         ColorListBody(
             onItemClicked = {
                 // navController.navigate("${AppScreens.Detail.route}${it.name}")
