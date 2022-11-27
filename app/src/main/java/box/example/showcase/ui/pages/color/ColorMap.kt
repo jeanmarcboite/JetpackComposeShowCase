@@ -1,7 +1,5 @@
 package box.example.showcase.ui.pages.color
 
-import box.example.showcase.ui.pages.ColorItem
-
 val COLOR_MAP: Map<String, ColorItem> = mapOf(
     "amber" to ColorItem(
         "Amber",

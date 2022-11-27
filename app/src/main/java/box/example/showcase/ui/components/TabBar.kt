@@ -15,7 +15,7 @@ private val TabHeight = 56.dp
 fun TabBar(
     tabs: List<Tab>,
     currentTab: Tab,
-    onScreenSelected: (Tab) -> Unit,
+    onTabSelected: (Tab) -> Unit,
 ) {
     Surface(
         Modifier
@@ -30,7 +30,7 @@ fun TabBar(
                         .fillMaxHeight(),
                     text = stringResource(id = tab.title),
                     icon = tab.icon,
-                    onClick = { onScreenSelected(tab) },
+                    onClick = { onTabSelected(tab) },
                     selected = currentTab == tab
                 )
             }

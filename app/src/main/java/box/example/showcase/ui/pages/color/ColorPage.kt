@@ -2,7 +2,6 @@ package box.example.showcase.ui.pages.color
 
 import box.example.showcase.R
 import box.example.showcase.ui.TabPage
-import box.example.showcase.ui.pages.ColorMapTab
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Cocktail

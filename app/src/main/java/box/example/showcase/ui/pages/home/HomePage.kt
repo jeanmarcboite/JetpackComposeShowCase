@@ -18,32 +18,43 @@ import androidx.compose.ui.unit.dp
 import box.example.showcase.R
 import box.example.showcase.ui.TabPage
 import box.example.showcase.ui.navigation.Tab
+import box.example.showcase.ui.pages.color.ColorThemeTab
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Home
 import compose.icons.fontawesomeicons.solid.ToggleOn
 
-object HomePage :
+class HomePage :
     TabPage(
         FontAwesomeIcons.Solid.Home,
         R.string.home_page_route,
         R.string.home_page_title
     ) {
-    override val tabs = listOf(ToggleTab)
+    override val tabs = listOf(HomeTab, ToggleTab, ColorThemeTab)
+}
+
+object HomeTab : Tab {
+    override val icon = FontAwesomeIcons.Solid.Home
+    override val route = R.string.home_tab_route
+    override val title = R.string.home_tab_title
+    override val Content: @Composable () -> Unit = {
+        Text("home")
+    }
 }
 
 object ToggleTab : Tab {
     override val icon = FontAwesomeIcons.Solid.ToggleOn
-    override val route = R.string.toggle_theme_route
-    override val title = R.string.toggle_theme_title
+    override val route = R.string.toggle_tab_route
+    override val title = R.string.toggle_tab_title
 
     override val Content: @Composable () -> Unit = {
         val result = remember { mutableStateOf<Bitmap?>(null) }
         Box {
+            val paddingTop = 9.dp
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(18.dp)
+                    .padding(paddingTop.times(2))
                     .border(4.dp, MaterialTheme.colorScheme.inversePrimary),
             ) {
                 Toggles()
@@ -51,11 +62,12 @@ object ToggleTab : Tab {
             Surface(
                 color = MaterialTheme.colorScheme.background,
                 modifier = Modifier
-                    .offset(x = 48.dp, y = 2.dp)
+                    .offset(x = 48.dp, y = paddingTop)
                     .clip(CircleShape)
             ) {
                 Text(
                     text = " Toggles ",
+                    modifier = Modifier.padding(horizontal = 4.dp)
                 )
             }
             result.value?.let { image ->

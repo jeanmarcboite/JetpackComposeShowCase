@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ShowCase</string>
     <string name="dark_mode">dark_mode</string>
-    <string name="start_destination">database</string>
+    <string name="start_destination">home</string>
     <string name="home_page_title">Home Page</string>
     <string name="home_page_route">home</string>
     <string name="bored_page_title">Find activity</string>
@@ -43,6 +43,8 @@
     <string name="calibre_author_table_title">Authors</string>
     <string name="calibre_author_table_route">authors</string>
     <string name="get_book_info">search book</string>
-    <string name="toggle_theme_title">Toggles</string>
-    <string name="toggle_theme_route">toggles</string>
+    <string name="home_tab_title">Home</string>
+    <string name="home_tab_route">home</string>
+    <string name="toggle_tab_title">Toggles</string>
+    <string name="toggle_tab_route">toggles</string>
 </resources>

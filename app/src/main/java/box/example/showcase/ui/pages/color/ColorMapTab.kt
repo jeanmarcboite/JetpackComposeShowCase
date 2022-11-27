@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages
+package box.example.showcase.ui.pages.color
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import box.example.showcase.R
 import box.example.showcase.ui.navigation.Tab
-import box.example.showcase.ui.pages.color.COLOR_MAP
 import box.example.showcase.ui.theme.margin_half
 import box.example.showcase.ui.theme.margin_standard
 import box.example.showcase.ui.theme.touchpoint_lg
