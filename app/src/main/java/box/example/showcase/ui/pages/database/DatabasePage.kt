@@ -30,7 +30,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
 
-class DatabasePage :
+object DatabasePage :
     Page(
         FontAwesomeIcons.Brands.Whatsapp,
         R.string.database_page_route,

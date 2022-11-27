@@ -23,7 +23,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Home
 import compose.icons.fontawesomeicons.solid.ToggleOn
 
-class HomePage :
+object HomePage :
     TabPage(
         FontAwesomeIcons.Solid.Home,
         R.string.home_page_route,
