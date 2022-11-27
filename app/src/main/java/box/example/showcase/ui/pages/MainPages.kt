@@ -18,7 +18,7 @@ import box.example.showcase.ui.pages.todo.TodoPage
 
 fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page> {
     val pages = listOf(
-        HomePage(),
+        HomePage,
         ColorPage(),
         AboutPage(),
         DatabasePage,
