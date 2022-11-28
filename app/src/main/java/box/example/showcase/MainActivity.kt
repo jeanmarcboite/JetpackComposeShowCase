@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity() {
                     stringResource(id = R.string.app_name),
                     mainViewModel,
                     navViewModel.selectedPage.value?.buttonIcon,
-                    onButtonClicked = { navViewModel.buttonClick() },
+                    onButtonClicked = { navViewModel.onButtonClicked() },
                 )
             },
         )

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import box.example.showcase.R
 import box.example.showcase.applib.notes.components.NoteAction
 import box.example.showcase.ui.Page
+import box.example.showcase.ui.models.NavViewModel
 
 class Settings :
     Page(
@@ -33,8 +34,8 @@ class Settings :
 
     override fun showInDrawer() = false
 
-    override suspend fun onButtonClicked() {
-        mainViewModel.navViewModel.navController.popBackStack()
+    override suspend fun onButtonClicked(navViewModel: NavViewModel) {
+        navViewModel.navController.popBackStack()
     }
 
     @Composable

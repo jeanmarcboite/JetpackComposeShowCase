@@ -14,6 +14,7 @@ import box.example.showcase.applib.books.components.openlibrary.View
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBook
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
+import box.example.showcase.ui.models.NavViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Book
@@ -34,8 +35,8 @@ class BookDetailPage() :
         bookID = arguments?.getString("bookID") ?: ""
     }
 
-    override suspend fun onButtonClicked() {
-        mainViewModel.navViewModel.navController.popBackStack()
+    override suspend fun onButtonClicked(navViewModel: NavViewModel) {
+        navViewModel.navController.popBackStack()
     }
 
     @Composable

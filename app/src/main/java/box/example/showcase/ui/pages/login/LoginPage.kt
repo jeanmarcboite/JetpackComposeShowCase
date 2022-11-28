@@ -15,6 +15,7 @@ import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.ProfileImage
 import box.example.showcase.ui.models.AuthState
+import box.example.showcase.ui.models.NavViewModel
 import com.google.firebase.auth.FirebaseAuth
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -41,8 +42,8 @@ class LoginPage :
         }
     }
 
-    override suspend fun onButtonClicked() {
-        mainViewModel.navViewModel.popBackStack()
+    override suspend fun onButtonClicked(navViewModel: NavViewModel) {
+        navViewModel.popBackStack()
     }
 
     @Composable

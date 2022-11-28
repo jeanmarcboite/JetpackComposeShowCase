@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import box.example.showcase.MainViewModel
+import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.navigation.Tab
 
 abstract class Page(
@@ -49,8 +50,8 @@ abstract class Page(
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
-    open suspend fun onButtonClicked() {
-        mainViewModel.navViewModel.drawerState.open()
+    open suspend fun onButtonClicked(navViewModel: NavViewModel) {
+        navViewModel.drawerState.open()
     }
 
     open val tabs: List<Tab> = listOf()

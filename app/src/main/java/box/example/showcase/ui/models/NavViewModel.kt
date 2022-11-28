@@ -40,9 +40,8 @@ class NavViewModel : ViewModel() {
         )
     }
 
-    suspend fun buttonClick() {
-        selectedPage.value?.onButtonClicked()
+    suspend fun onButtonClicked() {
+        selectedPage.value?.onButtonClicked(this)
         selectedPage.value = pages[navController.currentDestination?.route]!!
-
     }
 }
