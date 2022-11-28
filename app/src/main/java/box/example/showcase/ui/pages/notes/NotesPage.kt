@@ -6,10 +6,12 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.notes.components.NewNoteView
 import box.example.showcase.applib.notes.components.NoteListView
 import box.example.showcase.ui.Page
+import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Feather
@@ -26,7 +28,7 @@ class NotesPage :
     override fun Content() {
         val notesRoot = stringResource(R.string.notes_root)
         noteEdit = remember { mutableStateOf(false) }
-        val viewModel = mainViewModel.firebaseNotesViewModel
+        val viewModel = hiltViewModel<FirebaseNotesViewModel>()
 
         LaunchedEffect(true) {
             viewModel.setRoot(notesRoot)

@@ -5,12 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import box.example.showcase.applib.notes.NotesViewModel
 import box.example.showcase.applib.notes.components.NoteAction
-import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 
 class MainViewModel : ViewModel() {
-    lateinit var firebaseNotesViewModel: FirebaseNotesViewModel
     lateinit var notesViewModel: NotesViewModel
-
     var snackbarHostState = SnackbarHostState()
 
     val leftSwipeToReveal = mutableStateOf(false)

@@ -2,6 +2,7 @@ package box.example.showcase.ui.pages.notes.models
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import box.example.showcase.applib.notes.models.Note
 import com.google.firebase.database.ChildEventListener
@@ -10,16 +11,27 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*
+import javax.inject.Inject
 
-class FirebaseNotesViewModel : ViewModel() {
+@Module
+@InstallIn(SingletonComponent::class)
+object FirebaseNotesModule {
     val verbose = false
     private val TAG = "boxx [firebase]"
-    private val database: DatabaseReference = Firebase.database.reference
-    val notes = mutableStateListOf<Note>()
+    private val notes: SnapshotStateList<Note> = mutableStateListOf<Note>()
+
+    @Provides
+    fun notes() = notes
 
     init {
+        val database: DatabaseReference = Firebase.database.reference
         if (verbose)
             Log.v(TAG, "database reference: $database")
         val sdf = getDateTimeInstance() //SimpleDateFormat("dd/M/yyyy hh:mm:ss")
@@ -34,17 +46,25 @@ class FirebaseNotesViewModel : ViewModel() {
             Log.e(TAG, "Error getting data", it)
         }
     }
+}
+
+@HiltViewModel
+class FirebaseNotesViewModel @Inject constructor(
+    val notes: SnapshotStateList<Note>
+) : ViewModel() {
+
 
     private fun clear() {
         notes.clear()
     }
 
     fun add(root: String, note: Note) {
-        database.child(root).child(note.id).setValue(note)
+        Firebase.database.reference.child(root).child(note.id).setValue(note)
     }
 
     private fun read(root: String) {
-        database.child(root).get().addOnSuccessListener {
+        val TAG = "boxxxx [firebase:read]"
+        Firebase.database.reference.child(root).get().addOnSuccessListener {
             Log.v(TAG, "Got value ${it.value}")
             clear()
             for (data in it.children) {
@@ -58,6 +78,7 @@ class FirebaseNotesViewModel : ViewModel() {
     }
 
     fun setRoot(notesRoot: String) {
+        val TAG = "boxxxx [firebase:setRoot]"
         read(notesRoot)
         val childEventListener = object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
@@ -85,6 +106,6 @@ class FirebaseNotesViewModel : ViewModel() {
                 TODO("Not yet implemented: onCancelled")
             }
         }
-        database.addChildEventListener(childEventListener)
+        Firebase.database.reference.addChildEventListener(childEventListener)
     }
 }
