@@ -11,12 +11,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
-class SettingsPreferences(val strings: Map<Int, Int> = mapOf(),
-                          val booleans: Map<Int, Boolean> = mapOf(),
-                          val dropdown: Map<Int, Int> = mapOf())
+class SettingsPreferences(
+    val strings: Map<Int, Int> = mapOf(),
+    val booleans: Map<Int, Boolean> = mapOf(),
+    val dropdown: Map<Int, Int> = mapOf()
+)
 
 open class SettingsStore(
-    val context: Context, val preferences: SettingsPreferences) {
+    val context: Context, val preferences: SettingsPreferences
+) {
     val dataStore = context.dataStore
 
     fun clear() {
@@ -29,7 +32,9 @@ open class SettingsStore(
     }
 
     private suspend fun <T> edit(key: Preferences.Key<T>, value: T) {
-        dataStore.edit { it[key] = value }
+        dataStore.edit {
+            it[key] = value
+        }
     }
 
     fun <T> getFlow(key: Preferences.Key<T>): Flow<T?> = context.dataStore.data.map { preferences ->
