@@ -6,7 +6,9 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
+import box.example.showcase.applib.notes.NotesViewModel
 import box.example.showcase.applib.notes.components.NewNoteView
 import box.example.showcase.applib.notes.components.NoteListView
 import box.example.showcase.ui.Page
@@ -25,8 +27,7 @@ class TodoPage :
     @Composable
     override fun Content() {
         noteEdit = remember { mutableStateOf(false) }
-        val viewModel = mainViewModel.notesViewModel
-        //mainViewModel.notesViewModel.insert(Note(title = "todo"))
+        val viewModel = hiltViewModel<NotesViewModel>()
         LaunchedEffect(key1 = true) {
 
         }

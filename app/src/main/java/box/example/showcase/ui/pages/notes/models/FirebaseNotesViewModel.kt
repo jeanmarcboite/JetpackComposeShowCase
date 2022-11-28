@@ -19,15 +19,17 @@ import dagger.hilt.components.SingletonComponent
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
 object FirebaseNotesModule {
     val verbose = false
     private val TAG = "boxx [firebase]"
-    private val notes: SnapshotStateList<Note> = mutableStateListOf<Note>()
+    private val notes: SnapshotStateList<Note> = mutableStateListOf()
 
     @Provides
+    @Named("firebase_notes")
     fun notes() = notes
 
     init {
@@ -50,7 +52,7 @@ object FirebaseNotesModule {
 
 @HiltViewModel
 class FirebaseNotesViewModel @Inject constructor(
-    val notes: SnapshotStateList<Note>
+    @Named("firebase_notes") val notes: SnapshotStateList<Note>
 ) : ViewModel() {
 
 

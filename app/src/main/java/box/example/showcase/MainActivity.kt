@@ -21,15 +21,12 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.applib.notes.NotesDatabase
+import box.example.showcase.applib.notes.NotesModule
 import box.example.showcase.applib.notes.NotesRepository
-import box.example.showcase.applib.notes.NotesViewModel
-import box.example.showcase.applib.notes.NotesViewModelFactory
 import box.example.showcase.ui.app.ModalDrawer
 import box.example.showcase.ui.app.TopBar
-import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavModule
 import box.example.showcase.ui.pages.mainPages
-import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
 import com.jsramraj.flags.Flags
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,19 +40,13 @@ class HiltApp : Application()
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     val mainViewModel: MainViewModel by viewModels()
-    val authViewModel: AuthViewModel by viewModels()
-    val firebaseNotesViewModel: FirebaseNotesViewModel by viewModels()
-    val notesViewModel: NotesViewModel by viewModels {
-        val dao = NotesDatabase.getDatabase(this).dao()
-        val repository = NotesRepository(dao)
-        NotesViewModelFactory(repository)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ApplicationModule.readApplicationSettings(this)
 
-        mainViewModel.notesViewModel = notesViewModel
+        val dao = NotesDatabase.getDatabase(this).dao()
+        NotesModule.repository.value = NotesRepository(dao)
 
         setContent {
             MainScreen()
