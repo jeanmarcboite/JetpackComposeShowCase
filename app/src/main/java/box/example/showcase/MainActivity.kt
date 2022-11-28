@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.applib.notes.NotesDatabase
 import box.example.showcase.applib.notes.NotesRepository
@@ -52,27 +53,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel.readApplicationSettings(this)
+        ApplicationModule.readApplicationSettings(this)
+
         mainViewModel.authViewModel = authViewModel
         mainViewModel.firebaseNotesViewModel = firebaseNotesViewModel
         mainViewModel.notesViewModel = notesViewModel
 
         setContent {
-            ShowCaseTheme(mainViewModel.darkMode.value) {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    MainScreen()
-                }
-            }
+            MainScreen()
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MainScreen() {
+        val appViewModel = hiltViewModel<ApplicationViewModel>()
         val context = LocalContext.current
 
         Flags.init(LocalContext.current)
@@ -84,15 +79,23 @@ class MainActivity : ComponentActivity() {
         NavModule.selectedPage =
             remember { mutableStateOf(NavModule.pages[context.getString(R.string.start_destination)]) }
 
-        ModalDrawer(
-            mainViewModel.snackbarHostState,
-            topBar = {
-                TopBar(
-                    stringResource(id = R.string.app_name),
-                    mainViewModel,
+        ShowCaseTheme(appViewModel.applicationSettings.darkMode.value) {
+            // A surface container using the 'background' color from the theme
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                ModalDrawer(
+                    mainViewModel.snackbarHostState,
+                    topBar = {
+                        TopBar(
+                            stringResource(id = R.string.app_name),
+                            mainViewModel,
+                        )
+                    },
                 )
-            },
-        )
+            }
+        }
     }
 }
 

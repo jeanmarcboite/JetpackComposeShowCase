@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import box.example.showcase.ApplicationViewModel
 import box.example.showcase.MainViewModel
 import box.example.showcase.ui.components.ProfileImage
 import box.example.showcase.ui.models.NavViewModel
@@ -34,6 +35,8 @@ fun TopBar(
     title: String,
     mainViewModel: MainViewModel,
 ) {
+    val appViewModel = hiltViewModel<ApplicationViewModel>()
+
     val navViewModel = hiltViewModel<NavViewModel>()
     val scope = rememberCoroutineScope()
     val expanded = remember { mutableStateOf(false) }
@@ -50,7 +53,8 @@ fun TopBar(
             IconButton(onClick = {
                 scope.launch {
                     navViewModel.onButtonClicked()
-                } }) {
+                }
+            }) {
                 Icon(
                     imageVector = navViewModel.selectedPage.value?.buttonIcon ?: Icons.Default.Menu,
                     contentDescription = null,
@@ -59,15 +63,15 @@ fun TopBar(
             }
         },
         actions = {
-            IconToggleButton(checked = mainViewModel.darkMode.value,
+            IconToggleButton(checked = appViewModel.applicationSettings.darkMode.value,
                 onCheckedChange = {
 
-                    mainViewModel.setDarkMode(it)
+                    appViewModel.setDarkMode(it)
                 }) {
                 Icon(
-                    if (mainViewModel.darkMode.value) FontAwesomeIcons.Solid.Sun else FontAwesomeIcons.Solid.Moon,
+                    if (appViewModel.applicationSettings.darkMode.value) FontAwesomeIcons.Solid.Sun else FontAwesomeIcons.Solid.Moon,
                     contentDescription = "toggle dark mode",
-                    tint = if (mainViewModel.darkMode.value) Color.Yellow else Color.Magenta,
+                    tint = if (appViewModel.applicationSettings.darkMode.value) Color.Yellow else Color.Magenta,
                     modifier = Modifier
                         .size(24.dp)
                         .padding(4.dp)
