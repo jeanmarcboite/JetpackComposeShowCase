@@ -26,7 +26,7 @@ import box.example.showcase.applib.books.models.calibre.CalibreDatabase
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
 import box.example.showcase.ui.navigation.navigateSingleTopTo
-import box.example.showcase.ui.pages.database.components.LauncherButton
+import box.example.showcase.ui.pages.database.components.DatabaseSelection
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
@@ -80,7 +80,7 @@ object DatabasePage :
                     }
                 },
                 floatingActionButton = {
-                    LauncherButton(
+                    DatabaseSelection(
                         mainViewModel.snackbarHostState,
                         viewModel.version
                     )

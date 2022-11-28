@@ -5,21 +5,25 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
+import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.solid.FolderOpen
 import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 @Composable
-fun LauncherButton(
+fun DatabaseSelection(
     snackbarHostState: SnackbarHostState,
     databaseVersion: MutableState<Int>
 ) {
@@ -95,6 +99,11 @@ fun LauncherButton(
         containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
     ) {
-        Icon(Icons.Filled.Add, "Localized description")
+        Icon(
+            FontAwesomeIcons.Solid.FolderOpen, "Open calibre database",
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier
+                .size(32.dp)
+        )
     }
 }
