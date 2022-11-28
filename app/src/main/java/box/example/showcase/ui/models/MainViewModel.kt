@@ -1,5 +1,6 @@
 package box.example.showcase
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.mutableStateOf
@@ -10,11 +11,10 @@ import box.example.showcase.applib.notes.components.NoteAction
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 
-const val DARK_MODE = "dark_mode"
-
 class MainViewModel : ViewModel() {
     lateinit var applicationSettings: ApplicationSettings
 
+    lateinit var DARK_MODE: String
     val darkMode = mutableStateOf(false)
 
 
@@ -42,8 +42,10 @@ class MainViewModel : ViewModel() {
         Log.v("boxy", "init MainViewModel")
     }
 
-    fun readApplicationSettings(_applicationSettings: ApplicationSettings) {
-        applicationSettings = _applicationSettings
+    fun readApplicationSettings(context: Context) {
+        applicationSettings = ApplicationSettings(context)
+
+        DARK_MODE = context.resources.getString(R.string.dark_mode)
         darkMode.value = applicationSettings[booleanPreferencesKey(DARK_MODE)] ?: false
     }
 

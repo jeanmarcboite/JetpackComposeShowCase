@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel.readApplicationSettings(ApplicationSettings(this))
+        mainViewModel.readApplicationSettings(this)
         mainViewModel.authViewModel = authViewModel
         mainViewModel.firebaseNotesViewModel = firebaseNotesViewModel
         mainViewModel.notesViewModel = notesViewModel
