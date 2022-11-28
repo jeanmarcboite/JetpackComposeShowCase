@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
 
         navViewModel.drawerState = rememberDrawerState(DrawerValue.Closed)
 
-        navViewModel.selectedItem =
+        navViewModel.selectedPage =
             remember { mutableStateOf(navViewModel.pages[context.getString(R.string.start_destination)]) }
 
         ModalDrawer(
@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity() {
                 TopBar(
                     stringResource(id = R.string.app_name),
                     mainViewModel,
-                    navViewModel.selectedItem.value?.buttonIcon,
+                    navViewModel.selectedPage.value?.buttonIcon,
                     onButtonClicked = { navViewModel.buttonClick() },
                 )
             },

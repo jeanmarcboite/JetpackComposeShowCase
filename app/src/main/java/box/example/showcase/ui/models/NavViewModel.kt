@@ -13,7 +13,7 @@ import box.example.showcase.ui.navigation.navigateSingleTopTo
 class NavViewModel : ViewModel() {
     lateinit var pages: Map<String, Page>
     lateinit var drawerState: DrawerState
-    lateinit var selectedItem: MutableState<Page?>
+    lateinit var selectedPage: MutableState<Page?>
     lateinit var navController: NavHostController
 
     fun navigate(route: String) {
@@ -24,7 +24,7 @@ class NavViewModel : ViewModel() {
                     launchSingleTop = true
                 }
                 navigateSingleTopTo(route)
-                selectedItem.value =
+                selectedPage.value =
                     pages[navController.currentDestination?.route]!!
             } catch (e: Exception) {
                 Log.e("boxx", "Cannot navigate to ${route}: ${e.message}"/*, e*/)
@@ -41,8 +41,8 @@ class NavViewModel : ViewModel() {
     }
 
     suspend fun buttonClick() {
-        selectedItem.value?.onButtonClicked()
-        selectedItem.value = pages[navController.currentDestination?.route]!!
+        selectedPage.value?.onButtonClicked()
+        selectedPage.value = pages[navController.currentDestination?.route]!!
 
     }
 }

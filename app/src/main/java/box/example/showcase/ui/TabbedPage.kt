@@ -23,7 +23,7 @@ import box.example.showcase.ui.components.TabBar
 import box.example.showcase.ui.navigation.Tab
 import box.example.showcase.ui.navigation.navigateSingleTopTo
 
-abstract class TabPage(
+abstract class TabbedPage(
     icon: ImageVector,
     @StringRes route: Int,
     @StringRes title: Int,

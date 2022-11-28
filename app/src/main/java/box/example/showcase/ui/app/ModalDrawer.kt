@@ -41,10 +41,10 @@ fun ModalDrawer(
                     NavigationDrawerItem(
                         icon = { Icon(imageVector = page.icon, contentDescription = null) },
                         label = { Text(title) },
-                        selected = page == navViewModel.selectedItem.value,
+                        selected = page == navViewModel.selectedPage.value,
                         onClick = {
                             scope.launch { navViewModel.drawerState.close() }
-                            //selectedItem.value = page
+                            //selectedPage.value = page
                             navViewModel.navigate(route)
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
@@ -108,7 +108,7 @@ fun ModalDrawer(
                         }
                     }
                 },
-                floatingActionButton = { navViewModel.selectedItem.value?.floatingActionButton() },
+                floatingActionButton = { navViewModel.selectedPage.value?.floatingActionButton() },
             )
         }
     }
