@@ -86,8 +86,7 @@ fun TopBar(
                     Modifier
                         .clip(CircleShape)
                         .size(64.dp),
-                    CircleShape,
-                    mainViewModel.authViewModel
+                    CircleShape
                 )
             }
 

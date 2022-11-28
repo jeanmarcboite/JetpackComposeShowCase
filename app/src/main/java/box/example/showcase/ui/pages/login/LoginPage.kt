@@ -16,6 +16,7 @@ import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.ProfileImage
 import box.example.showcase.ui.models.AuthState
+import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
 import com.google.firebase.auth.FirebaseAuth
 import compose.icons.FontAwesomeIcons
@@ -34,9 +35,9 @@ class LoginPage :
 
     @Composable
     override fun Content() {
-        //googleSignIn = GSignIn(LocalContext.current)
+        val authViewModel = hiltViewModel<AuthViewModel>()
         Column(modifier = Modifier.fillMaxSize()) {
-            if (mainViewModel.authViewModel.state.value == AuthState.LoggedIn)
+            if (authViewModel.state.value == AuthState.LoggedIn)
                 LogoutScreen()
             else
                 LoginScreen()
@@ -49,18 +50,20 @@ class LoginPage :
 
     @Composable
     fun LoginScreen() {
+        val authViewModel = hiltViewModel<AuthViewModel>()
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            EmailSignInScreen(mainViewModel.authViewModel)
-            GoogleSignInScreen(mainViewModel.authViewModel)
+            EmailSignInScreen(authViewModel)
+            GoogleSignInScreen(authViewModel)
         }
     }
 
     @Composable
     fun LogoutScreen() {
+        val authViewModel = hiltViewModel<AuthViewModel>()
         val navViewModel = hiltViewModel<NavViewModel>()
 
         Column(
@@ -72,11 +75,10 @@ class LoginPage :
                 ProfileImage(
                     Modifier
                         .size(128.dp),
-                    RectangleShape,
-                    mainViewModel.authViewModel
+                    RectangleShape
                 )
                 Text(
-                    text = "Username: ${mainViewModel.authViewModel.user.value?.email}",
+                    text = "Username: ${authViewModel.user.value?.email}",
                     modifier = Modifier.padding(8.dp)
                 )
             }
@@ -84,7 +86,7 @@ class LoginPage :
             Button(
                 onClick = {
                     FirebaseAuth.getInstance().signOut()
-                    mainViewModel.authViewModel.setUser(null)
+                    authViewModel.setUser(null)
                     navViewModel.popBackStack()
                 },
                 modifier = Modifier.padding(8.dp),

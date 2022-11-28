@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.models.AuthViewModel
 import coil.compose.AsyncImage
@@ -27,9 +28,9 @@ fun ProfileImage(
     modifier: Modifier = Modifier
         .clip(CircleShape)
         .padding(8.dp),
-    shape: Shape = CircleShape,
-    viewModel: AuthViewModel
+    shape: Shape = CircleShape
 ) {
+    val viewModel = hiltViewModel<AuthViewModel>()
     val user = viewModel.user.value
     val imageUri = user?.photoUrl?.toString()?.toUri()
 

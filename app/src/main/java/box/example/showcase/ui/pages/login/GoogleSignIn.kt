@@ -32,7 +32,7 @@ fun GoogleSignInScreen(authViewModel: AuthViewModel) {
     Button(onClick = {
         val signInIntent = googleSignInClient.signInIntent
         authResultLauncher.launch(signInIntent)
-        authViewModel.googleSignInClient = googleSignInClient
+        authViewModel.googleSignInClient.value = googleSignInClient
     }) {
         Text("Sign in via Google")
     }
