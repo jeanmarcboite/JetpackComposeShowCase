@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -44,7 +45,7 @@ object DatabasePage :
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val viewModel = mainViewModel.calibreDatabaseViewModel
+        val viewModel = hiltViewModel<CalibreDatabaseViewModel>()
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
@@ -52,11 +53,11 @@ object DatabasePage :
         val tabs = listOf(
             BooksScreen(
                 mainViewModel.navViewModel,
-                viewModel.calibreDatabase.value?.books?.value?.sortedBy {
+                viewModel.database.value?.books?.value?.sortedBy {
                     val book = it as CalibreBook
                     book.sort ?: book.title
                 }),
-            AuthorsScreen(viewModel.calibreDatabase.value?.authors?.value?.sortedBy {
+            AuthorsScreen(viewModel.database.value?.authors?.value?.sortedBy {
                 val author = it as CalibreAuthor
                 author.sort ?: author.name
             })
@@ -81,7 +82,7 @@ object DatabasePage :
                 floatingActionButton = {
                     LauncherButton(
                         mainViewModel.snackbarHostState,
-                        viewModel.databaseVersion
+                        viewModel.version
                     )
                 }
             )
@@ -107,9 +108,9 @@ object DatabasePage :
     ) {
         val context = LocalContext.current
 
-        LaunchedEffect(viewModel.databaseVersion.value) {
+        LaunchedEffect(viewModel.version.value) {
             try {
-                viewModel.calibreDatabase.value = CalibreDatabase(context)
+                viewModel.database.value = CalibreDatabase(context)
             } catch (e: Exception) {
                 val errorMessage = if (e.message == null) {
                     ""
@@ -163,6 +164,5 @@ object DatabasePage :
             }
         }
     }
-
 }
 

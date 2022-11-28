@@ -9,7 +9,6 @@ import box.example.showcase.applib.notes.NotesViewModel
 import box.example.showcase.applib.notes.components.NoteAction
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
-import box.example.showcase.ui.pages.database.CalibreDatabaseViewModel
 import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 
 const val DARK_MODE = "dark_mode"
@@ -24,7 +23,6 @@ class MainViewModel : ViewModel() {
     lateinit var navViewModel: NavViewModel
     lateinit var firebaseNotesViewModel: FirebaseNotesViewModel
     lateinit var notesViewModel: NotesViewModel
-    lateinit var calibreDatabaseViewModel: CalibreDatabaseViewModel
 
     var snackbarHostState = SnackbarHostState()
 

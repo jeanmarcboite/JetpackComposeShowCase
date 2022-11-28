@@ -26,7 +26,6 @@ import box.example.showcase.ui.app.ModalDrawer
 import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
-import box.example.showcase.ui.pages.database.CalibreDatabaseViewModel
 import box.example.showcase.ui.pages.mainPages
 import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
@@ -50,7 +49,6 @@ class MainActivity : ComponentActivity() {
         val repository = NotesRepository(dao)
         NotesViewModelFactory(repository)
     }
-    val calibreDatabaseViewModel: CalibreDatabaseViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +57,6 @@ class MainActivity : ComponentActivity() {
         mainViewModel.navViewModel = navViewModel
         mainViewModel.firebaseNotesViewModel = firebaseNotesViewModel
         mainViewModel.notesViewModel = notesViewModel
-
-        mainViewModel.calibreDatabaseViewModel = calibreDatabaseViewModel
 
         setContent {
             ShowCaseTheme(mainViewModel.darkMode.value) {

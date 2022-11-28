@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object CalibreBookViewModelHomeModule {
+object CalibreBookModule {
     val book: MutableState<CalibreBook?> = mutableStateOf(null)
 
     @Provides

@@ -4,16 +4,30 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreDatabase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+import javax.inject.Named
 
-class CalibreDatabaseViewModel : ViewModel() {
-    var databaseVersion = mutableStateOf(0)
+@Module
+@InstallIn(ViewModelComponent::class)
+object CalibreDatabaseModule {
+    val databaseVersion = mutableStateOf(0)
     val calibreDatabase: MutableState<CalibreDatabase?> = mutableStateOf(null)
-    /*
-    val book: MutableState<CalibreBook?> = mutableStateOf(null)
 
-    fun getBook(calibreDatabase: CalibreDatabase?, uuid: String) {
-        book.value = calibreDatabase?.uuidBookMap?.value?.get(uuid)
-    }
+    @Provides
+    @Named("version")
+    fun version() = databaseVersion
 
-     */
+    @Provides
+    fun database() = calibreDatabase
 }
+
+@HiltViewModel
+class CalibreDatabaseViewModel @Inject constructor(
+    @Named("version") val version: MutableState<Int>,
+    val database: MutableState<CalibreDatabase?>
+) : ViewModel()
