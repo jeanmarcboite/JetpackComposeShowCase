@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.database
+package box.example.showcase.ui.models
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
