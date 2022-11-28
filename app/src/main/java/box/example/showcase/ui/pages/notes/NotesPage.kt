@@ -11,7 +11,7 @@ import box.example.showcase.R
 import box.example.showcase.applib.notes.components.NewNoteView
 import box.example.showcase.applib.notes.components.NoteListView
 import box.example.showcase.ui.Page
-import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
+import box.example.showcase.ui.models.FirebaseNotesViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Feather
