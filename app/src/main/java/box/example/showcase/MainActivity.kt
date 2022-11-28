@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -39,8 +38,6 @@ class HiltApp : Application()
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    val mainViewModel: MainViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ApplicationModule.readApplicationSettings(this)
@@ -62,7 +59,7 @@ class MainActivity : ComponentActivity() {
         Flags.init(LocalContext.current)
 
         Log.e("boxxxx [MainScreen]", "set NavModule")
-        NavModule.pages = mainPages(context, mainViewModel)
+        NavModule.pages = mainPages(context)
         NavModule.navController = rememberNavController()
         NavModule.drawerState = rememberDrawerState(DrawerValue.Closed)
         NavModule.selectedPage =
@@ -78,7 +75,6 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         TopBar(
                             stringResource(id = R.string.app_name),
-                            mainViewModel,
                         )
                     },
                 )

@@ -1,7 +1,6 @@
 package box.example.showcase.ui.pages
 
 import android.content.Context
-import box.example.showcase.MainViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.pages.about.AboutPage
 import box.example.showcase.ui.pages.books.BookDetailPage
@@ -16,7 +15,7 @@ import box.example.showcase.ui.pages.login.LoginPage
 import box.example.showcase.ui.pages.notes.NotesPage
 import box.example.showcase.ui.pages.todo.TodoPage
 
-fun mainPages(context: Context, mainViewModel: MainViewModel): HashMap<String, Page> {
+fun mainPages(context: Context): HashMap<String, Page> {
     val pages = listOf(
         HomePage,
         ColorPage(),
@@ -32,10 +31,6 @@ fun mainPages(context: Context, mainViewModel: MainViewModel): HashMap<String, P
         LoginPage(),
         Settings()
     )
-    pages.forEach {
-        it.mainViewModel = mainViewModel
-    }
-
 
     return pages.associateBy { context.resources.getString(it.route) } as HashMap<String, Page>
 }

@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.ApplicationViewModel
-import box.example.showcase.MainViewModel
 import box.example.showcase.ui.components.ProfileImage
 import box.example.showcase.ui.models.NavViewModel
 import compose.icons.FontAwesomeIcons
@@ -33,7 +32,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopBar(
     title: String,
-    mainViewModel: MainViewModel,
 ) {
     val appViewModel = hiltViewModel<ApplicationViewModel>()
 

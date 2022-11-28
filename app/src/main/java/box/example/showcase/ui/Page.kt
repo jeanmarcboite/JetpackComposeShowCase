@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import box.example.showcase.MainViewModel
 import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.navigation.Tab
 
@@ -25,7 +24,6 @@ abstract class Page(
     @StringRes val title: Int,
     val buttonIcon: ImageVector = Icons.Default.Menu,
 ) {
-    lateinit var mainViewModel: MainViewModel
     open fun showInDrawer() = true
 
     open fun parseArguments(arguments: Bundle?) {}
