@@ -16,7 +16,7 @@ import box.example.showcase.ui.pages.login.LoginPage
 import box.example.showcase.ui.pages.notes.NotesPage
 import box.example.showcase.ui.pages.todo.TodoPage
 
-fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page> {
+fun mainPages(context: Context, mainViewModel: MainViewModel): HashMap<String, Page> {
     val pages = listOf(
         HomePage,
         ColorPage(),
@@ -36,5 +36,6 @@ fun mainPages(context: Context, mainViewModel: MainViewModel): Map<String, Page>
         it.mainViewModel = mainViewModel
     }
 
-    return pages.associateBy { context.resources.getString(it.route) }
+
+    return pages.associateBy { context.resources.getString(it.route) } as HashMap<String, Page>
 }

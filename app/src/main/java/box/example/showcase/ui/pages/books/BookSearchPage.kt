@@ -25,6 +25,7 @@ import box.example.showcase.applib.books.components.openlibrary.View
 import box.example.showcase.applib.books.models.openlibrary.BookQueryType
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
+import box.example.showcase.ui.models.NavViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.BookReader
@@ -40,6 +41,7 @@ class BookSearchPage :
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
+        val navViewModel = hiltViewModel<NavViewModel>()
         var progressVisible by rememberSaveable {
             mutableStateOf(false)
         }
@@ -132,7 +134,7 @@ class BookSearchPage :
                         it.View() {
                             val destination = "book${it.key}"
                             Log.d("boxxx", "navigate to $destination")
-                            mainViewModel.navViewModel.navigate(destination)
+                            navViewModel.navigate(destination)
                         }
                     }
                 }

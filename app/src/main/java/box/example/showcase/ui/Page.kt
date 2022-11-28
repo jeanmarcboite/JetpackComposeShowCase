@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.MainViewModel
 import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.navigation.Tab
@@ -34,11 +35,12 @@ abstract class Page(
 
     @Composable
     open fun BottomAppBar() {
+        val navViewModel = hiltViewModel<NavViewModel>()
         BottomAppBar(
             containerColor = MaterialTheme.colorScheme.surface,
         ) {
             Text(
-                "Route: ${mainViewModel.navViewModel.navController.currentDestination?.route}",
+                "Route: ${navViewModel.navController.currentDestination?.route}",
                 modifier = Modifier.padding(start = 32.dp)
             )
         }

@@ -8,14 +8,49 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.navigation.navigateSingleTopTo
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
+import javax.inject.Named
 
-@OptIn(ExperimentalMaterial3Api::class)
-class NavViewModel : ViewModel() {
-    lateinit var pages: Map<String, Page>
+@Module
+@InstallIn(SingletonComponent::class)
+object NavModule {
+    // we need a HashMap here, Map is only an interface
+    lateinit var pages: HashMap<String, Page>
+
+    @OptIn(ExperimentalMaterial3Api::class)
     lateinit var drawerState: DrawerState
     lateinit var selectedPage: MutableState<Page?>
     lateinit var navController: NavHostController
 
+    @Provides
+    @Named("pages")
+    fun appPages() = pages
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Provides
+    fun appDrawerState() = drawerState
+
+    @Provides
+    fun appSelectedPage() = selectedPage
+
+    @Provides
+    fun appNavController() = navController
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@HiltViewModel
+class NavViewModel @Inject constructor(
+    @Named("pages") val pages: HashMap<String, Page>,
+    val drawerState: DrawerState,
+    val selectedPage: MutableState<Page?>,
+    val navController: NavHostController
+) : ViewModel() {
+    //    val pages: Map<String, Page> = mapOf()
     fun navigate(route: String) {
         navController.apply {
             try {

@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.ProfileImage
@@ -60,6 +61,8 @@ class LoginPage :
 
     @Composable
     fun LogoutScreen() {
+        val navViewModel = hiltViewModel<NavViewModel>()
+
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -82,7 +85,7 @@ class LoginPage :
                 onClick = {
                     FirebaseAuth.getInstance().signOut()
                     mainViewModel.authViewModel.setUser(null)
-                    mainViewModel.navViewModel.popBackStack()
+                    navViewModel.popBackStack()
                 },
                 modifier = Modifier.padding(8.dp),
                 shape = RoundedCornerShape(20.dp)

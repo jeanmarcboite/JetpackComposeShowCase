@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import box.example.showcase.R
@@ -23,10 +24,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModalDrawer(
-    navViewModel: NavViewModel,
     snackbarHostState: SnackbarHostState,
     topBar: @Composable () -> Unit = {},
 ) {
+    val navViewModel = hiltViewModel<NavViewModel>()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 

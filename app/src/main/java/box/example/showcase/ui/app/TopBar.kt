@@ -17,10 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.MainViewModel
 import box.example.showcase.ui.components.ProfileImage
+import box.example.showcase.ui.models.NavViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Moon
@@ -32,9 +33,8 @@ import kotlinx.coroutines.launch
 fun TopBar(
     title: String,
     mainViewModel: MainViewModel,
-    buttonIcon: ImageVector?,
-    onButtonClicked: suspend () -> Unit
 ) {
+    val navViewModel = hiltViewModel<NavViewModel>()
     val scope = rememberCoroutineScope()
     val expanded = remember { mutableStateOf(false) }
 
@@ -47,9 +47,12 @@ fun TopBar(
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
         navigationIcon = {
-            IconButton(onClick = { scope.launch { onButtonClicked() } }) {
+            IconButton(onClick = {
+                scope.launch {
+                    navViewModel.onButtonClicked()
+                } }) {
                 Icon(
-                    imageVector = buttonIcon ?: Icons.Default.Menu,
+                    imageVector = navViewModel.selectedPage.value?.buttonIcon ?: Icons.Default.Menu,
                     contentDescription = null,
                     tint = Color.White
                 )
@@ -73,7 +76,7 @@ fun TopBar(
             }
 
             IconButton(onClick = {
-                mainViewModel.navViewModel.navigate("login")
+                navViewModel.navigate("login")
             }) {
                 ProfileImage(
                     Modifier
@@ -116,7 +119,7 @@ fun TopBar(
                         { Text("Settings") },
                         onClick = {
                             expanded.value = false
-                            mainViewModel.navViewModel.navigate("settings")
+                            navViewModel.navigate("settings")
                         })
 
                 }

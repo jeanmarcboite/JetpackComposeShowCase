@@ -3,6 +3,7 @@ package box.example.showcase
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -25,7 +26,7 @@ import box.example.showcase.applib.notes.NotesViewModelFactory
 import box.example.showcase.ui.app.ModalDrawer
 import box.example.showcase.ui.app.TopBar
 import box.example.showcase.ui.models.AuthViewModel
-import box.example.showcase.ui.models.NavViewModel
+import box.example.showcase.ui.models.NavModule
 import box.example.showcase.ui.pages.mainPages
 import box.example.showcase.ui.pages.notes.models.FirebaseNotesViewModel
 import box.example.showcase.ui.theme.ShowCaseTheme
@@ -42,7 +43,6 @@ class HiltApp : Application()
 class MainActivity : ComponentActivity() {
     val mainViewModel: MainViewModel by viewModels()
     val authViewModel: AuthViewModel by viewModels()
-    val navViewModel: NavViewModel by viewModels()
     val firebaseNotesViewModel: FirebaseNotesViewModel by viewModels()
     val notesViewModel: NotesViewModel by viewModels {
         val dao = NotesDatabase.getDatabase(this).dao()
@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         mainViewModel.readApplicationSettings(ApplicationSettings(this))
         mainViewModel.authViewModel = authViewModel
-        mainViewModel.navViewModel = navViewModel
         mainViewModel.firebaseNotesViewModel = firebaseNotesViewModel
         mainViewModel.notesViewModel = notesViewModel
 
@@ -78,23 +77,19 @@ class MainActivity : ComponentActivity() {
 
         Flags.init(LocalContext.current)
 
-        navViewModel.pages = mainPages(context, mainViewModel)
-        navViewModel.navController = rememberNavController()
-
-        navViewModel.drawerState = rememberDrawerState(DrawerValue.Closed)
-
-        navViewModel.selectedPage =
-            remember { mutableStateOf(navViewModel.pages[context.getString(R.string.start_destination)]) }
+        Log.e("boxxxx [MainScreen]", "set NavModule")
+        NavModule.pages = mainPages(context, mainViewModel)
+        NavModule.navController = rememberNavController()
+        NavModule.drawerState = rememberDrawerState(DrawerValue.Closed)
+        NavModule.selectedPage =
+            remember { mutableStateOf(NavModule.pages[context.getString(R.string.start_destination)]) }
 
         ModalDrawer(
-            navViewModel,
             mainViewModel.snackbarHostState,
             topBar = {
                 TopBar(
                     stringResource(id = R.string.app_name),
                     mainViewModel,
-                    navViewModel.selectedPage.value?.buttonIcon,
-                    onButtonClicked = { navViewModel.onButtonClicked() },
                 )
             },
         )
