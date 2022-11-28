@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import box.example.showcase.ApplicationStateViewModel
 import box.example.showcase.R
 import box.example.showcase.ui.models.NavViewModel
 import kotlinx.coroutines.launch
@@ -24,7 +25,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModalDrawer(
-    snackbarHostState: SnackbarHostState,
     topBar: @Composable () -> Unit = {},
 ) {
     val navViewModel = hiltViewModel<NavViewModel>()
@@ -81,12 +81,13 @@ fun ModalDrawer(
                                     },
                                     content = {
                                         Column(Modifier.padding(it)) {
-
+                                            val applicationStateViewModel =
+                                                hiltViewModel<ApplicationStateViewModel>()
                                             page.Content()
                                             Spacer(modifier = Modifier.weight(1f))
                                             SnackbarHost(
                                                 //modifier = Modifier.align(Alignment.BottomCenter),
-                                                hostState = snackbarHostState,
+                                                hostState = applicationStateViewModel.snackbarHostState,
                                                 snackbar = { snackbarData: SnackbarData ->
                                                     Card(
                                                         shape = RoundedCornerShape(8.dp),

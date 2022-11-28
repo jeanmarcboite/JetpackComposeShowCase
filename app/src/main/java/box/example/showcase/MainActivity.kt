@@ -75,7 +75,6 @@ class MainActivity : ComponentActivity() {
                 color = MaterialTheme.colorScheme.background
             ) {
                 ModalDrawer(
-                    mainViewModel.snackbarHostState,
                     topBar = {
                         TopBar(
                             stringResource(id = R.string.app_name),

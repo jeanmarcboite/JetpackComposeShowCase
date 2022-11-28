@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
+import androidx.hilt.navigation.compose.hiltViewModel
+import box.example.showcase.ApplicationStateViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -24,11 +26,11 @@ import java.io.OutputStream
 
 @Composable
 fun DatabaseSelection(
-    snackbarHostState: SnackbarHostState,
     databaseVersion: MutableState<Int>
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = hiltViewModel<ApplicationStateViewModel>().snackbarHostState
 
     fun copyDatabase(context: Context, input: Uri) {
         val output = context.getDatabasePath(CalibreDatabaseHelper.DatabaseName)

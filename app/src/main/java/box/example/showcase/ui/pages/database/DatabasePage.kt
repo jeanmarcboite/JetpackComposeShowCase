@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import box.example.showcase.ApplicationStateViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.books.models.calibre.CalibreAuthor
 import box.example.showcase.applib.books.models.calibre.CalibreBook
@@ -83,7 +84,6 @@ object DatabasePage :
                 },
                 floatingActionButton = {
                     DatabaseSelection(
-                        mainViewModel.snackbarHostState,
                         viewModel.version
                     )
                 }
@@ -109,7 +109,7 @@ object DatabasePage :
         viewModel: CalibreDatabaseViewModel
     ) {
         val context = LocalContext.current
-
+        val snackbarHostState = hiltViewModel<ApplicationStateViewModel>().snackbarHostState
         LaunchedEffect(viewModel.version.value) {
             try {
                 viewModel.database.value = CalibreDatabase(context)
@@ -129,7 +129,8 @@ object DatabasePage :
                 }
                 Log.e("boxxx [readDatabase]", errorMessage)
                 // e.printStackTrace()
-                mainViewModel.snackbarHostState.showSnackbar(
+
+                snackbarHostState.showSnackbar(
                     errorMessage,
                     withDismissAction = true,
                     duration = SnackbarDuration.Indefinite

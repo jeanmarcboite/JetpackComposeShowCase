@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import box.example.showcase.ApplicationViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.notes.components.NoteAction
 import box.example.showcase.ui.Page
@@ -83,18 +85,19 @@ class Settings :
 
     @Composable
     fun SwipeActions() {
+        val applicationSettings = hiltViewModel<ApplicationViewModel>().applicationSettings
         Column {
             SwipeActions(
                 "Left Swipe",
-                mainViewModel.leftSwipeToReveal,
-                mainViewModel.leftSwipeAction,
-                mainViewModel.leftSwipeActions,
+                applicationSettings.leftSwipeToReveal,
+                applicationSettings.leftSwipeAction,
+                applicationSettings.leftSwipeActions,
             )
             SwipeActions(
                 "Right Swipe",
-                mainViewModel.rightSwipeToReveal,
-                mainViewModel.rightSwipeAction,
-                mainViewModel.rightSwipeActions,
+                applicationSettings.rightSwipeToReveal,
+                applicationSettings.rightSwipeAction,
+                applicationSettings.rightSwipeActions,
             )
         }
     }
