@@ -1,17 +1,18 @@
 package box.example.showcase.ui.pages.book
 
 import android.util.Log
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -74,27 +75,42 @@ class BookPage : TabbedPage(
     override fun floatingActionButton() {
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val bookViewModel = hiltViewModel<BookViewModel>()
-        val scope = rememberCoroutineScope()
-        ExtendedFloatingActionButton(
-            modifier = Modifier.width(150.dp),
-            onClick = {
-                scope.launch {
-                    search(
-                        openLibraryBookSearchViewModel,
-                        bookViewModel.calibreBook.value,
-                        bookViewModel.openLibraryBook
+
+        if (bookViewModel.openLibraryBook.value == null) {
+            val scope = rememberCoroutineScope()
+            var progressVisible by remember {
+                mutableStateOf(false)
+            }
+            ExtendedFloatingActionButton(
+                modifier = Modifier.width(150.dp),
+                onClick = {
+                    progressVisible = true
+                    scope.launch {
+                        search(
+                            openLibraryBookSearchViewModel,
+                            bookViewModel.calibreBook.value,
+                            bookViewModel.openLibraryBook
+                        )
+                        progressVisible = false
+                    }
+                }, icon = {
+                    Icon(
+                        Icons.Filled.Search, contentDescription = "Favorite"
                     )
-                }
-            }, icon = {
-                Icon(
-                    Icons.Filled.Search, contentDescription = "Favorite"
-                )
-            }, text = {
-                Text(
-                    text = "${bookViewModel.calibreBook.value?.title}",
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            })
+                }, text = {
+                    if (progressVisible) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = Color.Green,
+                            strokeWidth = 2.dp
+                        )
+                    } else
+                        Text(
+                            text = "${bookViewModel.calibreBook.value?.title}",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                })
+        }
     }
 }
