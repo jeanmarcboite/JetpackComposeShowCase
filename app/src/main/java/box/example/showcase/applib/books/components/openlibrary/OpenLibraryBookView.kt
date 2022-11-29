@@ -38,13 +38,13 @@ fun OpenLibraryBook.View() {
     LaunchedEffect(key1 = true) {
         try {
             val api = OpenLibraryApiHelper.getInstance()
-            bookAuthors.value = book.authors.map {
+            bookAuthors.value = book.authors?.map {
                 Log.d("boxx [bookAuthors]", it.author.key)
                 val parts = it.author.key.split("/")
                 val value: OpenLibraryAuthor? = api.getAuthor(parts.last()).body()
                 Log.d("boxx [bookAuthors]", "${it.author.key} $value")
                 value
-            }
+            } ?: listOf()
             Log.d("boxx [bookAuthors]", bookAuthors.value.toString())
         } catch (e: Exception) {
             Log.e("boxx [bookAuthors]", e.message.toString())
@@ -68,7 +68,7 @@ fun OpenLibraryBook.View() {
                     val firstAuthor = bookAuthors.value.firstOrNull()?.name ?: ""
                     OutlinedTextField(
                         enabled = false,
-                        value = title,
+                        value = title ?: "",
                         onValueChange = {},
                         label = {
                             Text(
@@ -86,27 +86,19 @@ fun OpenLibraryBook.View() {
                             .padding(20.dp)
                             .fillMaxWidth()
                     )
-                    bookAuthors.value.firstOrNull()?.apply {
-                        if (personal_name != null) {
-                            Text(personal_name, modifier = Modifier.padding(start = 32.dp))
-                        }
+                    bookAuthors.value.firstOrNull()?.personal_name?.apply {
+                        Text(this, modifier = Modifier.padding(start = 32.dp))
                     }
 
 
-                    if (book.description != null) {
-                        Log.i("boxxx", book.toString())
-
-                        Log.i("boxxx", book.description.toString())
-                        Log.i("boxxx value", book.description.value)
-                        book.description.value.apply {
-                            Text(
-                                book.description.value,
-                                modifier = Modifier
-                                    .padding(start = 32.dp)
-                                    .height(92.dp)
-                                    .verticalScroll(scroll)
-                            )
-                        }
+                    book.description?.value?.apply {
+                        Text(
+                            this,
+                            modifier = Modifier
+                                .padding(start = 32.dp)
+                                .height(92.dp)
+                                .verticalScroll(scroll)
+                        )
                     }
                 }
             }
