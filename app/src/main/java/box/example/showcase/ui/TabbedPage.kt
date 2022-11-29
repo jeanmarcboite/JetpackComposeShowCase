@@ -23,7 +23,7 @@ import box.example.showcase.ui.components.TabBar
 import box.example.showcase.ui.navigation.navigateSingleTopTo
 
 abstract class TabbedPage(
-    private val tabs: List<Tab>,
+    val tabs: List<Tab>,
     icon: ImageVector,
     @StringRes route: Int,
     @StringRes title: Int,

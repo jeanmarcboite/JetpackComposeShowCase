@@ -46,8 +46,8 @@ abstract class DatabaseTableScreen(val list: List<CalibreEntity>?) {
 class BooksScreen(list: List<CalibreEntity>?) :
     DatabaseTableScreen(list) {
     override val icon = TablerIcons.Book
-    override val route = R.string.calibre_book_table_route
-    override val title = R.string.calibre_book_table_title
+    override val route = R.string.calibre_books_table_route
+    override val title = R.string.calibre_books_table_title
 
     @Composable
     override fun CalibreEntity.ItemView() {
@@ -68,8 +68,8 @@ class BooksScreen(list: List<CalibreEntity>?) :
 
 class AuthorsScreen(list: List<CalibreEntity>?) : DatabaseTableScreen(list) {
     override val icon = TablerIcons.MoodHappy
-    override val route = R.string.calibre_author_table_route
-    override val title = R.string.calibre_author_table_title
+    override val route = R.string.calibre_authors_table_route
+    override val title = R.string.calibre_authors_table_title
 
     @Composable
     override fun CalibreEntity.ItemView() {

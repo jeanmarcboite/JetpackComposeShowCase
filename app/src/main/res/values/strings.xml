@@ -38,10 +38,10 @@
     <string name="database_page_title">Databases</string>
     <string name="database_page_route">database</string>
 
-    <string name="calibre_book_table_title">Books</string>
-    <string name="calibre_book_table_route">books</string>
-    <string name="calibre_author_table_title">Authors</string>
-    <string name="calibre_author_table_route">authors</string>
+    <string name="calibre_books_table_title">Books</string>
+    <string name="calibre_books_table_route">books</string>
+    <string name="calibre_authors_table_title">Authors</string>
+    <string name="calibre_authors_table_route">authors</string>
     <string name="get_book_info">search book</string>
     <string name="home_tab_title">Home</string>
     <string name="home_tab_route">home</string>
