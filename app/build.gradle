@@ -98,7 +98,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation "com.google.accompanist:accompanist-coil:0.10.0"
     implementation 'de.charlex.compose:speeddial-bottomappbar-material3:1.1.0'
-
+    
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
     implementation 'io.coil-kt:coil-compose:2.2.2'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
@@ -115,7 +115,7 @@ dependencies {
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
-    
+
     implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.4'
 
     testImplementation 'junit:junit:4.13.2'
