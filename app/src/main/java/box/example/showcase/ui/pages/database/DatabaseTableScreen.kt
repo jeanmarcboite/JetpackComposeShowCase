@@ -43,7 +43,7 @@ abstract class DatabaseTableScreen(val list: List<CalibreEntity>?) {
     abstract fun CalibreEntity.ItemView()
 }
 
-class BooksScreen(val navViewModel: NavViewModel, list: List<CalibreEntity>?) :
+class BooksScreen(list: List<CalibreEntity>?) :
     DatabaseTableScreen(list) {
     override val icon = TablerIcons.Book
     override val route = R.string.calibre_book_table_route
@@ -52,6 +52,7 @@ class BooksScreen(val navViewModel: NavViewModel, list: List<CalibreEntity>?) :
     @Composable
     override fun CalibreEntity.ItemView() {
         val calibreBookViewModel: CalibreBookViewModel = hiltViewModel()
+        val navViewModel: NavViewModel = hiltViewModel()
         val path = "book/calibre"
         val book = this as CalibreBook
         Column {

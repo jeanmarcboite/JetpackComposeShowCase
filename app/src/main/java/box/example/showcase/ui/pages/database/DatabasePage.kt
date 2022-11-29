@@ -27,7 +27,6 @@ import box.example.showcase.applib.books.models.calibre.CalibreDatabase
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
 import box.example.showcase.ui.models.CalibreDatabaseViewModel
-import box.example.showcase.ui.models.NavViewModel
 import box.example.showcase.ui.navigation.navigateSingleTopTo
 import box.example.showcase.ui.pages.database.components.DatabaseSelection
 import compose.icons.FontAwesomeIcons
@@ -45,14 +44,12 @@ object DatabasePage :
     @Composable
     override fun Content() {
         val viewModel = hiltViewModel<CalibreDatabaseViewModel>()
-        val navViewModel = hiltViewModel<NavViewModel>()
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
 
         val tabs = listOf(
             BooksScreen(
-                navViewModel,
                 viewModel.database.value?.books?.value?.sortedBy {
                     val book = it as CalibreBook
                     book.sort ?: book.title
