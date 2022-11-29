@@ -24,13 +24,12 @@ import box.example.showcase.ui.navigation.Tab
 import box.example.showcase.ui.navigation.navigateSingleTopTo
 
 abstract class TabbedPage(
+    private val tabs: List<Tab>,
     icon: ImageVector,
     @StringRes route: Int,
     @StringRes title: Int,
     buttonIcon: ImageVector = Icons.Default.Menu,
 ) : Page(icon, route, title, buttonIcon) {
-    override val tabs: List<Tab> = listOf()
-
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -66,11 +65,6 @@ abstract class TabbedPage(
                         }
                     }
                 })
-    }
-
-    // The bottomAppBar is already in the content, since we need the navController (we could also use a viewModel
-    @Composable
-    override fun BottomAppBar() {
     }
 
     fun List<Tab>.findRoute(context: Context, route: String?): Tab {

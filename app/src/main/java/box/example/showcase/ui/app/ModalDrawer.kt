@@ -45,7 +45,6 @@ fun ModalDrawer(
                         selected = page == navViewModel.selectedPage.value,
                         onClick = {
                             scope.launch { navViewModel.drawerState.close() }
-                            //selectedPage.value = page
                             navViewModel.navigate(route)
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
@@ -62,6 +61,7 @@ fun ModalDrawer(
         ) {
             Scaffold(
                 topBar = topBar,
+                floatingActionButton = { navViewModel.selectedPage.value?.floatingActionButton() },
                 content = { paddingValues ->
                     NavHost(
                         modifier = Modifier
@@ -73,44 +73,34 @@ fun ModalDrawer(
                         navViewModel.pages.values.forEach { page ->
                             composable(context.getString(page.route)) { navBackStackEntry ->
                                 page.parseArguments(navBackStackEntry.arguments)
-                                //page.Content()
 
-                                Scaffold(
-                                    bottomBar = {
-                                        page.BottomAppBar()
-                                    },
-                                    content = {
-                                        Column(Modifier.padding(it)) {
-                                            val applicationStateViewModel =
-                                                hiltViewModel<ApplicationStateViewModel>()
-                                            page.Content()
-                                            Spacer(modifier = Modifier.weight(1f))
-                                            SnackbarHost(
-                                                //modifier = Modifier.align(Alignment.BottomCenter),
-                                                hostState = applicationStateViewModel.snackbarHostState,
-                                                snackbar = { snackbarData: SnackbarData ->
-                                                    Card(
-                                                        shape = RoundedCornerShape(8.dp),
-                                                        border = BorderStroke(2.dp, Color.Red),
-                                                        modifier = Modifier
-                                                            .padding(16.dp)
-                                                            .wrapContentSize()
-                                                    ) {
-                                                        Snackbar(
-                                                            snackbarData
-                                                        )
-                                                    }
-                                                }
-                                            )
+                                Column {
+                                    val applicationStateViewModel =
+                                        hiltViewModel<ApplicationStateViewModel>()
+                                    page.Content()
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    SnackbarHost(
+                                        //modifier = Modifier.align(Alignment.BottomCenter),
+                                        hostState = applicationStateViewModel.snackbarHostState,
+                                        snackbar = { snackbarData: SnackbarData ->
+                                            Card(
+                                                shape = RoundedCornerShape(8.dp),
+                                                border = BorderStroke(2.dp, Color.Red),
+                                                modifier = Modifier
+                                                    .padding(16.dp)
+                                                    .wrapContentSize()
+                                            ) {
+                                                Snackbar(
+                                                    snackbarData
+                                                )
+                                            }
                                         }
-                                    }
-                                )
-
+                                    )
+                                }
                             }
                         }
                     }
                 },
-                floatingActionButton = { navViewModel.selectedPage.value?.floatingActionButton() },
             )
         }
     }

@@ -40,10 +40,6 @@ object DatabasePage :
         R.string.database_page_route,
         R.string.database_page_title
     ) {
-    @Composable
-    override fun BottomAppBar() {
-    }
-
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
