@@ -25,6 +25,7 @@ import box.example.showcase.ui.components.TabBar
 import box.example.showcase.ui.findRoute
 import box.example.showcase.ui.models.CalibreDatabaseViewModel
 import box.example.showcase.ui.navigation.navigateSingleTopTo
+import box.example.showcase.ui.pages.calibre.components.CalibreDatabaseSelection
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Database
 
@@ -35,9 +36,14 @@ object CalibreDatabasePage :
         R.string.database_page_route,
         R.string.database_page_title
     ) {
+    override val floatingActionButton: @Composable () -> Unit = {
+        CalibreDatabaseSelection()
+    }
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
+        val TAG = "boxxx [CalibreDatabasePage]"
         getDatabase()
 /*
         floatingActionButton = {
@@ -46,7 +52,7 @@ object CalibreDatabasePage :
                     )
                 }
         */
-        Log.d("boxxx [CalibreDatabasePage]", "Content()")
+        Log.d(TAG, "Content()")
         if (false)
             super.Content()
         else {
@@ -57,7 +63,9 @@ object CalibreDatabasePage :
             val currentDestination: NavDestination? = currentBackStack?.destination
             if (tabs.isNotEmpty())
                 Scaffold(
+                    floatingActionButton = floatingActionButton,
                     bottomBar = {
+                        Log.d(TAG, "BottomAppBar()")
                         BottomAppBar(
                             containerColor = MaterialTheme.colorScheme.surface,
                         ) {
@@ -70,12 +78,14 @@ object CalibreDatabasePage :
                         }
                     },
                     content = {
+                        Log.d(TAG, "NavHost()")
                         NavHost(
                             navController = navController,
                             startDestination = context.getString(tabs.first().route),
                             modifier = Modifier.padding(it)
                         ) {
                             tabs.forEach { screen ->
+                                Log.d(TAG, "tab ${screen.title}")
                                 composable(context.getString(screen.route)) {
                                     screen.Content()
                                 }

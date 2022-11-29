@@ -8,7 +8,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -17,6 +16,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.ApplicationStateViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
+import box.example.showcase.ui.models.CalibreDatabaseViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.FolderOpen
@@ -26,8 +26,9 @@ import java.io.OutputStream
 
 @Composable
 fun CalibreDatabaseSelection(
-    databaseVersion: MutableState<Int>
 ) {
+    val databaseVersion = hiltViewModel<CalibreDatabaseViewModel>().version
+
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = hiltViewModel<ApplicationStateViewModel>().snackbarHostState

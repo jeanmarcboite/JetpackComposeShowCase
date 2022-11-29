@@ -31,6 +31,7 @@ abstract class TabbedPage(
     buttonIcon: ImageVector = Icons.Default.Menu,
 ) : Page(icon, route, title, buttonIcon) {
     val TAG = "boxxx [TabbedPage]"
+    open val floatingActionButton: @Composable () -> Unit = {}
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -43,6 +44,7 @@ abstract class TabbedPage(
         val currentDestination: NavDestination? = currentBackStack?.destination
         if (tabs.isNotEmpty())
             Scaffold(
+                floatingActionButton = floatingActionButton,
                 bottomBar = {
                     Log.d(TAG, "BottomAppBar()")
                     BottomAppBar(
