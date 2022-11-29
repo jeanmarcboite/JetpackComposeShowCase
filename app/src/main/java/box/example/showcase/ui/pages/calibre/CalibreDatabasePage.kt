@@ -22,6 +22,7 @@ import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreDatabase
 import box.example.showcase.ui.TabbedPage
 import box.example.showcase.ui.components.TabBar
+import box.example.showcase.ui.findRoute
 import box.example.showcase.ui.models.CalibreDatabaseViewModel
 import box.example.showcase.ui.navigation.navigateSingleTopTo
 import compose.icons.TablerIcons
@@ -37,79 +38,58 @@ object CalibreDatabasePage :
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        val viewModel = hiltViewModel<CalibreDatabaseViewModel>()
-        getDatabase(viewModel)
-        viewModel.database.value?.books?.value?.sortedBy {
-            val book = it as CalibreBook
-            book.sort ?: book.title
-        }?.apply {
-            CalibreBooksTab.list.value = this
-        }
-        viewModel.database.value?.authors?.value?.sortedBy {
-            val author = it as CalibreAuthor
-            author.sort ?: author.name
-        }?.apply {
-            CalibreAuthorsTab.list.value = this
-        }
+        getDatabase()
 /*
-        val tabs = listOf(
-            BooksScreen(
-                viewModel.database.value?.books?.value?.sortedBy {
-                    val book = it as CalibreBook
-                    book.sort ?: book.title
-                }),
-            AuthorsScreen(viewModel.database.value?.authors?.value?.sortedBy {
-                val author = it as CalibreAuthor
-                author.sort ?: author.name
-            })
-        )
         floatingActionButton = {
                     CalibreDatabaseSelection(
                         viewModel.version
                     )
                 }
         */
-        //super.Content()
-        val context = LocalContext.current
-        val navController = rememberNavController()
-        val currentBackStack by navController.currentBackStackEntryAsState()
-        // Fetch your currentDestination:
-        val currentDestination: NavDestination? = currentBackStack?.destination
-        if (tabs.isNotEmpty())
-            Scaffold(
-                bottomBar = {
-                    BottomAppBar(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    ) {
-                        TabBar(
-                            tabs,
-                            currentTab = tabs.findRoute(context, currentDestination?.route)
-                        ) { newScreen ->
-                            navController.navigateSingleTopTo(context.getString(newScreen.route))
-                        }
-                    }
-                },
-                content = {
-                    NavHost(
-                        navController = navController,
-                        startDestination = context.getString(tabs.first().route),
-                        modifier = Modifier.padding(it)
-                    ) {
-                        tabs.forEach { screen ->
-                            composable(context.getString(screen.route)) {
-                                screen.Content()
+        Log.d("boxxx [CalibreDatabasePage]", "Content()")
+        if (false)
+            super.Content()
+        else {
+            val context = LocalContext.current
+            val navController = rememberNavController()
+            val currentBackStack by navController.currentBackStackEntryAsState()
+            // Fetch your currentDestination:
+            val currentDestination: NavDestination? = currentBackStack?.destination
+            if (tabs.isNotEmpty())
+                Scaffold(
+                    bottomBar = {
+                        BottomAppBar(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                        ) {
+                            TabBar(
+                                tabs,
+                                currentTab = tabs.findRoute(context, currentDestination?.route)
+                            ) { newScreen ->
+                                navController.navigateSingleTopTo(context.getString(newScreen.route))
                             }
                         }
-                    }
-                })
-
+                    },
+                    content = {
+                        NavHost(
+                            navController = navController,
+                            startDestination = context.getString(tabs.first().route),
+                            modifier = Modifier.padding(it)
+                        ) {
+                            tabs.forEach { screen ->
+                                composable(context.getString(screen.route)) {
+                                    screen.Content()
+                                }
+                            }
+                        }
+                    })
+        }
     }
 
     @SuppressLint("ComposableNaming")
     @Composable
     fun getDatabase(
-        viewModel: CalibreDatabaseViewModel
     ) {
+        val viewModel: CalibreDatabaseViewModel = hiltViewModel()
         val context = LocalContext.current
         val snackbarHostState = hiltViewModel<ApplicationStateViewModel>().snackbarHostState
         LaunchedEffect(viewModel.version.value) {
@@ -138,6 +118,19 @@ object CalibreDatabasePage :
                     duration = SnackbarDuration.Indefinite
                 )
             }
+            viewModel.database.value?.books?.value?.sortedBy {
+                val book = it as CalibreBook
+                book.sort ?: book.title
+            }?.apply {
+                CalibreBooksTab.list.value = this
+            }
+            viewModel.database.value?.authors?.value?.sortedBy {
+                val author = it as CalibreAuthor
+                author.sort ?: author.name
+            }?.apply {
+                CalibreAuthorsTab.list.value = this
+            }
+
         }
     }
 
