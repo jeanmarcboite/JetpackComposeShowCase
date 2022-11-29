@@ -64,7 +64,7 @@ class DbBookPage : Page(
                     isbn
                 )
             }
-            if (result == null || result.isFailure) {
+            if ((result == null) || result.isFailure) {
                 // OpenLibraryBookList(docs=[], numFound=0, numFoundExact=true, num_found=0, offset=null, q=, start=0)
                 val resultBookList: Result<OpenLibraryBookList?> =
                     openLibraryBookSearchViewModel.getBooks(
@@ -72,6 +72,7 @@ class DbBookPage : Page(
                     )
             } else {
                 val openLibraryBook: OpenLibraryBook? = result.getOrNull()
+                Log.d("boxxx [OpenLibraryBook]", "$openLibraryBook")
             }
         }
     }

@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.books
+package box.example.showcase.ui.pages.openlibrary
 
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +18,7 @@ import box.example.showcase.ui.models.NavViewModel
 import compose.icons.TablerIcons
 import compose.icons.tablericons.Book
 
-class BookDetailPage() :
+class OpenLibraryBookPage() :
     Page(
         TablerIcons.Book,
         R.string.book_page_route,

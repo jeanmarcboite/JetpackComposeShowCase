@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.books
+package box.example.showcase.ui.pages.openlibrary
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -31,7 +31,7 @@ import compose.icons.tablericons.Book
 import compose.icons.tablericons.CaretLeft
 import kotlinx.coroutines.launch
 
-class BookSearchPage :
+class OpenLibrarySearchPage :
     Page(
         TablerIcons.Book,
         R.string.books_page_route,
