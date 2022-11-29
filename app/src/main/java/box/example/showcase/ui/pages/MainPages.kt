@@ -6,9 +6,9 @@ import box.example.showcase.ui.pages.about.AboutPage
 import box.example.showcase.ui.pages.books.BookDetailPage
 import box.example.showcase.ui.pages.books.BookSearchPage
 import box.example.showcase.ui.pages.bored.BoredPage
+import box.example.showcase.ui.pages.calibre.CalibrePage
+import box.example.showcase.ui.pages.calibre.DbBookPage
 import box.example.showcase.ui.pages.color.ColorPage
-import box.example.showcase.ui.pages.database.DatabasePage
-import box.example.showcase.ui.pages.database.DbBookPage
 import box.example.showcase.ui.pages.home.HomePage
 import box.example.showcase.ui.pages.lab.LabPage
 import box.example.showcase.ui.pages.login.LoginPage
@@ -20,7 +20,7 @@ fun mainPages(context: Context): HashMap<String, Page> {
         HomePage,
         ColorPage(),
         AboutPage(),
-        DatabasePage,
+        CalibrePage,
         DbBookPage(),
         LabPage(),
         BoredPage(),

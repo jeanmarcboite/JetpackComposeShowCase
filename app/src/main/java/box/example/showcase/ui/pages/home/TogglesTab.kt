@@ -16,18 +16,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import box.example.showcase.R
-import box.example.showcase.ui.navigation.Tab
+import box.example.showcase.ui.Tab
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ToggleOn
 
 
-object TogglesTab : Tab {
-    override val icon = FontAwesomeIcons.Solid.ToggleOn
-    override val route = R.string.toggle_tab_route
-    override val title = R.string.toggle_tab_title
-
-    override val Content: @Composable () -> Unit = {
+object TogglesTab : Tab(
+    FontAwesomeIcons.Solid.ToggleOn,
+    R.string.toggle_tab_route,
+    R.string.toggle_tab_title
+) {
+    @Composable
+    override fun Content() {
         val result = remember { mutableStateOf<Bitmap?>(null) }
         Box {
             val paddingTop = 9.dp

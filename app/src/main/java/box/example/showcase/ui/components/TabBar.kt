@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import box.example.showcase.ui.navigation.Tab
+import box.example.showcase.ui.Tab
 
 private val TabHeight = 56.dp
 

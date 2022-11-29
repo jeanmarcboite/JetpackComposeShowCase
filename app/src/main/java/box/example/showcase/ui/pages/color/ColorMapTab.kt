@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import box.example.showcase.R
-import box.example.showcase.ui.navigation.Tab
+import box.example.showcase.ui.Tab
 import box.example.showcase.ui.theme.margin_half
 import box.example.showcase.ui.theme.margin_standard
 import box.example.showcase.ui.theme.touchpoint_lg
@@ -30,11 +30,13 @@ import compose.icons.fontawesomeicons.solid.Cocktail
 
 // gh repo clone mwolfson/jetpackTemplate
 
-object ColorMapTab : Tab {
-    override val icon = FontAwesomeIcons.Solid.Cocktail
-    override val route = R.string.color_page_route
-    override val title = R.string.color_page_title
-    override val Content: @Composable () -> Unit = {
+object ColorMapTab : Tab(
+    FontAwesomeIcons.Solid.Cocktail,
+    R.string.color_page_route,
+    R.string.color_page_title
+) {
+    @Composable
+    override fun Content() {
         ColorListBody(
             onItemClicked = {
                 // navController.navigate("${AppScreens.Detail.route}${it.name}")
@@ -42,7 +44,6 @@ object ColorMapTab : Tab {
             COLOR_MAP.values.toList(),
         )
     }
-
 }
 
 data class ColorItem(val name: String, val iconUrl: String, val iconUrlLg: String)

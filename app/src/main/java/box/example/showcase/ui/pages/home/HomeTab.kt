@@ -6,17 +6,19 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import box.example.showcase.R
-import box.example.showcase.ui.navigation.Tab
+import box.example.showcase.ui.Tab
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Home
 
 
-object HomeTab : Tab {
-    override val icon = FontAwesomeIcons.Solid.Home
-    override val route = R.string.home_tab_route
-    override val title = R.string.home_tab_title
-    override val Content: @Composable () -> Unit = {
+object HomeTab : Tab(
+    FontAwesomeIcons.Solid.Home,
+    R.string.home_tab_route,
+    R.string.home_tab_title
+) {
+    @Composable
+    override fun Content() {
         val model: HomeViewModel = viewModel()
         val hiltModel: HiltHomeViewModel = hiltViewModel()
         Column() {

@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.database
+package box.example.showcase.ui.pages.calibre
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -28,12 +28,12 @@ import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.IconAction
 import box.example.showcase.ui.models.CalibreDatabaseViewModel
 import box.example.showcase.ui.navigation.navigateSingleTopTo
-import box.example.showcase.ui.pages.database.components.DatabaseSelection
+import box.example.showcase.ui.pages.calibre.components.CalibreDatabaseSelection
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Whatsapp
 
-object DatabasePage :
+object CalibrePage :
     Page(
         FontAwesomeIcons.Brands.Whatsapp,
         R.string.database_page_route,
@@ -77,7 +77,7 @@ object DatabasePage :
                     }
                 },
                 floatingActionButton = {
-                    DatabaseSelection(
+                    CalibreDatabaseSelection(
                         viewModel.version
                     )
                 }

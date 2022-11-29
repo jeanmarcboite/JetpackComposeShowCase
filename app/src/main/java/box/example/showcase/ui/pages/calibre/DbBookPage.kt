@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.database
+package box.example.showcase.ui.pages.calibre
 
 import android.annotation.SuppressLint
 import android.os.Bundle

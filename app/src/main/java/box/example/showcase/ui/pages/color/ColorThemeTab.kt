@@ -10,17 +10,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import box.example.showcase.R
-import box.example.showcase.ui.navigation.Tab
+import box.example.showcase.ui.Tab
 import box.example.showcase.ui.theme.margin_half
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.PaintBrush
 
-object ColorThemeTab : Tab {
-    override val icon = FontAwesomeIcons.Solid.PaintBrush
-    override val route = R.string.color_theme_route
-    override val title = R.string.color_theme_title
-    override val Content: @Composable () -> Unit = {
+object ColorThemeTab : Tab(
+    FontAwesomeIcons.Solid.PaintBrush,
+    R.string.color_theme_route,
+    R.string.color_theme_title
+) {
+    @Composable
+    override fun Content() {
         val colorScheme: ColorScheme = MaterialTheme.colorScheme
         val colorsMap = mapOf(
             "Primary container" to Pair(

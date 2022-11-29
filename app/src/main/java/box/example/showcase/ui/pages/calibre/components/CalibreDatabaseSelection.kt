@@ -1,4 +1,4 @@
-package box.example.showcase.ui.pages.database.components
+package box.example.showcase.ui.pages.calibre.components
 
 import android.content.Context
 import android.net.Uri
@@ -25,7 +25,7 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 @Composable
-fun DatabaseSelection(
+fun CalibreDatabaseSelection(
     databaseVersion: MutableState<Int>
 ) {
     val context = LocalContext.current

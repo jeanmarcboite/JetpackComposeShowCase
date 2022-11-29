@@ -20,7 +20,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import box.example.showcase.ui.components.TabBar
-import box.example.showcase.ui.navigation.Tab
 import box.example.showcase.ui.navigation.navigateSingleTopTo
 
 abstract class TabbedPage(
