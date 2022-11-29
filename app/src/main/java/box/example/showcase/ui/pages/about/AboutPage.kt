@@ -5,13 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import box.example.showcase.R
 import box.example.showcase.ui.Page
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.InfoCircle
+import compose.icons.TablerIcons
+import compose.icons.tablericons.InfoCircle
 
 class AboutPage :
     Page(
-        FontAwesomeIcons.Solid.InfoCircle,
+        TablerIcons.InfoCircle,
         R.string.about_page_route,
         R.string.about_page_title
     ) {

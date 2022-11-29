@@ -26,15 +26,14 @@ import box.example.showcase.applib.books.models.openlibrary.BookQueryType
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.models.NavViewModel
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.BookReader
-import compose.icons.fontawesomeicons.solid.CaretSquareLeft
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Book
+import compose.icons.tablericons.CaretLeft
 import kotlinx.coroutines.launch
 
 class BookSearchPage :
     Page(
-        FontAwesomeIcons.Solid.BookReader,
+        TablerIcons.Book,
         R.string.books_page_route,
         R.string.books_page_title
     ) {
@@ -89,7 +88,7 @@ class BookSearchPage :
                 },
                 trailingIcon = {
                     Icon(
-                        FontAwesomeIcons.Solid.CaretSquareLeft,
+                        TablerIcons.CaretLeft,
                         "error",
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier

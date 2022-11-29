@@ -12,13 +12,12 @@ import box.example.showcase.applib.notes.components.NewNoteView
 import box.example.showcase.applib.notes.components.NoteListView
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.models.FirebaseNotesViewModel
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Feather
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Feather
 
 class NotesPage :
     Page(
-        FontAwesomeIcons.Solid.Feather,
+        TablerIcons.Feather,
         R.string.notes_page_route,
         R.string.notes_page_title
     ) {

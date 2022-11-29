@@ -17,13 +17,12 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import box.example.showcase.R
 import box.example.showcase.ui.Tab
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.ToggleOn
+import compose.icons.TablerIcons
+import compose.icons.tablericons.ToggleLeft
 
 
 object TogglesTab : Tab(
-    FontAwesomeIcons.Solid.ToggleOn,
+    TablerIcons.ToggleLeft,
     R.string.toggle_tab_route,
     R.string.toggle_tab_title
 ) {

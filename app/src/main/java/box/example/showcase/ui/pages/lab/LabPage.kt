@@ -8,12 +8,12 @@ import box.example.showcase.R
 import box.example.showcase.ui.Page
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.j256.ormlite.table.TableUtils
-import compose.icons.FeatherIcons
-import compose.icons.feathericons.Codepen
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Flask
 
 class LabPage :
     Page(
-        FeatherIcons.Codepen,
+        TablerIcons.Flask,
         R.string.lab_page_route,
         R.string.lab_page_title
     ) {

@@ -20,14 +20,13 @@ import box.example.showcase.applib.bored.BoredViewModel
 import box.example.showcase.applib.bored.MovieViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.components.LabeledField
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Beer
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Cloud
 import kotlinx.coroutines.launch
 
 class BoredPage :
     Page(
-        FontAwesomeIcons.Solid.Beer,
+        TablerIcons.Cloud,
         R.string.bored_page_route,
         R.string.bored_page_title
     ) {

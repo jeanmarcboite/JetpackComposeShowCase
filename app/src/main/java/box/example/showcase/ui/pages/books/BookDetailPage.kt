@@ -15,13 +15,12 @@ import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBook
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.models.NavViewModel
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Book
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Book
 
 class BookDetailPage() :
     Page(
-        FontAwesomeIcons.Solid.Book,
+        TablerIcons.Book,
         R.string.book_page_route,
         R.string.book_page_title,
         Icons.Default.ArrowBack,

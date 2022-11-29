@@ -22,13 +22,12 @@ import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookList
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookSearchViewModel
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.models.NavViewModel
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.BookReader
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Book
 import kotlinx.coroutines.launch
 
 class DbBookPage : Page(
-    FontAwesomeIcons.Solid.BookReader,
+    TablerIcons.Book,
     R.string.db_book_page_route,
     R.string.book_page_title,
     Icons.Default.ArrowBack,

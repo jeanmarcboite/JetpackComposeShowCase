@@ -12,13 +12,12 @@ import box.example.showcase.applib.notes.NotesViewModel
 import box.example.showcase.applib.notes.components.NewNoteView
 import box.example.showcase.applib.notes.components.NoteListView
 import box.example.showcase.ui.Page
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Eye
+import compose.icons.TablerIcons
+import compose.icons.tablericons.CaretRight
 
 class TodoPage :
     Page(
-        FontAwesomeIcons.Solid.Eye,
+        TablerIcons.CaretRight,
         R.string.todo_page_route,
         R.string.todo_page_title
     ) {

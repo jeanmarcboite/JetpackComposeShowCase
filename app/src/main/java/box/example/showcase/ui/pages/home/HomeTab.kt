@@ -7,13 +7,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import box.example.showcase.R
 import box.example.showcase.ui.Tab
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Home
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Home2
 
 
 object HomeTab : Tab(
-    FontAwesomeIcons.Solid.Home,
+    TablerIcons.Home2,
     R.string.home_tab_route,
     R.string.home_tab_title
 ) {

@@ -5,21 +5,17 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.ApplicationStateViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreDatabaseHelper
 import box.example.showcase.ui.models.CalibreDatabaseViewModel
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.FolderOpen
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Folder
 import kotlinx.coroutines.launch
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -103,10 +99,8 @@ fun CalibreDatabaseSelection(
         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
     ) {
         Icon(
-            FontAwesomeIcons.Solid.FolderOpen, "Open calibre database",
+            TablerIcons.Folder, "Open calibre database",
             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier
-                .size(32.dp)
         )
     }
 }

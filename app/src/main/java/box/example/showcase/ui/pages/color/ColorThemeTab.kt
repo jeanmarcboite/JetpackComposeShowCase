@@ -12,12 +12,11 @@ import androidx.compose.ui.unit.dp
 import box.example.showcase.R
 import box.example.showcase.ui.Tab
 import box.example.showcase.ui.theme.margin_half
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.PaintBrush
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Palette
 
 object ColorThemeTab : Tab(
-    FontAwesomeIcons.Solid.PaintBrush,
+    TablerIcons.Palette,
     R.string.color_theme_route,
     R.string.color_theme_title
 ) {

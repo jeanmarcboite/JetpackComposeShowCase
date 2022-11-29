@@ -19,13 +19,12 @@ import box.example.showcase.ui.models.AuthState
 import box.example.showcase.ui.models.AuthViewModel
 import box.example.showcase.ui.models.NavViewModel
 import com.google.firebase.auth.FirebaseAuth
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Fire
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Login
 
 class LoginPage :
     Page(
-        FontAwesomeIcons.Solid.Fire,
+        TablerIcons.Login,
         R.string.login_page_route,
         R.string.login_page_title,
         Icons.Default.ArrowBack

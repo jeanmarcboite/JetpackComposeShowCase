@@ -24,14 +24,13 @@ import box.example.showcase.ui.theme.margin_half
 import box.example.showcase.ui.theme.margin_standard
 import box.example.showcase.ui.theme.touchpoint_lg
 import coil.compose.rememberAsyncImagePainter
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Cocktail
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Brush
 
 // gh repo clone mwolfson/jetpackTemplate
 
 object ColorMapTab : Tab(
-    FontAwesomeIcons.Solid.Cocktail,
+    TablerIcons.Brush,
     R.string.color_page_route,
     R.string.color_page_title
 ) {

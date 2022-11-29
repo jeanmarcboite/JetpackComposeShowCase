@@ -22,10 +22,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.ApplicationViewModel
 import box.example.showcase.ui.components.ProfileImage
 import box.example.showcase.ui.models.NavViewModel
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Moon
-import compose.icons.fontawesomeicons.solid.Sun
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Moon
+import compose.icons.tablericons.Sun
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +42,7 @@ fun TopBar(
         title = {
             Text(text = title)
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
@@ -67,7 +66,7 @@ fun TopBar(
                     appViewModel.setDarkMode(it)
                 }) {
                 Icon(
-                    if (appViewModel.applicationSettings.darkMode.value) FontAwesomeIcons.Solid.Sun else FontAwesomeIcons.Solid.Moon,
+                    if (appViewModel.applicationSettings.darkMode.value) TablerIcons.Sun else TablerIcons.Moon,
                     contentDescription = "toggle dark mode",
                     tint = if (appViewModel.applicationSettings.darkMode.value) Color.Yellow else Color.Magenta,
                     modifier = Modifier

@@ -8,14 +8,13 @@ import box.example.showcase.applib.ui.components.MultiFloatingActionButton
 import box.example.showcase.ui.TabbedPage
 import box.example.showcase.ui.pages.color.ColorMapTab
 import box.example.showcase.ui.pages.color.ColorThemeTab
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Home
+import compose.icons.TablerIcons
+import compose.icons.tablericons.Home
 
 object HomePage :
     TabbedPage(
         listOf(HomeTab, TogglesTab, ColorThemeTab, ColorMapTab),
-        FontAwesomeIcons.Solid.Home,
+        TablerIcons.Home,
         R.string.home_page_route,
         R.string.home_page_title
     ) {
