@@ -1,6 +1,7 @@
 package box.example.showcase.ui.pages.book
 
 import android.util.Log
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
@@ -10,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.books.models.BookViewModel
@@ -70,22 +74,27 @@ class BookPage : TabbedPage(
     override fun floatingActionButton() {
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
         val bookViewModel = hiltViewModel<BookViewModel>()
-        val book = hiltViewModel<BookViewModel>().calibreBook.value
         val scope = rememberCoroutineScope()
-        ExtendedFloatingActionButton(onClick = {
-            scope.launch {
-                search(
-                    openLibraryBookSearchViewModel,
-                    bookViewModel.calibreBook.value,
-                    bookViewModel.openLibraryBook
+        ExtendedFloatingActionButton(
+            modifier = Modifier.width(150.dp),
+            onClick = {
+                scope.launch {
+                    search(
+                        openLibraryBookSearchViewModel,
+                        bookViewModel.calibreBook.value,
+                        bookViewModel.openLibraryBook
+                    )
+                }
+            }, icon = {
+                Icon(
+                    Icons.Filled.Search, contentDescription = "Favorite"
                 )
-            }
-        }, icon = {
-            Icon(
-                Icons.Filled.Search, contentDescription = "Favorite"
-            )
-        }, text = {
-            Text("${bookViewModel.calibreBook.value?.title}")
-        })
+            }, text = {
+                Text(
+                    text = "${bookViewModel.calibreBook.value?.title}",
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            })
     }
 }

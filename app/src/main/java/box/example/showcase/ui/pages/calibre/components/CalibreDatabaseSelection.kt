@@ -5,10 +5,14 @@ import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.ApplicationStateViewModel
@@ -90,17 +94,21 @@ fun CalibreDatabaseSelection(
             }
         }
 
-    FloatingActionButton(
-        onClick = {
-            //launcher.launch("application/octet-stream")
-            directoryLauncher.launch(null)
-        },
+    ExtendedFloatingActionButton(
+        modifier = Modifier.width(64.dp),
+        onClick = { directoryLauncher.launch(null) },
         containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-    ) {
-        Icon(
-            TablerIcons.Folder, "Open calibre database",
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-    }
+        //elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+        icon = {
+            Icon(
+                TablerIcons.Folder, "Open calibre database",
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }, text = {
+            Text(
+                text = "open db",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        })
 }
