@@ -14,8 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.books.components.calibre.ViewDetails
+import box.example.showcase.applib.books.models.BookViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreBook
-import box.example.showcase.applib.books.models.calibre.CalibreBookViewModel
 import box.example.showcase.applib.books.models.openlibrary.BookQueryType
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBook
 import box.example.showcase.applib.books.models.openlibrary.OpenLibraryBookList
@@ -46,9 +46,7 @@ class DbBookPage : Page(
 
     @Composable
     override fun Content() {
-        val calibreBookViewModel: CalibreBookViewModel = hiltViewModel()
-        Log.d("boxxx [DbBookPage:Content]", "book: ${calibreBookViewModel.book.value}")
-        calibreBookViewModel.book.value?.ViewDetails()
+        hiltViewModel<BookViewModel>().calibreBook.value?.ViewDetails()
     }
 
     suspend fun search(
@@ -80,9 +78,8 @@ class DbBookPage : Page(
     @SuppressLint("ComposableNaming")
     @Composable
     override fun floatingActionButton() {
-        val calibreBookViewModel: CalibreBookViewModel = hiltViewModel()
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
-        val book = calibreBookViewModel.book.value
+        val book = hiltViewModel<BookViewModel>().calibreBook.value
         val scope = rememberCoroutineScope()
         ExtendedFloatingActionButton(onClick = {
             scope.launch {

@@ -6,8 +6,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
 import box.example.showcase.applib.books.components.calibre.ViewSummary
+import box.example.showcase.applib.books.models.BookViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreBook
-import box.example.showcase.applib.books.models.calibre.CalibreBookViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreEntity
 import box.example.showcase.ui.models.NavViewModel
 import compose.icons.TablerIcons
@@ -20,15 +20,16 @@ object CalibreBooksTab : CalibreTab(
 ) {
     @Composable
     override fun CalibreEntity.ItemView() {
-        val calibreBookViewModel: CalibreBookViewModel = hiltViewModel()
+        val bookViewModel: BookViewModel = hiltViewModel()
         val navViewModel: NavViewModel = hiltViewModel()
         val path = "book/calibre"
         val route = LocalContext.current.getString(R.string.book_page_route)
         val book = this as CalibreBook
         Column {
             book.ViewSummary {
-                val destination = "$path/${book.uuid}"
-                calibreBookViewModel.book.value = book
+                //val destination = "$path/${book.uuid}"
+                bookViewModel.calibreBook.value = book
+                bookViewModel.openLibraryBook.value = null
                 navViewModel.navigate(route)
             }
         }
