@@ -2,7 +2,7 @@ package box.example.showcase.applib.books.models.openlibrary
 
 
 data class OpenLibraryBook(
-    val authors: List<AuthorK>,
+    val authors: List<AuthorKey>,
     val covers: List<Int>?,
     val created: Created?,
     val description: Description?,
@@ -28,7 +28,7 @@ data class Description(
 )
 
 data class Excerpt(
-    val author: AuthorKey,
+    val author: AuthorKeyString,
     val comment: String,
     val excerpt: String
 )
@@ -39,11 +39,11 @@ data class Link(
     val url: String
 )
 
-data class AuthorK(
-    val author: AuthorKey
+data class AuthorKey(
+    val author: AuthorKeyString
 )
 
-data class AuthorKey(
+data class AuthorKeyString(
     val key: String
 )
 

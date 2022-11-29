@@ -52,7 +52,6 @@ object CalibreDatabasePage :
                     )
                 }
         */
-        Log.d(TAG, "Content()")
         if (false)
             super.Content()
         else {
@@ -65,7 +64,6 @@ object CalibreDatabasePage :
                 Scaffold(
                     floatingActionButton = floatingActionButton,
                     bottomBar = {
-                        Log.d(TAG, "BottomAppBar()")
                         BottomAppBar(
                             containerColor = MaterialTheme.colorScheme.surface,
                         ) {
@@ -78,14 +76,12 @@ object CalibreDatabasePage :
                         }
                     },
                     content = {
-                        Log.d(TAG, "NavHost()")
                         NavHost(
                             navController = navController,
                             startDestination = context.getString(tabs.first().route),
                             modifier = Modifier.padding(it)
                         ) {
                             tabs.forEach { screen ->
-                                Log.d(TAG, "tab ${screen.title}")
                                 composable(context.getString(screen.route)) {
                                     screen.Content()
                                 }

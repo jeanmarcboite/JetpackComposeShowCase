@@ -10,6 +10,7 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
@@ -51,7 +52,8 @@ class DbBookPage : Page(
 
     suspend fun search(
         openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel,
-        book: CalibreBook?
+        book: CalibreBook?,
+        openLibraryBook: MutableState<OpenLibraryBook?>
     ) {
         if (book != null) {
             var result: Result<OpenLibraryBook?>? = null
@@ -69,7 +71,7 @@ class DbBookPage : Page(
                         book.title!!, BookQueryType.Title
                     )
             } else {
-                val openLibraryBook: OpenLibraryBook? = result.getOrNull()
+                openLibraryBook.value = result.getOrNull()
                 Log.d("boxxx [OpenLibraryBook]", "$openLibraryBook")
             }
         }
@@ -79,18 +81,22 @@ class DbBookPage : Page(
     @Composable
     override fun floatingActionButton() {
         val openLibraryBookSearchViewModel: OpenLibraryBookSearchViewModel = hiltViewModel()
-        val book = hiltViewModel<BookViewModel>().calibreBook.value
+        val bookViewModel = hiltViewModel<BookViewModel>()
         val scope = rememberCoroutineScope()
         ExtendedFloatingActionButton(onClick = {
             scope.launch {
-                search(openLibraryBookSearchViewModel, book)
+                search(
+                    openLibraryBookSearchViewModel,
+                    bookViewModel.calibreBook.value,
+                    bookViewModel.openLibraryBook
+                )
             }
         }, icon = {
             Icon(
                 Icons.Filled.Search, contentDescription = "Favorite"
             )
         }, text = {
-            Text("${book?.title}")
+            Text("${bookViewModel.calibreBook.value?.title}")
             //Text(stringResource(R.string.get_book_info))
         })
     }

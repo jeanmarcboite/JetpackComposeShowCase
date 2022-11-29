@@ -1,7 +1,6 @@
 package box.example.showcase.ui
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -36,7 +35,6 @@ abstract class TabbedPage(
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
-        Log.d(TAG, "TabbedPage::Content()")
         val context = LocalContext.current
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
@@ -46,7 +44,6 @@ abstract class TabbedPage(
             Scaffold(
                 floatingActionButton = floatingActionButton,
                 bottomBar = {
-                    Log.d(TAG, "BottomAppBar()")
                     BottomAppBar(
                         containerColor = MaterialTheme.colorScheme.surface,
                     ) {
@@ -59,14 +56,12 @@ abstract class TabbedPage(
                     }
                 },
                 content = {
-                    Log.d(TAG, "NavHost()")
                     NavHost(
                         navController = navController,
                         startDestination = context.getString(tabs.first().route),
                         modifier = Modifier.padding(it)
                     ) {
                         tabs.forEach { screen ->
-                            Log.d(TAG, "tab ${screen.title}")
                             composable(context.getString(screen.route)) {
                                 screen.Content()
                             }

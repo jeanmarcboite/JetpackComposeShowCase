@@ -36,15 +36,19 @@ fun OpenLibraryBook.View() {
     }
 
     LaunchedEffect(key1 = true) {
-        val api = OpenLibraryApiHelper.getInstance()
-        bookAuthors.value = book.authors.map {
-            Log.d("boxx [bookAuthors]", it.author.key)
-            val parts = it.author.key.split("/")
-            val value: OpenLibraryAuthor? = api.getAuthor(parts.last()).body()
-            Log.d("boxx [bookAuthors]", "${it.author.key} $value")
-            value
+        try {
+            val api = OpenLibraryApiHelper.getInstance()
+            bookAuthors.value = book.authors.map {
+                Log.d("boxx [bookAuthors]", it.author.key)
+                val parts = it.author.key.split("/")
+                val value: OpenLibraryAuthor? = api.getAuthor(parts.last()).body()
+                Log.d("boxx [bookAuthors]", "${it.author.key} $value")
+                value
+            }
+            Log.d("boxx [bookAuthors]", bookAuthors.value.toString())
+        } catch (e: Exception) {
+            Log.e("boxx [bookAuthors]", e.message.toString())
         }
-        Log.d("boxx [bookAuthors]", bookAuthors.value.toString())
     }
 
     Column {
