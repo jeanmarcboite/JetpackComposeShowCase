@@ -25,8 +25,11 @@
     <string name="books_page_route">books</string>
     <string name="books_page_title">Books</string>
     <string name="db_book_page_route">book/calibre/{bookID}</string>
-    <string name="book_page_route">book/works/{bookID}</string>
-    <string name="book_page_title">Book</string>
+    <string name="db_book_page_title">book/calibre</string>
+    <string name="calibre_book_page_route">book/calibre</string>
+    <string name="calibre_book_page_title">Calibre</string>
+    <string name="openlibrary_book_page_route">book/works/{bookID}</string>
+    <string name="openlibrary_book_page_title">OpenLibrary</string>
     <string name="words_page_route">words</string>
     <string name="words_page_title">Words</string>
     <string name="todo_page_route">todo</string>
@@ -40,9 +43,12 @@
     <string name="calibre_books_table_route">books</string>
     <string name="calibre_authors_table_title">Authors</string>
     <string name="calibre_authors_table_route">authors</string>
+
     <string name="get_book_info">search book</string>
     <string name="home_tab_title">Home</string>
     <string name="home_tab_route">home</string>
     <string name="toggle_tab_title">Toggles</string>
     <string name="toggle_tab_route">toggles</string>
+    <string name="book_page_route">book</string>
+    <string name="book_page_title">BOOK</string>
 </resources>

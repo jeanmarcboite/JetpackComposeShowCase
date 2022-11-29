@@ -3,9 +3,9 @@ package box.example.showcase.ui.pages
 import android.content.Context
 import box.example.showcase.ui.Page
 import box.example.showcase.ui.pages.about.AboutPage
+import box.example.showcase.ui.pages.book.BookPage
 import box.example.showcase.ui.pages.bored.BoredPage
 import box.example.showcase.ui.pages.calibre.CalibreDatabasePage
-import box.example.showcase.ui.pages.calibre.DbBookPage
 import box.example.showcase.ui.pages.color.ColorPage
 import box.example.showcase.ui.pages.home.HomePage
 import box.example.showcase.ui.pages.lab.LabPage
@@ -21,7 +21,7 @@ fun mainPages(context: Context): HashMap<String, Page> {
         ColorPage(),
         AboutPage(),
         CalibreDatabasePage,
-        DbBookPage(),
+        BookPage(),
         LabPage(),
         BoredPage(),
         OpenLibrarySearchPage(),

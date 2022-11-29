@@ -21,8 +21,8 @@ import compose.icons.tablericons.Book
 class OpenLibraryBookPage() :
     Page(
         TablerIcons.Book,
-        R.string.book_page_route,
-        R.string.book_page_title,
+        R.string.openlibrary_book_page_route,
+        R.string.openlibrary_book_page_title,
         Icons.Default.ArrowBack,
     ) {
     var bookID = ""
