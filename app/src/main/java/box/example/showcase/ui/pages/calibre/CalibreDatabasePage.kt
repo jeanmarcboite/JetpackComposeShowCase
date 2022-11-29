@@ -33,8 +33,8 @@ object CalibreDatabasePage :
     TabbedPage(
         listOf(CalibreBooksTab, CalibreAuthorsTab),
         TablerIcons.Database,
-        R.string.database_page_route,
-        R.string.database_page_title
+        R.string.calibre_page_route,
+        R.string.calibre_page_title
     ) {
     override val floatingActionButton: @Composable () -> Unit = {
         CalibreDatabaseSelection()
