@@ -20,6 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import androidx.hilt.navigation.compose.hiltViewModel
+import box.example.showcase.applib.books.models.EpubContainer
+import box.example.showcase.applib.books.models.EpubMetadata
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
 import box.example.showcase.applib.ui.components.data.*
@@ -169,6 +171,18 @@ fun CalibreBook.openFile(context: Context, viewModel: CalibreDatabaseViewModel) 
                     "boxxx [openFile]",
                     "mimetype: ${unzip["mimetype"]}"
                 )
+                val container = EpubContainer.parseXml(unzip["META-INF/container.xml"] ?: "")
+                Log.v(
+                    "boxxx [openFile]",
+                    "container: ${container}"
+                )
+                container.rootFile?.apply {
+                    val epub = EpubMetadata.parseXml(unzip[container.rootFile] ?: "")
+                    Log.v(
+                        "boxxx [openFile]",
+                        "epub: ${epub}"
+                    )
+                }
             }
         }
     }
