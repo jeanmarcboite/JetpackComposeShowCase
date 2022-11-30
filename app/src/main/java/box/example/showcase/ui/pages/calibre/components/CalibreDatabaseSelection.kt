@@ -27,7 +27,8 @@ import java.io.OutputStream
 @Composable
 fun CalibreDatabaseSelection(
 ) {
-    val databaseVersion = hiltViewModel<CalibreDatabaseViewModel>().version
+    val viewModel = hiltViewModel<CalibreDatabaseViewModel>()
+    val databaseVersion = viewModel.version
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -63,10 +64,12 @@ fun CalibreDatabaseSelection(
     val directoryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) {
             it?.run {
-                val tree = DocumentFile.fromTreeUri(context, this)
-                val metadata: DocumentFile? = tree?.listFiles()?.find { documentFile ->
-                    documentFile.name == CalibreDatabaseHelper.DatabaseName
-                }
+                viewModel.documentTree.value = DocumentFile.fromTreeUri(context, this)
+                // TODO findfile
+                val metadata: DocumentFile? =
+                    viewModel.documentTree.value?.listFiles()?.find { documentFile ->
+                        documentFile.name == CalibreDatabaseHelper.DatabaseName
+                    }
                 val errorMessage = if (metadata?.isFile == true) {
                     copyDatabase(context, metadata.uri)
                     null

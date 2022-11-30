@@ -1,21 +1,31 @@
 package box.example.showcase.applib.books.components.calibre
 
+import android.content.Context
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.documentfile.provider.DocumentFile
+import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.applib.books.models.calibre.CalibreBook
 import box.example.showcase.applib.books.models.calibre.CalibreCustomColumn
 import box.example.showcase.applib.ui.components.data.*
 import box.example.showcase.ui.components.OutlinedCard
+import box.example.showcase.ui.models.CalibreDatabaseViewModel
+import java.util.zip.ZipInputStream
 
 @Composable
 fun CalibreBook.ViewHeader(columnsList: Map<String, Boolean>) {
@@ -64,6 +74,8 @@ fun CalibreBook.ViewSummary(onClick: () -> Unit = {}) {
 
 @Composable
 fun CalibreBook.ViewDetails() {
+    val viewModel = hiltViewModel<CalibreDatabaseViewModel>()
+    val context = LocalContext.current
     val scroll = rememberScrollState(0)
     Column(modifier = Modifier.padding(8.dp)) {
         Text(authors.joinToString { it.name.toString() })
@@ -73,6 +85,7 @@ fun CalibreBook.ViewDetails() {
             "ratings" to false,
         )
         ViewHeader(columnsList)
+        OpenFileButton()
         Column(modifier = Modifier.verticalScroll(scroll)) {
             columns.forEach {
                 if (it.key !in (columnsList.keys)) {
@@ -89,6 +102,73 @@ fun CalibreBook.ViewDetails() {
             }
             comment?.apply {
                 listOf(this).ViewHtml("Comments")
+            }
+        }
+    }
+}
+
+@Composable
+fun CalibreBook.OpenFileButton() {
+    if (path != null) {
+        val context = LocalContext.current
+        val viewModel = hiltViewModel<CalibreDatabaseViewModel>()
+        val directoryLauncher =
+            rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) {
+                it?.run {
+                    viewModel.documentTree.value = DocumentFile.fromTreeUri(context, this)
+                    openFile(context, viewModel)
+                }
+            }
+        //val item = context.contentResolver.openInputStream(path)
+
+        Button(
+            onClick = {
+                if (viewModel.documentTree.value == null)
+                    directoryLauncher.launch(null)
+                else
+                    openFile(context, viewModel)
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Open")
+        }
+    }
+}
+
+fun CalibreBook.openFile(context: Context, viewModel: CalibreDatabaseViewModel) {
+    if (path != null) {
+        var documentFile = viewModel.documentTree.value
+        var errorMessage: String? = null
+        var parts = path.split("/")
+        while (parts.size > 0 && errorMessage == null) {
+            val directory = parts.first()
+            documentFile = documentFile?.findFile(directory)
+            if (documentFile?.isDirectory == false) {
+                errorMessage = "could not find '${parts.first()}' in directory"
+            }
+            parts = parts.drop(1)
+        }
+        if (errorMessage != null)
+            Log.e("boxxx [openFile]", errorMessage)
+        else {
+            val epub: DocumentFile? = documentFile!!.listFiles().find {
+                it.name?.endsWith(".epub") == true
+            }
+            if (epub != null) {
+                Log.v("boxxx [openFile]", "epub: ${epub.name}")
+                val zipInputStream =
+                    ZipInputStream(context.contentResolver.openInputStream(epub.uri))
+                val unzip = generateSequence { zipInputStream.nextEntry }
+                    .filterNot { it.isDirectory }
+                    .map {
+                        val bytes = ByteArray(it.size.toInt())
+                        zipInputStream.read(bytes)
+                        Pair(it.name, String(bytes))
+                    }.toMap()
+                Log.v(
+                    "boxxx [openFile]",
+                    "mimetype: ${unzip["mimetype"]}"
+                )
             }
         }
     }

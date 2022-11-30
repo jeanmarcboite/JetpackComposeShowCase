@@ -1,6 +1,5 @@
 package box.example.showcase.ui.pages.calibre
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import box.example.showcase.R
@@ -18,7 +17,7 @@ object OpenLibraryBookTab : Tab(
     @Composable
     override fun Content() {
         val bookViewModel = hiltViewModel<BookViewModel>()
-        Log.d("boxxx [OpenLibrary:Content]", "book: ${bookViewModel.openLibraryBook.value}")
+        // Log.v("boxxx [OpenLibrary:Content]", "book: ${bookViewModel.openLibraryBook.value}")
         bookViewModel.openLibraryBook.value?.View()
     }
 }

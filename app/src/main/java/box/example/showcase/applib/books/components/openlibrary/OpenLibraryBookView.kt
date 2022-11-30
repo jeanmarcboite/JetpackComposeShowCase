@@ -39,13 +39,17 @@ fun OpenLibraryBook.View() {
         try {
             val api = OpenLibraryApiHelper.getInstance()
             bookAuthors.value = book.authors?.map {
-                Log.d("boxx [bookAuthors]", it.author.key)
-                val parts = it.author.key.split("/")
-                val value: OpenLibraryAuthor? = api.getAuthor(parts.last()).body()
-                Log.d("boxx [bookAuthors]", "${it.author.key} $value")
-                value
+                if (it.author == null)
+                    null
+                else {
+                    Log.d("boxx [bookAuthors]", it.author.key)
+                    val parts = it.author.key.split("/")
+                    val value: OpenLibraryAuthor? = api.getAuthor(parts.last()).body()
+                    Log.d("boxx [bookAuthors]", "${it.author.key} $value")
+                    value
+                }
             } ?: listOf()
-            Log.d("boxx [bookAuthors]", bookAuthors.value.toString())
+            Log.v("boxx [bookAuthors]", "authors: ${bookAuthors.value}")
         } catch (e: Exception) {
             Log.e("boxx [bookAuthors]", e.message.toString())
         }
