@@ -1,13 +1,15 @@
 package box.example.showcase.applib.books.models
 
+import box.tools.xml.XmlTag
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
 import java.io.StringReader
+import java.lang.ref.Reference
 
 class EpubContainer(val rootFile: String?) {
     companion object {
         fun parseXml(xml: String): EpubContainer {
-            val TAG = "boxxxx [parseXml]"
+            @Suppress("UNUSED_VARIABLE") val TAG = "boxxxx [parseXml]"
             val factory = XmlPullParserFactory.newInstance()
             factory.isNamespaceAware = true
             val xpp = factory.newPullParser()
@@ -37,34 +39,30 @@ class EpubContainer(val rootFile: String?) {
     }
 }
 
-class EpubMetadata(val title: String?) {
-    init {
-        Package.Metadata.title = title
-    }
-
+class EpubMetadata(tags: Map<String, XmlTag>) {
     var xmlVersion: String = "1.0"
     var encoding = "UTF-8"
 
-    object Package {
+    class _package {
         var xmlns: String? = null
         var uniqueIdentifier: String? = null
         var version: String? = null
 
-        object Metadata {
+        object metadata {
             var xmlns_dc: String? = null
             var xmlns_dcterms: String? = null
             var xmlns_opf: String? = null
             var xmlns_xsi: String? = null
 
-            object creator {
+            val creator = object {
                 var role: String? = null
                 var fileAs: String? = null
                 var value: String? = null
             }
 
-            var title: String? = null
+            val title: String? = tags["title"]?.text
 
-            object identifier {
+            val identifier = object {
                 var id: String? = null
                 var opfScheme: String? = null
                 var value: String? = null
@@ -72,7 +70,7 @@ class EpubMetadata(val title: String?) {
 
             var publisher: String? = null
 
-            object date {
+            val date = object {
                 var opf_event: String? = null
                 var value: String? = null
             }
@@ -80,7 +78,7 @@ class EpubMetadata(val title: String?) {
             var dc_rights: String? = null
             var meta: List<Meta> = listOf()
 
-            class Meta() {
+            inner class Meta {
                 var name: String? = null
                 var content: String? = null
             }
@@ -92,17 +90,17 @@ class EpubMetadata(val title: String?) {
 
         var manifest: List<ManifestItem> = listOf()
 
-        class ManifestItem {
+        inner class ManifestItem {
             var href: String? = null
             var id: String? = null
             var mediaType: String? = null
         }
 
-        object spine {
+        val spine = object {
             var toc: String? = null
             var itemref: List<ItemRef> = listOf()
 
-            class ItemRef {
+            inner class ItemRef {
                 var idref: String? = null
                 var linear: Boolean = false
 
@@ -111,7 +109,7 @@ class EpubMetadata(val title: String?) {
 
         var guide: List<Reference> = listOf()
 
-        class Reference {
+        inner class Reference {
             var href: String? = null
             var title: String? = null
             var type: String? = null
@@ -120,19 +118,18 @@ class EpubMetadata(val title: String?) {
 
     companion object {
         fun parseXml(xml: String): EpubMetadata {
-            class Tag(val attributes: Map<String, String>, val text: String)
 
-            val TAG = "boxxxx [parseXml]"
+
+            @Suppress("UNUSED_VARIABLE") val TAG = "boxxxx [parseXml]"
             val factory = XmlPullParserFactory.newInstance()
             factory.isNamespaceAware = true
             val xpp = factory.newPullParser()
-            val tags: MutableMap<String, Tag> = mutableMapOf()
+            val tags: MutableMap<String, XmlTag> = mutableMapOf()
 
             xpp.setInput(StringReader(xml))
-            var eventType = xpp.eventType
+            xpp.eventType
             while (true) {
-                eventType = xpp.next()
-                when (eventType) {
+                when (xpp.next()) {
                     XmlPullParser.END_DOCUMENT -> break
                     XmlPullParser.START_TAG -> {
                         val name = xpp.name
@@ -140,19 +137,18 @@ class EpubMetadata(val title: String?) {
                         (0..xpp.attributeCount - 1).forEach {
                             attributes[xpp.getAttributeName(it)] = xpp.getAttributeValue(it)
                         }
-                        eventType = xpp.next()
-                        if (eventType == XmlPullParser.TEXT) {
-                            tags[name] = Tag(attributes, xpp.text)
+                        if (xpp.next() == XmlPullParser.TEXT) {
+                            tags[name] = XmlTag(attributes, xpp.text)
                         }
                     }
                 }
             }
 
-            return EpubMetadata(tags["title"]?.text)
+            return EpubMetadata()
         }
     }
 
     override fun toString(): String {
-        return "EpubMetadata(title='${Package.Metadata.title}')"
+        return "EpubMetadata(title='${_package().metadata}')"
     }
 }
